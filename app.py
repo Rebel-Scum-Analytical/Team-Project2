@@ -1,5 +1,8 @@
-from flask import Flask, render_template
 import pandas as pd
+from flask import Flask, render_template
+from flask_sqlalchemy import SQLAlchemy
+
+app = Flask(__name__)
 
 @app.route("/")
 def index():
@@ -7,4 +10,4 @@ def index():
 
 
 if __name__ == "__main__":
-    app.route(debug = true)
+    app.run(debug=True)
