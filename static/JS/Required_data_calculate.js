@@ -1,12 +1,3 @@
-user_personal_data = 
-{
-    height: 65,
-    weight: 205,
-    gender: "male",
-    date_of_birth:"10/1/1980",
-    physical_activity_level:"Lightly_active",
-    calories:0
-}
 
 function calculateAge(dob){
     var from = dob.split("/");
@@ -16,7 +7,7 @@ function calculateAge(dob){
     // This is the difference in milliseconds
     return Math.floor(diff/31557600000);
 }
-function calculateMultiplier(PAL){
+function calcPhysicalMultiplier(PAL){
 switch (PAL) {
     case 'Sedentary': return 1.2;
     case 'Lightly_active':return 1.375;
@@ -27,7 +18,7 @@ switch (PAL) {
   }
 }
 
-function calculateBMRCalories(user_personal_data){
+function calculateCalories(user_personal_data){
     if(user_personal_data.gender === "Male")
     {
         bmr = (66 + 
@@ -44,12 +35,10 @@ function calculateBMRCalories(user_personal_data){
             4.7*calculateAge(user_personal_data.date_of_birth));
     
     }
-    user_personal_data.calories = bmr*calculateMultiplier(user_personal_data.physical_activity_level)
+    return(bmr*calcPhysicalMultiplier(user_personal_data.physical_activity_level))
     
 }
 
-calculateBMRCalories(user_personal_data);
-console.log(user_personal_data);
 
   
 

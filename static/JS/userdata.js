@@ -1,4 +1,12 @@
-userdata = {
+user_personal_data = 
+{
+    height: 65,
+    weight: 205,
+    gender: "male",
+    date_of_birth:"10/1/1980",
+    physical_activity_level:"Lightly_active"
+}
+userdata_nutrition_data = {
     calories:{total:2200, 
         proteins:660, 
         carbohydrates:1100, 
@@ -8,7 +16,7 @@ userdata = {
         Fiber: 35,
         Linoleic_Acid: 15,
         Alpha_Linolenic_Acid: 1.5,
-        Protein: 50}    
+        Protein: 50},
     minerals:{ Calcium: 1300,
         Chromium: 23,
         Copper: 700 ,
@@ -31,7 +39,7 @@ userdata = {
         Riboflavin_VB2:14,
         Niacin_VB3:13,
         Pantothenic_Acid_VB5:18,
-        Pyridoxine_VB6:,
+        Pyridoxine_VB6:1.2,
         Biotin_VB7:30,
         Folate_VB9: 500,
         Vitamin_D:20,
