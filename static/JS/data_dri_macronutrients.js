@@ -66,7 +66,7 @@ const data_macro_rda = {
       "100": "46"
     }
   },
-  Male: {
+  "Male": {
     Water: {
       "13": "2.4",
       "50": "3.7",

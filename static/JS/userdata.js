@@ -2,7 +2,7 @@ user_personal_data =
 {
     height: 65,
     weight: 205,
-    gender: "male",
+    gender: "Male",
     date_of_birth:"10/1/1980",
     physical_activity_level:"Lightly_active"
 }
@@ -36,7 +36,7 @@ userdata_nutrition_data = {
     vitamins: {Vitamin_C: 70,
         Cobalamin_VB12:2.5,
         Thiamine_VB1:1,
-        Riboflavin_VB2:14,
+        Riboflavin_VB2:2.3,
         Niacin_VB3:13,
         Pantothenic_Acid_VB5:18,
         Pyridoxine_VB6:1.2,

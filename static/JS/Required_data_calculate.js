@@ -5,7 +5,31 @@ function calculateAge(dob){
     var cur = new Date();
     var diff = cur - birthdateTimeStamp;
     // This is the difference in milliseconds
-    return Math.floor(diff/31557600000);
+    user_age = Math.floor(diff/31557600000);
+    if(user_age <= 13)
+    {
+        age_key = "13";
+
+    }else if((user_age>= 14) && (user_age<= 18))
+    {
+        age_key = "18";
+
+    }else if((user_age>= 19) && (user_age<= 30))
+    {
+        age_key = "30";
+    }else if((user_age>= 31) && (user_age<= 50))
+    {
+        age_key = "50";
+    }
+    else if((user_age>= 51) && (user_age<= 70))
+    {
+        age_key = "70";
+    }else {
+        age_key = "100";
+    }
+    return age_key
+
+
 }
 function calcPhysicalMultiplier(PAL){
 switch (PAL) {
@@ -37,6 +61,24 @@ function calculateCalories(user_personal_data){
     }
     return(bmr*calcPhysicalMultiplier(user_personal_data.physical_activity_level))
     
+}
+
+function dri_macro_nutrient(data){
+    return data_macro_rda[data.gender][data.nutrient][data.age_key]
+}
+
+function dri_micro_nutrient_minerals(data){
+
+    values = [] 
+    values.push(data_mineral_rda[data.gender][data.nutrient][data.age_key])
+    return values
+}
+
+function dri_micro_nutrient_vitamins(data){
+
+    values = []   
+    values.push(data_vitamin_rda[data.gender][data.nutrient][data.age_key])
+    return values
 }
 
 

@@ -3,6 +3,9 @@ const nutrition_data = userdata_nutrition_data;
 const BAR = "plot";
 const selectNutrient = d3.select("#selectnutrients");
 
+user_age_key = calculateAge(user_personal_data.date_of_birth);
+user_calory_needs = calculateCalories(user_personal_data);
+user_gender = user_personal_data.gender;
 
 
 const inputField = d3.select("#datetime");
@@ -23,89 +26,90 @@ var options = selectNutrient
 	.append('option')
   .text(function (d) { return d; });
   
-  // Initialize the city
+  // Initialize the dropdown menu
   (function() {
-    desired_nutrient = document.getElementById('selectnutrients').value = 'All';
+    desired_nutrient = document.getElementById('selectnutrients').value = 'Calories';
   })();
 
 (function(){
-    
-    let data = [
-        {
-        //   x: [],
-          x: [10,20,35,40],
-          y: ["Vitamin A","Vitamin C","Vitamin K","Vitamin E" ],
-        //   y: [],
-          type:'bar',
-          orientation: 'h'
-        }
-      ];
-    
-      let layout = {
-        title: "My Plot",
-        xaxis: {
-          title: "X-Axis",
-          range: [0, 100]
-        },
-        yaxis: {
-          title: "Y-Axis",
-          
-        }
-      };
-    
-      Plotly.plot(BAR, data, layout);
+      d3.select("#plot").html("")
+      let plot_data = plot_calories()
+      plot_data.layout.height = 700;
+      plot_data.layout.width = 1200;  
+      Plotly.newPlot(BAR, plot_data.data, plot_data.layout)
+
 
       selectNutrient.on( 'change', function () {
         let desired_nutrient = selectNutrient.property("value");
-        let x = [];
-        let y = [];
+        d3.select("#plot").html("")
+
         if( desired_nutrient == 'All')
         {
+          let row1 = d3.select("#plot")
+                      .html("")
+                     .append("div")
+                     .classed("row justify-content-center", true)
+
+          let col1 = row1.append("div")
+                      .classed("col-md-6", true)
+                      .attr("id", "plot1")
+                    
+          let col2 = row1.append("div")
+                     .classed("col-md-6", true)
+                     .attr("id", "plot2")
+
+                     d3.select("#plot")
+                    .append("br")
+                    .append("br")
+
+          let row2 = d3.select("#plot")
+                    .append("div")
+                    .classed("row justify-content-center", true)
+                    .attr("id", "plot3")
+
+          let plot_data = plot_macro()
+          plot_data.layout.height = 700/2;
+          plot_data.layout.width = 1200/2; 
+          Plotly.newPlot("plot1", plot_data.data, plot_data.layout)   
+          
+          plot_data = plot_micro()
+          plot_data.layout.height = 700/2;
+          plot_data.layout.width = 1200/2; 
+          Plotly.newPlot("plot2", plot_data.data, plot_data.layout)
+
+          
+          plot_data = plot_calories() 
+          plot_data.layout.height = 700/2;
+          plot_data.layout.width = 1200/2;  
+          Plotly.newPlot("plot3", plot_data.data, plot_data.layout)
+
 
         }else if(desired_nutrient == 'Macro Nutrients'){
-          x=Object.values(userdata_nutrition_data.macronutrients);
-          y=Object.keys(userdata_nutrition_data.macronutrients);
+
+          let plot_data = plot_macro()
+          plot_data.layout.height = 700;
+          plot_data.layout.width = 1200;
+          Plotly.newPlot(BAR, plot_data.data, plot_data.layout) 
         }
         else if(desired_nutrient == 'Micro Nutrients'){
-          x=Object.values(userdata_nutrition_data.minerals);
-          y=Object.keys(userdata_nutrition_data.minerals);
-          x.push.apply(x, Object.values(userdata_nutrition_data.vitamins))
-          y.push.apply(y,Object.keys(userdata_nutrition_data.vitamins))
 
-
+          let plot_data = plot_micro()
+          plot_data.layout.height = 700;
+          plot_data.layout.width = 1200;
+          Plotly.newPlot(BAR, plot_data.data, plot_data.layout)
         }
-        else if(desired_nutrient == 'Calories'){
+        else if(desired_nutrient == 'Calories'){  
 
-          x=Object.values(userdata_nutrition_data.calories);
-          console.log(x);
-          y=Object.keys(userdata_nutrition_data.calories);
-          console.log(y);
-          type='pie'
-            // y=(Object.values(userdata_nutrition_data[desired_nutrient])/Object.values(userdata_nutrition_data[desired_nutrient])
-            // x=Object.keys(userdata_nutrition_data[desired_nutrient]) 
-            // x=[5,25,30,45]
-            // y=["Vitamin A","Vitamin C","Vitamin K","Vitamin E" ]
+          let plot_data = plot_calories()  
+          plot_data.layout.height = 700;
+          plot_data.layout.width = 1200;
+          Plotly.newPlot(BAR, plot_data.data, plot_data.layout)
 
         }
 
-
-        Plotly.restyle(BAR, "type", [type]);
-        Plotly.restyle(BAR, "x", [x]);
-        Plotly.restyle(BAR, "y", [y]);
       });
     
 })();
 
 
 
-  //Handle the button click event     
-const button = d3.select("#filter-btn");
-
-button.on("click", function() {
-    x=[10,20,35,40]
-    y=["Vitamin A","Vitamin C","Vitamin K","Vitamin E" ]
-    Plotly.restyle(BAR, "x", [x]);
-    Plotly.restyle(BAR, "y", [y]);
-
-
-})
