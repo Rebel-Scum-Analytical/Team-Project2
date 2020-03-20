@@ -2,7 +2,7 @@
 -- MySQL Workbench Migration
 -- Migrated Schemata: sr28
 -- Source Schemata: sr28
--- Created: Thu Mar 19 16:49:23 2020
+-- Created: Fri Mar 20 00:01:03 2020
 -- Workbench Version: 8.0.19
 -- ----------------------------------------------------------------------------
 
@@ -62,52 +62,52 @@ CREATE TABLE IF NOT EXISTS `sr28`.`FOOTNOTE` (
 CREATE TABLE IF NOT EXISTS `sr28`.`ABBREV` (
   `NDB_No` VARCHAR(5) NOT NULL,
   `Shrt_Desc` VARCHAR(60) NULL,
-  `Water_(g)` DOUBLE NULL,
+  `Water_g` DOUBLE NULL,
   `Energ_Kcal` INT(10) NULL,
-  `Protein_(g)` DOUBLE NULL,
-  `Lipid_Tot_(g)` DOUBLE NULL,
-  `Ash_(g)` DOUBLE NULL,
-  `Carbohydrt_(g)` DOUBLE NULL,
-  `Fiber_TD_(g)` DOUBLE NULL,
-  `Sugar_Tot_(g)` DOUBLE NULL,
-  `Calcium_(mg)` INT(10) NULL,
-  `Iron_(mg)` DOUBLE NULL,
-  `Magnesium_(mg)` DOUBLE NULL,
-  `Phosphorus_(mg)` INT(10) NULL,
-  `Potassium_(mg)` INT(10) NULL,
-  `Sodium_(mg)` INT(10) NULL,
-  `Zinc_(mg)` DOUBLE NULL,
-  `Copper_mg)` DOUBLE NULL,
-  `Manganese_(mg)` DOUBLE NULL,
-  `Selenium_(µg)` DOUBLE NULL,
-  `Vit_C_(mg)` DOUBLE NULL,
-  `Thiamin_(mg)` DOUBLE NULL,
-  `Riboflavin_(mg)` DOUBLE NULL,
-  `Niacin_(mg)` DOUBLE NULL,
-  `Panto_Acid_mg)` DOUBLE NULL,
-  `Vit_B6_(mg)` DOUBLE NULL,
-  `Folate_Tot_(µg)` DOUBLE NULL,
-  `Folic_Acid_(µg)` DOUBLE NULL,
-  `Food_Folate_(µg)` DOUBLE NULL,
-  `Folate_DFE_(µg)` DOUBLE NULL,
-  `Choline_Tot_ (mg)` DOUBLE NULL,
-  `Vit_B12_(µg)` DOUBLE NULL,
+  `Protein_g` DOUBLE NULL,
+  `Lipid_Tot_g` DOUBLE NULL,
+  `Ash_g` DOUBLE NULL,
+  `Carbohydrt_g` DOUBLE NULL,
+  `Fiber_TD_g` DOUBLE NULL,
+  `Sugar_Tot_g` DOUBLE NULL,
+  `Calcium_mg` INT(10) NULL,
+  `Iron_mg` DOUBLE NULL,
+  `Magnesium_mg` DOUBLE NULL,
+  `Phosphorus_mg` INT(10) NULL,
+  `Potassium_mg` INT(10) NULL,
+  `Sodium_g` INT(10) NULL,
+  `Zinc_mg` DOUBLE NULL,
+  `Copper_mg` DOUBLE NULL,
+  `Manganese_mg` DOUBLE NULL,
+  `Selenium_mcg` DOUBLE NULL,
+  `Vit_C_mg` DOUBLE NULL,
+  `Thiamin_mg` DOUBLE NULL,
+  `Riboflavin_mg` DOUBLE NULL,
+  `Niacin_mg` DOUBLE NULL,
+  `Panto_Acid_mg` DOUBLE NULL,
+  `Vit_B6_mg` DOUBLE NULL,
+  `Folate_Tot_mcg` DOUBLE NULL,
+  `Folic_Acid_mcg` DOUBLE NULL,
+  `Food_Folate_mcg` DOUBLE NULL,
+  `Folate_DFE_mcg` DOUBLE NULL,
+  `Choline_Tot_mg` DOUBLE NULL,
+  `Vit_B12_mcg` DOUBLE NULL,
   `Vit_A_IU` INT(10) NULL,
   `Vit_A_RAE` DOUBLE NULL,
-  `Retinol_(µg)` DOUBLE NULL,
-  `Alpha_Carot_(µg)` DOUBLE NULL,
-  `Beta_Carot_(µg)` DOUBLE NULL,
-  `Beta_Crypt_(µg)` DOUBLE NULL,
-  `Lycopene_(µg)` DOUBLE NULL,
-  `Lut+Zea_ (µg)` DOUBLE NULL,
-  `Vit_E_(mg)` DOUBLE NULL,
-  `Vit_D_µg` DOUBLE NULL,
+  `Retinol_mcg` DOUBLE NULL,
+  `Alpha_Carot_mcg` DOUBLE NULL,
+  `Beta_Carot_mcg` DOUBLE NULL,
+  `Beta_Crypt_mcg` DOUBLE NULL,
+  `Lycopene_mcg` DOUBLE NULL,
+  `Lut+Zea_mcg` DOUBLE NULL,
+  `Vit_E_mg` DOUBLE NULL,
+  `Vit_D_mcg` DOUBLE NULL,
   `Vit_D_IU` DOUBLE NULL,
-  `Vit_K_(µg)` DOUBLE NULL,
-  `FA_Sat_(g)` DOUBLE NULL,
-  `FA_Mono_(g)` DOUBLE NULL,
-  `FA_Poly_(g)` DOUBLE NULL,
-  `Cholestrl_(mg)` INT(10) NULL,
+  `Vit_K_mcg` DOUBLE NULL,
+  `FA_Sat_g` DOUBLE NULL,
+  `FA_Mono_g` DOUBLE NULL,
+  `FA_Poly_g` DOUBLE NULL,
+  `Cholestrl_g` INT(10) NULL,
   `GmWt_1` DOUBLE NULL,
   `GmWt_Desc1` VARCHAR(120) NULL,
   `GmWt_2` DOUBLE NULL,
@@ -236,14 +236,6 @@ CREATE TABLE IF NOT EXISTS `sr28`.`NUTR_DEF` (
   INDEX `Num_Dec` (`Num_Dec` ASC));
 
 -- ----------------------------------------------------------------------------
--- Table sr28.SRC_CD
--- ----------------------------------------------------------------------------
-CREATE TABLE IF NOT EXISTS `sr28`.`SRC_CD` (
-  `Src_Cd` VARCHAR(2) NOT NULL,
-  `SrcCd_Desc` VARCHAR(60) NULL,
-  PRIMARY KEY (`Src_Cd`));
-
--- ----------------------------------------------------------------------------
 -- Table sr28.DATA_SRC
 -- ----------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `sr28`.`DATA_SRC` (
@@ -261,6 +253,14 @@ CREATE TABLE IF NOT EXISTS `sr28`.`DATA_SRC` (
     REFERENCES `sr28`.`DATSRCLN` (`DataSrc_ID`)
     ON DELETE RESTRICT
     ON UPDATE RESTRICT);
+
+-- ----------------------------------------------------------------------------
+-- Table sr28.SRC_CD
+-- ----------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `sr28`.`SRC_CD` (
+  `Src_Cd` VARCHAR(2) NOT NULL,
+  `SrcCd_Desc` VARCHAR(60) NULL,
+  PRIMARY KEY (`Src_Cd`));
 
 -- ----------------------------------------------------------------------------
 -- Table sr28.LANGUAL
