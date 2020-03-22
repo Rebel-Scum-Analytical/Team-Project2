@@ -234,10 +234,12 @@ ul, ol {
 }
 .logo {
 	float: left;
+	
 }
 .logo a {
 	display: inline-block;
-	padding: 24px 0 29px;
+	padding: 20px 0 29px;
+	
 }
 .nav-menu {
 	float: right;
@@ -291,8 +293,9 @@ ul, ol {
 -----------------------*/
 
 .hero-section {
-	height: 880px;
-	padding-top: 335px;
+	height: 100px;
+	padding-top: 220px;
+	padding-left: 40px;
 }
 .hero-image {
 	/* Use "linear-gradient" to add a darken background effect to the image (photographer.jpg). This will make the text easier to read */
@@ -324,6 +327,22 @@ ul, ol {
 .hero-text p {
 	color: #ffffff;
 	margin-bottom: 44px;
+}
+.visual-section {
+	height: 50px;
+	padding-top: 50px;
+	padding-left: 40px;
+
+}
+
+.form-group {
+	border: 4px solid #f44336;
+}
+.svg-container {
+	height: 50px;
+	padding-top: 50px;
+	padding-left: 40px;
+	border: 4px solid #f44336;
 }
 /*---------------------
   About Section
