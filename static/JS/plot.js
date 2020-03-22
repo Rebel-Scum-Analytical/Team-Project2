@@ -13,7 +13,7 @@ function plot_calories(){
     var layout = { 
       
       title: `Total Calories consumed ${total}`,
-      paper_bgcolor: "#fed8b1"
+      paper_bgcolor: "#949291"
     }
 
     return(data= {
@@ -82,7 +82,7 @@ function plot_micro(){
           tickangle: 315,
          
         },
-        // height: 700,
+        // height: 100,
         // width: 1200,
         paper_bgcolor: "#fed8b1"
     }
