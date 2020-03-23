@@ -1,92 +1,97 @@
 import os
-from flask import Flask, render_template, jsonify, request, redirect
+import sqlalchemy
+from flask import Flask, render_template, jsonify, request, url_for, flash, redirect
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.ext.automap import automap_base
+from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import Session
 from sqlalchemy import create_engine, func, inspect
+from forms import RegistrationForm, LoginForm
 
-#################################################
-# Flask Setup
-#################################################
+# Setup the Database
+HOSTNAME = "127.0.0.1"
+PORT = 3306
+USERNAME = "root"
+PASSWORD = "PASSWORD"
+DIALECT = "mysql"
+DRIVER = "pymysql"
+DATABASE = "nutrometer"
+
+# Connect to DB in DB Server
+db_connection_string = (
+    f"{DIALECT}+{DRIVER}://{USERNAME}:{PASSWORD}@{HOSTNAME}:{PORT}/{DATABASE}"
+)
+
+engine = create_engine(db_connection_string)
+inspector = inspect(engine)
+table_names = inspector.get_table_names()
+# print(table_names)
+
+Base = automap_base()
+Base.prepare(engine, reflect=True)
+
+# create classes by mapping with names which match the table names
+User_account = Base.classes.user_account
+Meal_record = Base.classes.meal_record
+
+session = Session(bind=engine)
+
+all_users = session.query(User_account.account_number,
+                        User_account.username,\
+                        User_account.first_name, \
+                        User_account.last_name, \
+                        User_account.gender,\
+                        User_account.date_of_birth,\
+                        User_account.height,\
+                        User_account.weight,\
+                        User_account.physical_activity_level)\
+                        .all()
+# print(all_users)
 
 app = Flask(__name__)
 
-#################################################
-# The database URI
-#################################################
-
-app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///db/nutrometer.sql"
-
-db = SQLAlchemy(app)
+@app.route("/all_users")
+def show_all():
+    return jsonify(all_users)
 
 
-# # Create our database model
-# class UserLogin(db.Model):
-#     __tablename__ = 'user_account'
+def loginsys(username, password):
+    user_ls = session.query(User_account.first_name, User_account.last_name, User_account.gender)\
+                        .filter(User_account.username == username)\
+                        .filter(User_account.password == password)\
+                        .all()                            
+    return user_ls
 
-#     first_name = db.Column(db.String)
-#     last_name = db.Column(db.String)
-#     # email_id = db.Column(db.String)
-#     # mobile_no = db.Column(db.Integer)
+@app.route("/login")
+def login():
 
-#     def __repr__(self):
-#         return '<User %r>' % (self.name)
+    request_username = request.args['username']
+    request_password = request.args['password']
+
+    return jsonify(loginsys(request_username, request_password))
+    # return render_template(".html")
+
+ # @app.route("/login")
+# def login():
+#     form =LoginForm()
+#     return render_template("login.html", title="Login", form=form)   
 
 
-# # Create database tables
-# @app.before_first_request
-# def setup():
-#     # Recreate database each time for demo
-#     # db.drop_all()
-#     db.create_all()
+app.config['SECRET_KEY'] = '5791628bb0b13ce0c676dfde280ba245'
 
-#############################################################################################
-# Route #1("/")
-# Home Page
-#############################################################################################
-
-@app.route("/")
+@app.route("/home")
 def home():
-    return render_template("index.html")
+    return render_template("home.html")
 
 
-#############################################################################################
-# Route #2(/api/v1.0/user_login)
-# Design a query for the existing user to login
-#############################################################################################
+@app.route("/register", methods=["GET", "POST"])
+def register():
+    form =RegistrationForm()
+    if form.validate_on_submit():
+        flash(f'Account created for {form.username.data}!', "success")
+        return redirect(url_for('home'))
+    return render_template("register.html", title="Register", form=form)
 
-# Query the database and send the jsonified results for user login
-@app.route("/send", methods=["POST"])
-def send():
-    if request.method == "POST":
-        firstname = request.form["userFirstname"]
-        lastname = request.form["userLastname"]
-        email = request.form["useremail"]
-        mobile = request.form["usermobilenumber"]
-
-        user = Users(first_name=firstname, last_name=lastname, email_id=email, mobile_no=mobile)
-        db.session.add(user)
-        db.session.commit()
-        print(user)
-        return redirect("/", code=302)
-
-    return render_template("form.html")
-#############################################################################################
-# Route #3(/api/v1.0/create_user)
-# Design a query create a new user
-#############################################################################################
-
-#############################################################################################
-# Route #4(/api/v1.0/user_metrics)
-# Design a query That displays specific nutrients for the food consumed by the user. 
-#############################################################################################
-
-#############################################################################################
-# Route #5(/api/v1.0/food_list)
-# Design a query That displays food with specific nutrients. 
-# Basically ask the user, what nutrient are you looking for and
-# have it return a list of foods that are high in that nutrient.
-#############################################################################################
 
 if __name__ == "__main__":
     app.run(debug=True)
