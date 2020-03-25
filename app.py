@@ -11,7 +11,7 @@ from sqlalchemy import create_engine, func, inspect
 HOSTNAME = "127.0.0.1"
 PORT = 3306
 USERNAME = "root"
-PASSWORD = "@200Piedmont"
+PASSWORD = "PASSWORD"
 DIALECT = "mysql"
 DRIVER = "pymysql"
 DATABASE = "nutrometer"
