@@ -42,7 +42,7 @@ app = Flask(__name__)
 def home():
     return render_template("home.html")
 
-
+# REGISTER ROUTE
 @app.route("/register", methods=["GET"])
 def register():
     requested_username = request.args['username']
@@ -76,6 +76,8 @@ def register():
             return render_template("register.html")
 
 
+        
+# LOGIN ROUTE
 def loginsys(username, password):
     user_ls = session.query(User_account.first_name, User_account.last_name, User_account.gender)\
                         .filter(User_account.username == username)\
@@ -98,6 +100,7 @@ def login():
         return jsonify({"Status":"Failure!", "Error": str(e)})
 
 
+# ADD MEAL ROUTE
 @app.route("/meal", methods=["GET"])
 def meal():
     requested_meal_date = request.args['meal_date']
@@ -121,6 +124,3 @@ def meal():
 
 if __name__ == "__main__":
     app.run(debug=True)
-
-#     @Pratima Gokhale I think "meal_record" functions accepting inputs now, but we need to figure out the nutrients calculation by mapping out the relationships between Nutrometer.db and USDA dbs
-# Then we are able to move on to JS
