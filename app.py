@@ -1,3 +1,4 @@
+# Dependencies
 import os
 import sqlalchemy
 from flask import Flask, render_template, jsonify, request, make_response
@@ -7,11 +8,13 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import Session
 from sqlalchemy import create_engine, func, inspect
 
-# Setup the Database
+#################################################
+# Set up the database
+#################################################
 HOSTNAME = "127.0.0.1"
 PORT = 3306
 USERNAME = "root"
-PASSWORD = "PASSWORD"
+PASSWORD = "password"
 DIALECT = "mysql"
 DRIVER = "pymysql"
 DATABASE = "nutrometer"
@@ -35,14 +38,25 @@ Meal_record = Base.classes.meal_record
 
 session = Session(bind=engine)
 
+#################################################
+# Flask Setup
+#################################################
 
 app = Flask(__name__)
 
-@app.route("/home")
+#############################################################################################
+# Route #1("/")
+# Home Page
+#############################################################################################
+@app.route("/")
 def home():
-    return render_template("home.html")
+    return render_template("index.html")
 
-# REGISTER ROUTE
+#############################################################################################
+# Route #2(/api/register)
+# Design a query for the register a new user
+#############################################################################################
+
 @app.route("/register", methods=["GET"])
 def register():
     requested_username = request.args['username']
@@ -77,7 +91,11 @@ def register():
 
 
         
-# LOGIN ROUTE
+#############################################################################################
+# Route #3(/api/login)
+# Design a query for the existing user to login
+#############################################################################################
+
 def loginsys(username, password):
     user_ls = session.query(User_account.first_name, User_account.last_name, User_account.gender)\
                         .filter(User_account.username == username)\
@@ -100,7 +118,11 @@ def login():
         return jsonify({"Status":"Failure!", "Error": str(e)})
 
 
-# ADD MEAL ROUTE
+#############################################################################################
+# Route #4(/meal)
+# Design a query that displays specific nutrients for the food consumed by the user. 
+#############################################################################################
+
 @app.route("/meal", methods=["GET"])
 def meal():
     requested_meal_date = request.args['meal_date']
@@ -121,6 +143,12 @@ def meal():
     session.commit()
 
     return render_template("user_metrics.html")
+#############################################################################################
+# Route #5(/food_list)
+# Design a query That displays food with specific nutrients. 
+# Basically ask the user, what nutrient are you looking for and
+# have it return a list of foods that are high in that nutrient.
+#############################################################################################
 
 if __name__ == "__main__":
     app.run(debug=True)
