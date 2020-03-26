@@ -21,7 +21,7 @@ app = Flask(__name__)
 #app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///db/nutrometer.sql"
 
 #######################SAMPLE CODE TO ACCESS DB###########################  
-app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://root:uv9y9g5t@127.0.0.1:3306/sakila"
+app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://root:password@127.0.0.1:3306/sakila"
 #CONECTION STRING mysql+mysqlconnector://<user>:<password>@<host>[:<port>]/<dbname> #########
 #######################SAMPLE CODE TO ACCESS DB###########################  
 
