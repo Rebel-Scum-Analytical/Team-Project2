@@ -87,7 +87,7 @@ def register():
 
             session.add(new_user)
             session.commit()
-            return render_template("register.html")
+            return render_template("New_user.html")
 
 
         

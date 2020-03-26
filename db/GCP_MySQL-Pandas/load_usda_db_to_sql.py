@@ -14,7 +14,8 @@ import warnings
 HOSTNAME = "127.0.0.1"
 PORT = 3306
 USERNAME = "root"
-PASSWORD = "PASSWORD" ## Enter MySQL password here 
+PASSWORD = "password" ## Enter MySQL password here 
+# PASSWORD = "Password123!" ## Enter MySQL password here 
 DIALECT = "mysql"
 DRIVER = "pymysql"
 DATABASE = "sr28"
@@ -81,17 +82,17 @@ df = pd.DataFrame(nutrition_info , columns =["Food Desc","Water","Energy","Prote
     "Pantothenic_Acid_VB5", "Cholestrol","Weight_grams","Weight_desc"
  ])
 # print(df)
-DATABASE1 = "usda_db"
-TABLENAME1 = "nutrition"
+# DATABASE1 = "usda_db"
+# TABLENAME1 = "nutrition"
 try:
-    engine.execute(f"CREATE DATABASE {DATABASE1}")
+    engine.execute(f"CREATE DATABASE {DATABASE}")
 except ProgrammingError:
     warnings.warn(
-        f"Could not create database {DATABASE1}. Database {DATABASE1} may already exist."
+        f"Could not create database {DATABASE}. Database {DATABASE} may already exist."
     )
     pass
 
-engine.execute(f"USE {DATABASE1}")
-engine.execute(f"DROP TABLE IF EXISTS {TABLENAME1}")
-df.to_sql(name=TABLENAME1, con=engine)
+engine.execute(f"USE {DATABASE}")
+engine.execute(f"DROP TABLE IF EXISTS {TABLENAME}")
+df.to_sql(name=TABLENAME, con=engine)
 
