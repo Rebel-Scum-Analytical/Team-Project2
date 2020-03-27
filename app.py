@@ -14,7 +14,7 @@ from sqlalchemy import create_engine, func, inspect
 HOSTNAME = "127.0.0.1"
 PORT = 3306
 USERNAME = "root"
-PASSWORD = "password"
+PASSWORD = "PASSWORD" # Enter you password here
 DIALECT = "mysql"
 DRIVER = "pymysql"
 DATABASE = "nutrometer"
@@ -27,7 +27,7 @@ db_connection_string = (
 engine = create_engine(db_connection_string)
 inspector = inspect(engine)
 table_names = inspector.get_table_names()
-# print(table_names)
+print(table_names)
 
 Base = automap_base()
 Base.prepare(engine, reflect=True)
@@ -87,7 +87,7 @@ def register():
 
             session.add(new_user)
             session.commit()
-            return render_template("register.html")
+            return render_template("New_user.html")
 
 
         

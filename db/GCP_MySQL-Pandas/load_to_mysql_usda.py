@@ -1,19 +1,27 @@
+#################################################
+# Dependencies
+#################################################
+
 import numpy as np
 import pandas as pd
 from sqlalchemy import create_engine
 from sqlalchemy.exc import ProgrammingError
 import warnings
 
+#################################################
+# Set up the database
+#################################################
+
 USER = "root"
-PASSWORD = "password"
+PASSWORD = "PASSWORD" # Enter you SQL password here
 HOST = "127.0.0.1"
 PORT = "3306"
-DATABASE = "trig_db"
-TABLENAME = "trig_table"
+DATABASE = "usda_db"
+TABLENAME = "nutrition"
 
-# create the dataframe
-x = np.arange(0, 1000)
-df = pd.DataFrame({"x": x, "sin": np.sin(x), "cos": np.cos(x), "tan": np.tan(x)})
+# Create the database usig csv file
+df = pd.read_csv('file1.csv')  
+# print(df.head())
 
 engine = create_engine(f"mysql+pymysql://{USER}:{PASSWORD}@{HOST}:{PORT}")
 
