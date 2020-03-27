@@ -1,3 +1,7 @@
+#################################################
+# Dependencies
+#################################################
+
 import pandas as pd
 import os
 from flask import Flask, render_template, jsonify, request, redirect
@@ -14,8 +18,7 @@ import warnings
 HOSTNAME = "127.0.0.1"
 PORT = 3306
 USERNAME = "root"
-PASSWORD = "password" ## Enter MySQL password here 
-# PASSWORD = "Password123!" ## Enter MySQL password here 
+PASSWORD = "PASSWORD" ## Enter MySQL password here 
 DIALECT = "mysql"
 DRIVER = "pymysql"
 DATABASE = "sr28"
@@ -27,7 +30,7 @@ db_connection_string = (
 )
 
 engine = create_engine(db_connection_string)
-# print(engine)
+
 inspector = inspect(engine)
 table_names = inspector.get_table_names()
 # print("Table names are: ", table_names)
@@ -37,7 +40,6 @@ Base.prepare(engine, reflect=True)
 
 # create classes by mapping with names which match the table names
 Nutrition = Base.classes.abbrev
-# Meal_record = Base.classes.meal_record
 
 session = Session(bind=engine)
 
@@ -75,24 +77,14 @@ nutrition_info = session.query(Nutrition.Shrt_Desc,\
                         Nutrition.GmWt_1, \
                         Nutrition.GmWt_Desc1) \
                         .all()
-print(type(nutrition_info))
+# print(type(nutrition_info))
 df = pd.DataFrame(nutrition_info , columns =["Food Desc","Water","Energy","Protein","Lipid_Total","Carbohydrate",
     "Fiber","Sugar","Calcium","Iron","Magnesium","Phosphorus","Potassium","Sodium","Zinc", "Copper","Manganese","Selenium", "Folic_Acid",
     "Vitamin_C","Vitamin_B12","Vitamin_B6", "Vitamin_D","Vitamin_K", "Vitamin_A", "Vitamin_E", "Thiamin", "Riboflavin", "Niacin",
     "Pantothenic_Acid_VB5", "Cholestrol","Weight_grams","Weight_desc"
  ])
 # print(df)
-# DATABASE1 = "usda_db"
-# TABLENAME1 = "nutrition"
-try:
-    engine.execute(f"CREATE DATABASE {DATABASE}")
-except ProgrammingError:
-    warnings.warn(
-        f"Could not create database {DATABASE}. Database {DATABASE} may already exist."
-    )
-    pass
 
-engine.execute(f"USE {DATABASE}")
-engine.execute(f"DROP TABLE IF EXISTS {TABLENAME}")
-df.to_sql(name=TABLENAME, con=engine)
+# Convert the df to csv file 
+df.to_csv('file1.csv')
 
