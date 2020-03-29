@@ -16,8 +16,64 @@
               <div class="hero-image">
                 <div class="hero-text">
                     <span>You are what you eat</span>
-                    <h1>TODO: ADD NUTRITION SEARCH/LOOKUP</h1>
-                    
+                    <!-- <h1>TODO: ADD NUTRITION SEARCH/LOOKUP</h1> -->
+                  </br></br>
+                    <div class="row-sm">
+                      <div class="section-title register-text">
+                          <div class="section-title">
+                              <h4>Search Food Database</h4>
+                          </div>
+                          <form action="#" class="register-form">
+                              <div class="row">
+                                  <!-- <div class="col-8">
+                                      <label for="name">Food</label>
+                                      <input type="text">
+                                    </div> -->
+                                  <!-- <div class="col-2">
+                                    <label for="name">Type</label>
+                                    <input list="mealType" name="mealType" placeholder="When?">
+                                      <datalist id="mealType">
+                                          <option value="Breakfast">
+                                          <option value="Lunch">
+                                          <option value="Dinner">
+                                          <option value="Snacks">
+                                      </datalist> -->
+                                  <!-- </div> -->
+                                  <div class="col">
+                                    <label for="name">Food</label>
+                                    <input type="text" placeholder="Search for Food" onchange="optionChanged(this.value)">
+                                  </div>
+                                  <!-- <div class="col-2">
+                                      <label for="name">Servings</label>
+                                      <input type="number" min="0" max="20" placeholder="How much?">
+                                    </div> -->
+                                      </div>
+                                      <button type="submit" class="register-btn">Search</button>
+                                    </br></br>
+                                  <div class="block">
+                                    <div class="col">
+                                      <label for="name">Matching Foods:</label>
+                                      <div class="col-2">
+                                      </div>
+                                      <textarea class="form-control" rows="5" id="comment"></textarea>
+                                       
+                                     <script type="text/javascript">
+
+                                      // $(document).on('click', 'ul#matching li', function(e) {
+                                      //     e.preventDefault();
+                                      //     var $this = $(this);
+                                      //     var $searchItem = $this.find('.search').first();
+
+                                      //     remote_update("#nutrition_facts", $searchItem.attr('href'), '', null, true);
+
+                                      //   }); 
+                                      </script> 
+                                      <ul id="matching"></ul>
+                                    </div>
+                                  </div>
+                          </form>
+                      </div>
+                  </div>  
                 </div>
               </div>
             </div>
@@ -54,5 +110,7 @@
         </div>
     </div>
   </section>
-
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.5.0/d3.min.js"></script>
+  <script src="{{ url_for('static', filename='js/user_metric.js') }}"></script>
   {% endblock %}
