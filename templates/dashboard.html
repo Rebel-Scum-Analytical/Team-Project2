@@ -1,0 +1,168 @@
+
+{% extends "layout.html" %}
+{% block pagetitle %}Dashboard{% endblock %}
+{% block bodycontent %}
+
+
+
+<section class="hero-section set-bg">
+    <div class="container">
+        <div class="row-sm">
+            <div class="section-title register-text">
+                <h4>Today's Statistics</h4>
+                <table class="table table-dark" id="diary-table">
+
+
+                    <thead>                  
+                        <tr>
+                          <th scope="col"></th> </th>
+                          <th scope="col">Calories (kcal)</th>
+                          <th scope="col">Carbs (g)</th>
+                          <th scope="col">Fat (g)</th>
+                          <th scope="col">Sodium (mg)</th>
+                          <th scope="col">Sugar (g)</th>
+                          <th scope="col">Calories (kcal)</th>                      
+                        </tr>
+                    </thead>
+              
+                    <tbody>
+              
+              
+                    <tr>
+              
+                      <th scope="row">Totals</th>
+                          <td>0</td>                  
+                          <td>-</td>
+                          <td>-</td>
+                          <td>-</td>
+                          <td>0</td>                  
+                          <td>0</td>
+                    </tr>
+              
+                    <tr>
+                        <th scope="row">Your Daily Goal</th>
+                            <td>1,200</td>
+                            <td>50</td>
+                            <td>30</td>
+                            <td>20</td>
+                            <td>2,300</td>
+                            <td>45</td>
+              
+                    </tr>
+              
+                    <tr>
+                        <th scope="row">Remaining</th>
+              
+              
+                            <td>1,200</td>
+                            <td>50</td>
+                            <td>30</td>
+                            <td>20</td>
+                            <td>2,300</td>
+                            <td>45</td>
+                    </tr>
+              
+                  </tbody>
+              
+                  
+                </table>
+
+                
+
+            </div>
+
+        </div>
+        <div class="row-sm">
+            <div class="section-title register-text">
+                <div class="section-title">
+                    <h4>Quick Add</h4>
+                </div>
+                <form action="#" class="register-form">
+                    <div class="row">
+                        <div class="col-2">
+                            <label for="name">Date</label>
+                            <input type="date">
+                          </div>
+                        <div class="col-2">
+                          <label for="name">Type</label>
+                          <input list="mealType" name="mealType" placeholder="When?">
+                            <datalist id="mealType">
+                                <option value="Breakfast">
+                                <option value="Lunch">
+                                <option value="Dinner">
+                                <option value="Snacks">
+                            </datalist>
+                        </div>
+                        <div class="col">
+                          <label for="name">Food</label>
+                          <input type="text" placeholder="What?">
+                        </div>
+                        <div class="col-2">
+                            <label for="name">Servings</label>
+                            <input type="number" min="0" max="20" placeholder="How much?">
+                          </div>
+                            </div>
+                            <button type="submit" class="register-btn">Add</button>
+                </form>
+            </div>
+        </div>  
+        <div class="row-sm">
+            <div class="register-text">
+                <div class="section-title">
+                    <h4>Last 5 entries</h4>
+
+                    <table class="table table-dark" id="diary-table">
+
+
+                        <thead>                  
+                            <tr>
+                              <th scope="col"></th> </th>
+                              <th scope="col">Date</th>
+                              <th scope="col">Meal Type</th>
+                              <th scope="col">Food</th>
+                              <th scope="col">Servings</th>
+                              <th scope="col">Calories (kcal)</th>                      
+                            </tr>
+                        </thead>
+                  
+                        <tbody>
+                  
+                  
+                        <tr>
+                  
+                          <th scope="row">1</th>
+                              <td>3/28/2020</td>                  
+                              <td>Breakfast</td>
+                              <td>Cereals</td>
+                              <td>1</td>
+                              <td>200</td>
+                        </tr>
+                        <tr>
+                  
+                            <th scope="row">2</th>
+                                <td>3/28/2020</td>                  
+                                <td>Breakfast</td>
+                                <td>Milk</td>
+                                <td>1</td>
+                                <td>50</td>
+                          </tr>
+                  
+    
+                      </tbody>
+                  
+                      
+                    </table>
+                </div>
+            </div>
+        </div> 
+        
+
+            
+        </div>
+    </div>
+</section>
+
+
+  
+
+  {% endblock %}

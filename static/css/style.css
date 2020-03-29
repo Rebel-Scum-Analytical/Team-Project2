@@ -827,9 +827,8 @@ ul, ol {
 	margin-bottom: 12px;
 }
 .register-text {
-	padding: 50px 70px 60px 70px;
+	padding: 20px;
 	background: #dfdddd;
-	margin-right: -15px;
 }
 .register-text .register-form label {
 	font-size: 14px;
@@ -858,6 +857,36 @@ ul, ol {
 	cursor: pointer;
 	margin-top: 30px;
 }
+
+.register-nut {
+	font-size: 16px;
+	color: #ffffff;
+	font-weight: 600;
+	width: 80%;
+	background: -webkit-gradient(linear, left top, right top, from(#eb3c5a), to(#f67831));
+	background: -o-linear-gradient(left, #eb3c5a, #f67831);
+	background: linear-gradient(to right, #eb3c5a, #f67831);
+	border: none;
+	padding: 12px;
+	cursor: pointer;
+	margin: 30px;
+}
+
+.register-nut-back {
+	font-size: 16px;
+	color: #ffffff;
+	font-weight: 600;
+	width: 80%;
+	background: -webkit-gradient(linear, left top, right top, from(#eb3c5a), to(#f67831));
+	background: -o-linear-gradient(left, #50494a, #e9e3df);
+	background: linear-gradient(to right, #50494a, #e9e3df);
+	border: none;
+	padding: 12px;
+	cursor: pointer;
+	margin: 30px;
+	text-align: center;
+}
+
 .register-pic {
 	margin-left: -15px;
 }
