@@ -33,7 +33,7 @@ app.secret_key = '1a2b3c4d5e'
 HOSTNAME = "127.0.0.1"
 PORT = 3306
 USERNAME = "root"
-PASSWORD = "password" # Enter you password here
+PASSWORD = "uv9y9g5t" # Enter you password here
 DIALECT = "mysql"
 DRIVER = "pymysql"
 DATABASE = "usda"
@@ -138,6 +138,21 @@ def dashboard():
     
     session['page']='dashboard'
     return render_template("dashboard.html")
+
+@app.route("/user_metrics/<new_food>")
+def user_meal(new_food):
+    print(new_food)
+    search = "{}%".format(new_food) 
+    list_food = session_db.query(Nutrition.Shrt_Desc,Nutrition.Weight_desc )\
+                    .filter(Nutrition.Shrt_Desc.like(search)).all()
+    print(list_food)                
+    show_breakfast = {}   
+    for food in list_food:
+        show_breakfast[food[0]] = food[1]
+       
+    print(show_breakfast)      
+    return jsonify(show_breakfast)
+ 
 
 @app.route('/analysis')
 def analysis():
