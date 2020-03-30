@@ -12,7 +12,13 @@ function plot_calories(){
     }]
     var layout = { 
       
-      title: `Total Calories consumed ${total}`,
+      title: {
+        text: `Total Calories Consumed ${total}`,
+        font: {
+          family: 'Courier New, monospace',
+          size: 20
+        }},
+     
       paper_bgcolor: "#949291"
     }
 
@@ -61,21 +67,29 @@ function plot_micro(){
       })
 
     var trace1 ={
-      x : percentage_values,
-      y : y1,
+      x : y1,
+      y : percentage_values,
       type :'bar',
-      orientation: 'h',
+      //orientation: 'h',
+      // x : percentage_values,
+      // y : y1,
       text:y2.flat()
     }
         
       let data1 = [trace1];
       var layout = {
-        title: "User Micro Nutrient intake as a Percent of RDA of Nutrient ",
+         
+        title: {
+          text:"Micro Nutrient Intake",
+          font: {
+            family: 'Courier New, monospace',
+            size: 20
+          }},
         yaxis: {
           autotick: false,
           ticks: 'outside',
           tick0: 0,
-          dtick: 0.25,
+          dtick: 25,
           ticklen: 8,
           tickwidth: 4,
           tickcolor: '#000',
@@ -84,7 +98,7 @@ function plot_micro(){
         },
         // height: 100,
         // width: 1200,
-        paper_bgcolor: "#fed8b1"
+        paper_bgcolor: "#949291"
     }
 
         return(data= {
@@ -115,28 +129,38 @@ function plot_macro(){
             })
 
         let data1 =[{
-            x:percentage_values,
-            y:Object.keys(userdata_nutrition_data.macronutrients),
+            // x:percentage_values,
+            // y:Object.keys(userdata_nutrition_data.macronutrients),
+            //orientation: 'h',
+            //use below for vertical orientation 
+            x :Object.keys(userdata_nutrition_data.macronutrients),
+            y:percentage_values,
             type:'bar',
-            orientation: 'h',
+            
             text:text
 
           }]
 
           var layout = {
-            title: "User Macro Nutrient intake as a Percent of RDA of Nutrient ",
+            title: {
+              text:"Macro Nutrient Intake",
+              font: {
+                family: 'Courier New, monospace',
+                size: 20
+              }},
+            
             yaxis: {
               autotick: false,
               ticks: 'outside',
               tick0: 0,
-              dtick: 0.25,
+              dtick: 25,
               ticklen: 8,
               tickwidth: 4,
               tickcolor: '#000',
               tickangle: 315,
               
             },
-            paper_bgcolor: "#fed8b1"
+            paper_bgcolor: "#949291"
            }
 
            return(data= {
