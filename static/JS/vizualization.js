@@ -34,8 +34,8 @@ var options = selectNutrient
 (function(){
       d3.select("#plot").html("")
       let plot_data = plot_calories()
-      plot_data.layout.height = 700;
-      plot_data.layout.width = 1200;  
+      plot_data.layout.height = 500;
+      plot_data.layout.width = 900;  
       Plotly.newPlot(BAR, plot_data.data, plot_data.layout)
 
 
@@ -48,7 +48,7 @@ var options = selectNutrient
           let row1 = d3.select("#plot")
                       .html("")
                      .append("div")
-                     .classed("row justify-content-center", true)
+                     .classed("row justify-content-space-between", true)
 
           let col1 = row1.append("div")
                       .classed("col-md-6", true)
@@ -87,22 +87,22 @@ var options = selectNutrient
         }else if(desired_nutrient == 'Macro Nutrients'){
 
           let plot_data = plot_macro()
-          plot_data.layout.height = 700;
-          plot_data.layout.width = 1200;
+          plot_data.layout.height = 500;
+          plot_data.layout.width = 900;
           Plotly.newPlot(BAR, plot_data.data, plot_data.layout) 
         }
         else if(desired_nutrient == 'Micro Nutrients'){
 
           let plot_data = plot_micro()
-          plot_data.layout.height = 700;
-          plot_data.layout.width = 1200;
+          plot_data.layout.height = 500;
+          plot_data.layout.width = 900;
           Plotly.newPlot(BAR, plot_data.data, plot_data.layout)
         }
         else if(desired_nutrient == 'Calories'){  
 
           let plot_data = plot_calories()  
-          plot_data.layout.height = 700;
-          plot_data.layout.width = 1200;
+          plot_data.layout.height = 500;
+          plot_data.layout.width = 900;
           Plotly.newPlot(BAR, plot_data.data, plot_data.layout)
 
         }
