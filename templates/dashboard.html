@@ -3,7 +3,7 @@
 {% block pagetitle %}Dashboard{% endblock %}
 {% block bodycontent %}
 
-
+<link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
 
 <section class="hero-section set-bg">
     <div class="container">
@@ -95,7 +95,8 @@
                         </div>
                         <div class="col">
                           <label for="name">Food</label>
-                          <input type="text" placeholder="What?">
+                          <input type="text" placeholder="What?" id="foodName">
+                          <input type="hidden" id="foodNameId">
                         </div>
                         <div class="col-2">
                             <label for="name">Servings</label>
@@ -161,6 +162,36 @@
         </div>
     </div>
 </section>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script>
+    $( "#foodName" ).autocomplete({
+        source: function (request, response) {
+        $.getJSON("/nutriquicksearch?term=" + request.term, function (data) {
+            
+            response(
+                $.map(data.data, function (key) {
+                return {
+                    label: key[1] + ' ['+key[2]+' kcal]',
+                    value: key[0]
+                };
+            }));
+        });
+    },
+
+        select( event, ui ){
+        $('#foodNameId').val(ui.item.value);
+        $('#foodName').val(ui.item.label);
+        return false;
+    },
+
+      minLength: 2,
+
+    } );
+
+   
+ 
+</script>
 
 
   

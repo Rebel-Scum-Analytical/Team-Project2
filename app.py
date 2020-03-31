@@ -30,9 +30,9 @@ app.secret_key = '1a2b3c4d5e'
 #################################################
 # Set up the database
 #################################################
-HOSTNAME = "127.0.0.1"
+HOSTNAME = "192.168.1.41"
 PORT = 3306
-USERNAME = "root"
+USERNAME = "look4chirag"
 PASSWORD = "password" # Enter you password here
 DIALECT = "mysql"
 DRIVER = "pymysql"
@@ -197,6 +197,18 @@ def logout():
         session['messages'] = messages
         session['page']=' '
         return redirect("/")  
+
+
+@app.route('/nutriquicksearch', methods=['GET'])
+def nutriquicksearch():
+    searchkey=request.args.get('term')
+    if not searchkey:
+        return '{  "data": [] } '
+    resultSet = session_db.query(Nutrition.NDB_No, Nutrition.Shrt_Desc, Nutrition.Energy)\
+        .filter(Nutrition.Shrt_Desc.ilike('%'+searchkey+'%')).all()
+    return jsonify(data=resultSet)
+
+
 
 if __name__ == "__main__":
     app.run(debug=True)
