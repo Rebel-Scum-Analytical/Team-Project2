@@ -24,7 +24,7 @@ DROP TABLE IF EXISTS `meal_record`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `meal_record` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `account_number` int DEFAULT NULL,
+  `username` varchar(50) NOT NULL,
   `meal_category` set('Breakfast','Lunch','Dinner','Snack') DEFAULT NULL,
   `meal_date` date DEFAULT NULL,
   `meal_time` time DEFAULT NULL,
@@ -73,7 +73,9 @@ CREATE TABLE `meal_record` (
   `alpha_linolenic_acid` float(5,1) DEFAULT NULL,
   `protein` float(5,1) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `id_UNIQUE` (`id`)
+  UNIQUE KEY `id_UNIQUE` (`id`),
+  UNIQUE KEY `username_UNIQUE` (`username`),
+  CONSTRAINT `username` FOREIGN KEY (`username`) REFERENCES `user_account` (`username`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -83,7 +85,6 @@ CREATE TABLE `meal_record` (
 
 LOCK TABLES `meal_record` WRITE;
 /*!40000 ALTER TABLE `meal_record` DISABLE KEYS */;
-INSERT INTO `meal_record` VALUES (1,NULL,'','2020-01-01','01:00:00','',NULL,1.0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(2,NULL,'','2020-02-02','02:00:00','',NULL,2.0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(3,NULL,'','2020-03-03','03:00:00','',NULL,3.0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(4,NULL,'','2020-04-04','04:00:00','',NULL,4.0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(5,NULL,NULL,'2020-01-01','15:20:00',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `meal_record` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -96,8 +97,8 @@ DROP TABLE IF EXISTS `user_account`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `user_account` (
   `account_number` int NOT NULL AUTO_INCREMENT,
-  `username` varchar(50) DEFAULT NULL,
-  `password` varchar(20) DEFAULT NULL,
+  `username` varchar(50) NOT NULL,
+  `password` varchar(50) DEFAULT NULL,
   `first_name` varchar(50) DEFAULT NULL,
   `last_name` varchar(50) DEFAULT NULL,
   `gender` set('male','female') NOT NULL,
@@ -105,10 +106,11 @@ CREATE TABLE `user_account` (
   `height` float(5,1) DEFAULT NULL,
   `weight` float(5,1) DEFAULT NULL,
   `physical_activity_level` set('sedentary','lightly active','moderately active',' very active','extra active') DEFAULT NULL,
-  `confirm_password` varchar(20) NOT NULL,
-  PRIMARY KEY (`account_number`),
-  UNIQUE KEY `account_number_UNIQUE` (`account_number`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `confirm_password` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`username`),
+  UNIQUE KEY `account_number_UNIQUE` (`account_number`),
+  UNIQUE KEY `username_UNIQUE` (`username`)
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -117,7 +119,6 @@ CREATE TABLE `user_account` (
 
 LOCK TABLES `user_account` WRITE;
 /*!40000 ALTER TABLE `user_account` DISABLE KEYS */;
-INSERT INTO `user_account` VALUES (14,'user0000','0000',NULL,NULL,'male',NULL,NULL,NULL,NULL,'0000'),(15,'user111','1111',NULL,NULL,'male',NULL,NULL,NULL,NULL,'1111');
 /*!40000 ALTER TABLE `user_account` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -130,4 +131,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-03-30 14:15:31
+-- Dump completed on 2020-03-30 20:16:42
