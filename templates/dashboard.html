@@ -77,15 +77,22 @@
                 <div class="section-title">
                     <h4>Quick Add</h4>
                 </div>
-                <form action="#" class="register-form">
+                <form action="" class="register-form" method="POST">
+                    {{ form.hidden_tag() }}
+                    {{ form.csrf_token }}
+                    {{ form.name }}
+                    {% if form.errors %}
+                    {{ form.errors }}
+                    {% endif %}
                     <div class="row">
                         <div class="col-2">
                             <label for="name">Date</label>
-                            <input type="date">
+                            <!-- PK -->
+                            <input type="date" id="inputdate" name="inputdate">
                           </div>
                         <div class="col-2">
                           <label for="name">Type</label>
-                          <input list="mealType" name="mealType" placeholder="When?">
+                          <input list="mealType" name="meal_category" placeholder="When?" id="meal_category">
                             <datalist id="mealType">
                                 <option value="Breakfast">
                                 <option value="Lunch">
@@ -95,12 +102,12 @@
                         </div>
                         <div class="col">
                           <label for="name">Food</label>
-                          <input type="text" placeholder="What?" id="foodName">
-                          <input type="hidden" id="foodNameId">
+                          <input type="text" placeholder="What?" id="foodName" name="food_desc">
+                          <input type="hidden" id="foodNameId" name="foodNameId">
                         </div>
                         <div class="col-2">
                             <label for="name">Servings</label>
-                            <input type="number" min="0" max="20" placeholder="How much?">
+                            <input type="number" min="0" max="20" placeholder="How much?" id="servings_count" name="servings_count">
                           </div>
                             </div>
                             <button type="submit" class="register-btn">Add</button>
