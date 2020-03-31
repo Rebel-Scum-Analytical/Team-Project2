@@ -8,6 +8,10 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import Session
 from sqlalchemy import create_engine, func, inspect
 import pymysql
+from flask_wtf import FlaskForm
+from wtforms import StringField, BooleanField, TextField, PasswordField, SelectField, DateField, DecimalField, SubmitField
+from wtforms.validators import InputRequired, Length, NumberRange, EqualTo
+from passlib.hash import sha256_crypt
 
 #################################################
 # Flask Setup
@@ -30,9 +34,9 @@ app.secret_key = '1a2b3c4d5e'
 #################################################
 # Set up the database
 #################################################
-HOSTNAME = "192.168.1.41"
+HOSTNAME = "127.0.0.1"
 PORT = 3306
-USERNAME = "look4chirag"
+USERNAME = "root"
 PASSWORD = "password" # Enter you password here
 DIALECT = "mysql"
 DRIVER = "pymysql"
@@ -130,14 +134,37 @@ def loginsys(username, password):
 # This will be the home page, only accessible for loggedin users
 #############################################################################################
 
+class AddMeal(FlaskForm):
+    inputdate = DateField('inputdate', format='%Y-%m-%d')
+    meal_category = StringField(u'meal_category', validators=[InputRequired()]) 
+    food_desc = StringField('food_desc', validators=[InputRequired()])
+    servings_count = DecimalField('servings_count', places=2, rounding=None, validators=[InputRequired(), NumberRange(min=0, max=20)])
+    foodNameId = DecimalField('foodNameId')
+    submit = SubmitField('Add')
 
-@app.route('/dashboard')
+
+@app.route('/dashboard',methods=["GET", "POST"])
 def dashboard():
     if(checkLoggedIn() == False):
         return redirect('/login')
     
     session['page']='dashboard'
-    return render_template("dashboard.html")
+
+    form = AddMeal(request.form)
+    if form.validate_on_submit():
+        # flash(f'Meal Added for {form.meal_category.data}!', 'successfully')
+
+        new_meal = Meal_record(meal_date = form.inputdate.data,\
+                                    type = form.meal_category.data,\
+                                    meal_desc = form.food_desc.data,\
+                                    amount = form.servings_count.data,\
+                                    meal_item_code = form.foodNameId.data
+                                    )
+        session_db.add(new_meal)
+        session_db.commit()
+        print("Adding meal")
+
+    return render_template("dashboard.html", form=form)
 
 @app.route("/user_metrics/<new_food>")
 def user_meal(new_food):
