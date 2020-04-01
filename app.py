@@ -13,6 +13,8 @@ from wtforms import StringField, BooleanField, TextField, PasswordField, SelectF
 from wtforms.validators import InputRequired, Length, NumberRange, EqualTo
 from passlib.hash import sha256_crypt
 
+import enum
+
 
 
 #################################################
