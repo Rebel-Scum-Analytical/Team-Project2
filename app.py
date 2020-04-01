@@ -13,7 +13,6 @@ from wtforms import StringField, BooleanField, TextField, PasswordField, SelectF
 from wtforms.validators import InputRequired, Length, NumberRange, EqualTo
 from passlib.hash import sha256_crypt
 
-import enum
 
 
 
@@ -41,7 +40,7 @@ app.secret_key = '1a2b3c4d5e'
 HOSTNAME = "127.0.0.1"
 PORT = 3306
 USERNAME = "root"
-PASSWORD = "uv9y9g5t"
+PASSWORD = "PASSWORD"
 DIALECT = "mysql"
 DRIVER = "pymysql"
 DATABASE = "usda"
@@ -64,27 +63,6 @@ app.config['SQLALCHEMY_DATABASE_URI'] = (
  )
 db = SQLAlchemy(app)
 
-class IntEnum(db.TypeDecorator):
-    """
-    Enables passing in a Python enum and storing the enum's *value* in the db.
-    The default would have stored the enum's *name* (ie the string).
-    """
-    impl = db.Integer
-
-    def __init__(self, enumtype, *args, **kwargs):
-        super(IntEnum, self).__init__(*args, **kwargs)
-        self._enumtype = enumtype
-
-    def process_bind_param(self, value, dialect):
-        if isinstance(value, int):
-            return value
-
-        return value.value
-
-    def process_result_value(self, value, dialect):
-        return self._enumtype(value)
-
-
 class Meal_record(db.Model):
     __tablename__ = "meal_record"
 
@@ -98,14 +76,6 @@ class Meal_record(db.Model):
     def __repr__(self):
         return "<Meal_record %r>" % (self.name)
 
-class ActivityTypes(enum.IntEnum):
-    sedentary = 1
-    lightly_active = 2
-    moderately_active = 3
-    very_active = 4
-    extra_active = 5
-
-
 class User_account(db.Model):
     __tablename__ = "user_account"
 
@@ -118,9 +88,7 @@ class User_account(db.Model):
     date_of_birth = db.Column(db.Date)
     height = db.Column(db.Float)
     weight = db.Column(db.Float)
-    # physical_activity_level = db.Column(IntEnum(ActivityTypes), default=ActivityTypes.sedentary)
     physical_activity_level = db.Column(db.String(50))
-
 
     def __repr__(self):
         return "<User_account %r>" % (self.name)
