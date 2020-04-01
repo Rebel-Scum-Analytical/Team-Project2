@@ -55,36 +55,104 @@ db_connection_string = (
 # #################################################
 
 # # The database URI
-# app.config['SQLALCHEMY_DATABASE_URI'] = (
-#     os.environ.get("JAWSDB_URL",""), or db_connection_string
-# )
-# db = SQLAlchemy(app)
-
 ###################################################
 
 app.config['SQLALCHEMY_DATABASE_URI'] = (
-     os.environ.get("JAWSDB_URL",""), or db_connection_string
+     os.environ.get("JAWSDB_URL","") or db_connection_string
  )
 db = SQLAlchemy(app)
 
+class IntEnum(db.TypeDecorator):
+    """
+    Enables passing in a Python enum and storing the enum's *value* in the db.
+    The default would have stored the enum's *name* (ie the string).
+    """
+    impl = db.Integer
 
+    def __init__(self, enumtype, *args, **kwargs):
+        super(IntEnum, self).__init__(*args, **kwargs)
+        self._enumtype = enumtype
+
+    def process_bind_param(self, value, dialect):
+        if isinstance(value, int):
+            return value
+
+        return value.value
+
+    def process_result_value(self, value, dialect):
+        return self._enumtype(value)
+
+
+class Meal_record(db.Model):
+    __tablename__ = "meal_record"
+
+    meal_item_code = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(50))
+    type = db.Column(db.String(50))
+    meal_date = db.Column(db.Date)
+    meal_desc = db.Column(db.String(256))    
+    amount = db.Column(db.Float)
+
+    def __repr__(self):
+        return "<Meal_record %r>" % (self.name)
+
+class ActivityTypes(enum.IntEnum):
+    sedentary = 1
+    lightly_active = 2
+    moderately active = 3
+    very_active = 4
+    extra_active = 5
+
+
+class User_account(db.Model):
+    __tablename__ = "user_account"
+
+    username = db.Column(db.String(50), primary_key=True)
+    password = db.Column(db.String(50))
+    first_name = db.Column(db.String(50))
+    last_name = db.Column(db.String(50))
+    gender = db.Column(db.String(50))
+    date_of_birth = db.Column(db.Date)
+    height = db.Column(db.Float)
+    weight = db.Column(db.Float)
+    physical_activity_level = db.Column(IntEnum(ActivityTypes), default=ActivityTypes.sedentary)
+    confirm_password = db.Column(db.String(50))
+
+
+    def __repr__(self):
+        return "<User_account %r>" % (self.name)
+
+
+@app.before_first_request
+def setup():
+    db.create_all()
+
+#ABOVE CODE IS FOR HEROKU######
+###################################################
+
+#commented as using a different method for Heroku
 # engine = create_engine(db_connection_string)
 # inspector = inspect(engine)
 # table_names = inspector.get_table_names()
 # # print("Table names are: ", table_names)
 
-Base = automap_base()
-Base.prepare(db.engine, reflect=True)
-# print(Base.classes.values)
+#commented as using a different method for Heroku
+# Base = automap_base()
+# Base.prepare(db.engine, reflect=True)
+# # print(Base.classes.values)
 
-# create classes by mapping with names which match the table names
-User_account = Base.classes.user_account
-Meal_record = Base.classes.meal_record
-Nutrition = Base.classes.nutrition
+# # create classes by mapping with names which match the table names
+# User_account = Base.classes.user_account
+# Meal_record = Base.classes.meal_record
+# Nutrition = Base.classes.nutrition
 
-
+#commented as using a different method for Heroku
 # session_db = Session(bind=engine)
 # print("session_db is: ", session_db)
+
+
+
+
 
 
 #############################################################################################
