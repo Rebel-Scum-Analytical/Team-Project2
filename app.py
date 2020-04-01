@@ -99,7 +99,7 @@ class Meal_record(db.Model):
 class ActivityTypes(enum.IntEnum):
     sedentary = 1
     lightly_active = 2
-    moderately active = 3
+    moderately_active = 3
     very_active = 4
     extra_active = 5
 
