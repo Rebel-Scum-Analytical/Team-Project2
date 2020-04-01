@@ -13,10 +13,6 @@ from wtforms import StringField, BooleanField, TextField, PasswordField, SelectF
 from wtforms.validators import InputRequired, Length, NumberRange, EqualTo
 from passlib.hash import sha256_crypt
 
-from flask_wtf import FlaskForm
-from wtforms import StringField, BooleanField, TextField, PasswordField, SelectField, DateField, DecimalField, SubmitField
-from wtforms.validators import InputRequired, Length, NumberRange, EqualTo
-from passlib.hash import sha256_crypt
 
 
 #################################################
@@ -53,22 +49,41 @@ db_connection_string = (
     f"{DIALECT}+{DRIVER}://{USERNAME}:{PASSWORD}@{HOSTNAME}:{PORT}/{DATABASE}"
 )
 
-engine = create_engine(db_connection_string)
-inspector = inspect(engine)
-table_names = inspector.get_table_names()
-# print("Table names are: ", table_names)
+#FOLLOWING CODE IS FOR HEROKU######
+# #################################################
+# # Database Setup
+# #################################################
+
+# # The database URI
+# app.config['SQLALCHEMY_DATABASE_URI'] = (
+#     os.environ.get("JAWSDB_URL",""), or db_connection_string
+# )
+# db = SQLAlchemy(app)
+
+###################################################
+
+app.config['SQLALCHEMY_DATABASE_URI'] = (
+     os.environ.get("JAWSDB_URL",""), or db_connection_string
+ )
+db = SQLAlchemy(app)
+
+
+# engine = create_engine(db_connection_string)
+# inspector = inspect(engine)
+# table_names = inspector.get_table_names()
+# # print("Table names are: ", table_names)
 
 Base = automap_base()
-Base.prepare(engine, reflect=True)
+Base.prepare(db.engine, reflect=True)
 # print(Base.classes.values)
 
 # create classes by mapping with names which match the table names
 User_account = Base.classes.user_account
 Meal_record = Base.classes.meal_record
-# Nutrition = Base.classes.nutrition
+Nutrition = Base.classes.nutrition
 
 
-session_db = Session(bind=engine)
+# session_db = Session(bind=engine)
 # print("session_db is: ", session_db)
 
 
@@ -124,7 +139,7 @@ def login():
     
 def loginsys(username, password):
     print("Username: "+username+" Password: "+password)
-    user_ls = session_db.query(User_account.first_name, User_account.last_name, User_account.gender, User_account.username)\
+    user_ls = db.session.query(User_account.first_name, User_account.last_name, User_account.gender, User_account.username)\
                         .filter(User_account.username == username)\
                         .filter(User_account.password == password)\
                         .first()           
@@ -168,8 +183,8 @@ def register():
                                     weight = form.weight.data,\
                                     physical_activity_level = form.physical_activity_level.data
                                     )
-            session_db.add(new_user)
-            session_db.commit()
+            db.session.add(new_user)
+            db.session.commit()
 
             return redirect('/dashboard')
         return render_template("New_user.html", form=form)
@@ -206,8 +221,8 @@ def dashboard():
                                     amount = form.servings_count.data,\
                                     meal_item_code = form.foodNameId.data
                                     )
-        session_db.add(new_meal)
-        session_db.commit()
+        db.session.add(new_meal)
+        db.session.commit()
         print("Adding meal")
 
     return render_template("dashboard.html", form=form)
@@ -216,7 +231,7 @@ def dashboard():
 def user_meal(new_food):
     print(new_food)
     search = "{}%".format(new_food) 
-    list_food = session_db.query(Nutrition.Shrt_Desc,Nutrition.Weight_desc )\
+    list_food =db.session.query(Nutrition.Shrt_Desc,Nutrition.Weight_desc )\
                     .filter(Nutrition.Shrt_Desc.like(search)).all()
     print(list_food)                
     show_breakfast = {}   
@@ -277,7 +292,7 @@ def nutriquicksearch():
     searchkey=request.args.get('term')
     if not searchkey:
         return '{  "data": [] } '
-    resultSet = session_db.query(Nutrition.NDB_No, Nutrition.Shrt_Desc, Nutrition.Energy)\
+    resultSet = db.session.query(Nutrition.NDB_No, Nutrition.Shrt_Desc, Nutrition.Energy)\
         .filter(Nutrition.Shrt_Desc.ilike('%'+searchkey+'%')).all()
     return jsonify(data=resultSet)
 
