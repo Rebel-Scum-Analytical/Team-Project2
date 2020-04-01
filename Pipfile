@@ -12,6 +12,8 @@ sqlalchemy = "*"
 pymysql = "*"
 flask-sqlalchemy = "*"
 flask-wtf = "*"
+passlib = "*"
+gunicorn = "*"
 
 [requires]
 python_version = "3.7"
