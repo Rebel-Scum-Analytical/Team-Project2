@@ -118,8 +118,8 @@ class User_account(db.Model):
     date_of_birth = db.Column(db.Date)
     height = db.Column(db.Float)
     weight = db.Column(db.Float)
-    physical_activity_level = db.Column(IntEnum(ActivityTypes), default=ActivityTypes.sedentary)
-    
+    # physical_activity_level = db.Column(IntEnum(ActivityTypes), default=ActivityTypes.sedentary)
+    physical_activity_level = db.Column(db.String(50))
 
 
     def __repr__(self):
