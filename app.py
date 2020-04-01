@@ -111,6 +111,7 @@ class User_account(db.Model):
 
     username = db.Column(db.String(50), primary_key=True)
     password = db.Column(db.String(50))
+    confirm_password = db.Column(db.String(50))
     first_name = db.Column(db.String(50))
     last_name = db.Column(db.String(50))
     gender = db.Column(db.String(50))
@@ -118,7 +119,7 @@ class User_account(db.Model):
     height = db.Column(db.Float)
     weight = db.Column(db.Float)
     physical_activity_level = db.Column(IntEnum(ActivityTypes), default=ActivityTypes.sedentary)
-    confirm_password = db.Column(db.String(50))
+    
 
 
     def __repr__(self):
