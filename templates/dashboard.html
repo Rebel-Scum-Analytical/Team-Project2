@@ -18,48 +18,45 @@
                           <th scope="col"></th> </th>
                           <th scope="col">Calories (kcal)</th>
                           <th scope="col">Carbs (g)</th>
-                          <th scope="col">Fat (g)</th>
+                          <th scope="col">Total Fat (% kcal)</th>
                           <th scope="col">Sodium (mg)</th>
-                          <th scope="col">Sugar (g)</th>
-                          <th scope="col">Calories (kcal)</th>                      
+                          <th scope="col">Added Sugars (g)</th>
+                          <th scope="col">Fiber (g)</th>                      
                         </tr>
                     </thead>
               
                     <tbody>
-              
-              
                     <tr>
-              
-                      <th scope="row">Totals</th>
-                          <td>0</td>                  
-                          <td>-</td>
-                          <td>-</td>
-                          <td>-</td>
-                          <td>0</td>                  
-                          <td>0</td>
-                    </tr>
-              
+                        <th scope="row">Daily Goals </th>
+                            <td>{{daily_goal_list[0]}} </td>
+                            <td>{{daily_goal_list[1]}} </td>
+                            <td>{{daily_goal_list[2]}} </td>
+                            <td>{{daily_goal_list[3]}} </td>
+                            <td>{{daily_goal_list[4]}}</td>
+                            <td>{{daily_goal_list[5]}}</td> 
+                        
+                    </tr>     
+                    
                     <tr>
-                        <th scope="row">Your Daily Goal</th>
-                            <td>1,200</td>
-                            <td>50</td>
-                            <td>30</td>
-                            <td>20</td>
-                            <td>2,300</td>
-                            <td>45</td>
-              
-                    </tr>
-              
+                      <th scope="row">Daily Totals </th>
+                        <td> {{ results[0] }} </td>
+                        <td> {{ results[1] }} </td>
+                        <td> {{ results[2] }} </td>
+                        <td> {{ results[3] }} </td>
+                        <td> {{ results[4] }} </td>
+                        <td> {{ results[5] }} </td> 
+                  
+                    </tr>        
+                                
                     <tr>
                         <th scope="row">Remaining</th>
               
-              
-                            <td>1,200</td>
+                            <td> {{ daily_goal_list[0] - results[0] }} </td>
                             <td>50</td>
                             <td>30</td>
                             <td>20</td>
                             <td>2,300</td>
-                            <td>45</td>
+                            <td>45</td> -->
                     </tr>
               
                   </tbody>
