@@ -249,7 +249,7 @@ def dashboard():
 
     session['page']='dashboard'
 
-    # Code to display daily statistics on dashboard
+    # Code to display daily statistics on dashboard - part 1
     
     daily_goal_list = [1800, 130, 25, 2200, 25, 25.2]
     form = AddMeal(request.form)
@@ -269,6 +269,7 @@ def dashboard():
         print("Adding meal")
         return redirect("/dashboard")
 
+    # Code to display daily statistics on dashboard - part 2
     cmd = session_db.query(func.sum(Nutrition.Energy).label('cal'), func.sum(Nutrition.Carbohydrate).label('carbs'),\
                                 func.sum(Nutrition.Lipid_Total).label('fats'), func.sum(Nutrition.Sodium).label('sodium'),\
                                 func.sum(Nutrition.Sugar_Total).label('sugar'), func.sum(Nutrition.Fiber).label('fiber'),\
@@ -281,8 +282,12 @@ def dashboard():
     print("daily stats are: ", daily_stats)
     print("daily stats cnt: ",daily_stats.cnt)
    
-
-    return render_template("dashboard.html", form=form, results = results, daily_goal_list = daily_goal_list)
+    # Code to display last 3 wntries on dashboard
+    top5_entries = session_db.query(Meal_record).order_by(Meal_record.meal_date.desc()).limit(5)
+    print("Meal desc for the entry on dashbord are: ", top5_entries[4].meal_desc)
+    top5_entries_l = [top5_entries[i] for i in range(6)]  
+    print(top5_entries_l[0].meal_date)   
+    return render_template("dashboard.html", form=form, results = results, daily_goal_list = daily_goal_list, top5_entries_l = top5_entries_l)
 
 @app.route("/user_metrics/<new_food>")
 def user_meal(new_food):
