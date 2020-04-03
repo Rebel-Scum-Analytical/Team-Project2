@@ -10,7 +10,9 @@ pandas = "*"
 flask = "*"
 sqlalchemy = "*"
 pymysql = "*"
+flask-wtf = "*"
 flask-sqlalchemy = "*"
+update = "*"
 
 [requires]
 python_version = "3.7"
