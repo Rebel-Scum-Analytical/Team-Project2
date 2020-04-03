@@ -13,7 +13,6 @@ pymysql = "*"
 flask-wtf = "*"
 flask-sqlalchemy = "*"
 update = "*"
-flask-wtf = "*"
 passlib = "*"
 gunicorn = "*"
 
