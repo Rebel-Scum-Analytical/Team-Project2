@@ -13,6 +13,9 @@ pymysql = "*"
 flask-wtf = "*"
 flask-sqlalchemy = "*"
 update = "*"
+flask-wtf = "*"
+passlib = "*"
+gunicorn = "*"
 
 [requires]
 python_version = "3.7"

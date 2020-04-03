@@ -1,7 +1,7 @@
 # Dependencies
 import os
 import sqlalchemy
-from flask import Flask, render_template, jsonify, request, make_response, session, abort, redirect, url_for
+from flask import Flask, render_template, jsonify, request, make_response, session, abort, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.ext.declarative import declarative_base
@@ -12,6 +12,9 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, BooleanField, TextField, PasswordField, SelectField, DateField, DecimalField, SubmitField
 from wtforms.validators import InputRequired, Length, NumberRange, EqualTo
 # from passlib.hash import sha256_crypt
+
+
+
 
 #################################################
 # Flask Setup
@@ -37,7 +40,7 @@ app.secret_key = '1a2b3c4d5e'
 HOSTNAME = "127.0.0.1"
 PORT = 3306
 USERNAME = "root"
-PASSWORD = "password" # Enter you password here
+PASSWORD = "PASSWORD"
 DIALECT = "mysql"
 DRIVER = "pymysql"
 DATABASE = "usda"
@@ -47,23 +50,79 @@ db_connection_string = (
     f"{DIALECT}+{DRIVER}://{USERNAME}:{PASSWORD}@{HOSTNAME}:{PORT}/{DATABASE}"
 )
 
-engine = create_engine(db_connection_string)
-inspector = inspect(engine)
-table_names = inspector.get_table_names()
-print("Table names are: ", table_names)
+#FOLLOWING CODE IS FOR HEROKU######
+# #################################################
+# # Database Setup
+# #################################################
 
-Base = automap_base()
-Base.prepare(engine, reflect=True)
-print(Base.classes.values)
+# # The database URI
+###################################################
 
-# create classes by mapping with names which match the table names
-User_account = Base.classes.user_account
-Meal_record = Base.classes.meal_record
-Nutrition = Base.classes.nutrition
+app.config['SQLALCHEMY_DATABASE_URI'] = (
+     os.environ.get("JAWSDB_URL","") or db_connection_string
+ )
+db = SQLAlchemy(app)
+
+class Meal_record(db.Model):
+    __tablename__ = "meal_record"
+
+    meal_item_code = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(50))
+    type = db.Column(db.String(50))
+    meal_date = db.Column(db.Date)
+    meal_desc = db.Column(db.String(256))    
+    amount = db.Column(db.Float)
+
+    def __repr__(self):
+        return "<Meal_record %r>" % (self.name)
+
+class User_account(db.Model):
+    __tablename__ = "user_account"
+
+    username = db.Column(db.String(50), primary_key=True)
+    password = db.Column(db.String(50))
+    confirm_password = db.Column(db.String(50))
+    first_name = db.Column(db.String(50))
+    last_name = db.Column(db.String(50))
+    gender = db.Column(db.String(50))
+    date_of_birth = db.Column(db.Date)
+    height = db.Column(db.Float)
+    weight = db.Column(db.Float)
+    physical_activity_level = db.Column(db.String(50))
+
+    def __repr__(self):
+        return "<User_account %r>" % (self.name)
 
 
-session_db = Session(bind=engine)
-print("session_db is: ", session_db)
+@app.before_first_request
+def setup():
+    db.create_all()
+
+#ABOVE CODE IS FOR HEROKU######
+###################################################
+
+#commented as using a different method for Heroku
+# engine = create_engine(db_connection_string)
+# inspector = inspect(engine)
+# table_names = inspector.get_table_names()
+# # print("Table names are: ", table_names)
+
+#commented as using a different method for Heroku
+# Base = automap_base()
+# Base.prepare(db.engine, reflect=True)
+# # print(Base.classes.values)
+
+# # create classes by mapping with names which match the table names
+# User_account = Base.classes.user_account
+# Meal_record = Base.classes.meal_record
+# Nutrition = Base.classes.nutrition
+
+#commented as using a different method for Heroku
+# session_db = Session(bind=engine)
+# print("session_db is: ", session_db)
+
+
+
 
 
 
@@ -119,16 +178,57 @@ def login():
     
 def loginsys(username, password):
     print("Username: "+username+" Password: "+password)
-    user_ls = session_db.query(User_account.first_name, User_account.last_name, User_account.gender, User_account.username)\
+    user_ls = db.session.query(User_account.first_name, User_account.last_name, User_account.gender, User_account.username)\
                         .filter(User_account.username == username)\
                         .filter(User_account.password == password)\
                         .first()           
     print("user_ls: " + str(user_ls))                 
     return user_ls
+
+
 ##############################################################################################
 # Route #3(/register)
 # Design a query for the register a new user
 #############################################################################################
+
+class RegistrationForm(FlaskForm):
+    username = StringField('username', validators=[InputRequired(), Length(min=4, max=20)])
+    password = PasswordField('password', validators=[InputRequired()])
+    confirm_password = PasswordField('confirm_password', validators=[InputRequired(), EqualTo('password')])
+    first_name = StringField('first_name', validators=[InputRequired(),Length(min=2, max=50)])
+    last_name = StringField('last_name', validators=[InputRequired(),Length(min=2, max=50)])
+    gender = SelectField(u'gender', choices=[('male', 'Male'), ('female', 'Female')])
+    date_of_birth = DateField('date_of_birth', format='%Y-%m-%d')
+    height = DecimalField('height', places=2, rounding=None, validators=[InputRequired(), NumberRange(min=0, max=500, message='Blah')])
+    weight = DecimalField('weight', places=2, rounding=None, validators=[InputRequired(), NumberRange(min=0, max=2000, message='Blah')])
+    physical_activity_level = SelectField(u'physical_activity_level', choices=[('sedentary', 'Sedentary'), ('lightly active', 'Lightly Active'), ('moderately active', 'Moderately Active'), ('very active', 'Very Active'), ('extra active', 'Extra Active')])  
+    submit = SubmitField('Get Started')
+
+@app.route("/register", methods=["GET", "POST"])
+def register():
+
+        form = RegistrationForm(request.form)
+        if form.validate_on_submit():
+            flash(f'Account created for {form.username.data}!', 'success')
+
+            new_user = User_account(username = form.username.data,\
+                                    password = form.password.data,\
+                                    confirm_password = form.confirm_password.data,\
+                                    first_name = form.first_name.data,\
+                                    last_name = form.last_name.data,\
+                                    gender =  form.gender.data,\
+                                    date_of_birth = form.date_of_birth.data,\
+                                    height = form.height.data,\
+                                    weight = form.weight.data,\
+                                    physical_activity_level = form.physical_activity_level.data
+                                    )
+            db.session.add(new_user)
+            db.session.commit()
+
+            return redirect('/dashboard')
+        return render_template("New_user.html", form=form)
+
+
 ##############################################################################################
 # Route #4(/home)
 # This will be the home page, only accessible for loggedin users
@@ -147,7 +247,7 @@ class AddMeal(FlaskForm):
 def dashboard():
     if(checkLoggedIn() == False):
         return redirect('/login')
-    
+
     session['page']='dashboard'
 
     form = AddMeal(request.form)
@@ -161,8 +261,8 @@ def dashboard():
                                     amount = form.servings_count.data,\
                                     meal_item_code = form.foodNameId.data
                                     )
-        session_db.add(new_meal)
-        session_db.commit()
+        db.session.add(new_meal)
+        db.session.commit()
         print("Adding meal")
 
     return render_template("dashboard.html", form=form)
@@ -171,7 +271,7 @@ def dashboard():
 def user_meal(new_food):
     print(new_food)
     search = "{}%".format(new_food) 
-    list_food = session_db.query(Nutrition.Shrt_Desc,Nutrition.Weight_desc )\
+    list_food =db.session.query(Nutrition.Shrt_Desc,Nutrition.Weight_desc )\
                     .filter(Nutrition.Shrt_Desc.like(search)).all()
     print(list_food)                
     show_breakfast = {}   
@@ -202,10 +302,10 @@ def nutrition():
     session['page']='nutrition'
     return render_template("nutrition.html")
 
-@app.route('/register')
-def register():
-    session['page']='register'
-    return render_template("New_user.html")
+# @app.route('/register')
+# def register():
+#     session['page']='register'
+#     return render_template("New_user.html")
 
 @app.route('/intake')
 def intake():
@@ -232,7 +332,7 @@ def nutriquicksearch():
     searchkey=request.args.get('term')
     if not searchkey:
         return '{  "data": [] } '
-    resultSet = session_db.query(Nutrition.NDB_No, Nutrition.Shrt_Desc, Nutrition.Energy)\
+    resultSet = db.session.query(Nutrition.NDB_No, Nutrition.Shrt_Desc, Nutrition.Energy)\
         .filter(Nutrition.Shrt_Desc.ilike('%'+searchkey+'%')).all()
     return jsonify(data=resultSet)
 

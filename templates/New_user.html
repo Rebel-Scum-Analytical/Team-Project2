@@ -5,8 +5,6 @@
 {% block bodycontent %}
 
 
-
-
 <section class="hero-section set-bg">
   <div class="container">
       <div class="row">
@@ -14,97 +12,158 @@
               <div class="register-text">
                   <div class="section-title">
                       <h2>New User Registration</h2>
-                      <!-- <p>The First 7 Day Trial Is Completely Free With The Teacher</p> -->
                   </div>
-                  <form action="#" class="register-form">
-                      <div class="row">
-                          <div class="col-lg-6">
-                            <label for="name">Create User Name</label>
-                            <input type="text" id="username">
-                          </div>
-                          <div class="col-lg-6">
-                            <label for="name">Create Password</label>
-                            <input type="text" id="password">
-                          </div>
-                          <div class="col-lg-6">
-                              <label for="name">First Name</label>
-                              <input type="text" id="name">
-                          </div>
-                          <div class="col-lg-6">
-                              <label for="last-name">Last Name</label>
-                              <input type="text" id="last-name">                           
-                            </div>
-                          <div class="col-lg-6">
-                              <label for="name">Gender</label>
-                              <input type="text" id="gender">
-                          </div>
-                          <!-- <div class="col-lg-6">
-                              <label for="email">Your email address</label>
-                              <input type="text" id="email"> -->
-                          <!-- </div> -->
-                          <!-- <div class="col-lg-6">
-                              <label for="mobile">Mobile No*</label>
-                              <input type="text" id="mobile">
-                          </div> -->
-                          <div class="col-lg-6">
-                            <label for="mobile">Date of birth</label>
-                            <input type="text" id="date_of_birth">
-                          </div>
-                          <div class="col-lg-6">
-                            <label for="mobile">Height</label>
-                            <input type="text" id="height">
-                          </div>
-                          <div class="col-lg-6">
-                            <label for="mobile">Weight</label>
-                            <input type="text" id="weight">
-                          </div>
-                          <div class="col-lg-6">
-                            <label for="mobile">Physical activity Level</label>
-                            <input type="text" id="physical_activity_level">
-                          </div>
-                          <!-- <div class="col-lg-6">
-                            <label for="mobile">City</label>
-                            <input type="text" id="city">
-                          </div> -->
-                          <!-- <div class="col-lg-6">
-                            <label for="mobile">State</label>
-                            <input type="text" id="state">
-                          </div> -->
-                          <!-- <div class="col-lg-6">
-                            <label for="mobile">Country</label>
-                            <input type="text" id="country">
-                          </div> -->
-                          <!-- <div class="col-lg-6">
-                            <label for="mobile">Address</label>
-                            <input type="text" id="address">
-                          </div> -->
-                          <!-- <div class="col-lg-6">
-                            <label for="mobile">Phone Number</label>
-                            <input type="text" id="phone_number">
-                          </div> -->
-                          <!-- <div class="col-lg-6">
-                            <label for="mobile">email</label>
-                            <input type="text" id="email">
-                          </div> -->
-                          <!-- <div class="col-lg-6">
-                            <label for="mobile">Occupation</label>
-                            <input type="text" id="occupation">
-                          </div> -->
-                          <!-- <div class="col-lg-6">
-                            <label for="mobile">Education</label>
-                            <input type="text" id="education">
-                          </div> -->
-                          <!-- <div class="col-lg-6">
-                            <label for="mobile">Insurance</label>
-                            <input type="text" id="insurance">
-                          </div> -->
+                  <form action="/register" class="register-form" method="POST">
+                    {{ form.hidden_tag() }}
+                    <fieldset class="form-group">
+                        <div class="form-group">
+                            {{ form.username.label(class="form-control-label") }}
+        
+                            {% if form.username.errors %}
+                                {{ form.username(class="form-control form-control-lg is-invalid") }}
+                                <div class="invalid-feedback">
+                                    {% for error in form.username.errors %}
+                                        <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                {{ form.username(class="form-control form-control-lg") }}
+                            {% endif %}
+                        </div>
+
+                        <div class="form-group">
+                          {{ form.password.label(class="form-control-label") }}
+                          {% if form.password.errors %}
+                              {{ form.password(class="form-control form-control-lg is-invalid") }}
+                              <div class="invalid-feedback">
+                                  {% for error in form.password.errors %}
+                                      <span>{{ error }}</span>
+                                  {% endfor %}
                               </div>
-                              <button type="submit" class="register-nut">Get Started</button>
-                              <a href="./index.html" >
-                                <div class="register-nut-back">Home</div>
-                                
-                              </a>
-                  </form>
+                          {% else %}
+                              {{ form.password(class="form-control form-control-lg") }}
+                          {% endif %}
+                      </div>
+
+                      <div class="form-group">
+                        {{ form.confirm_password.label(class="form-control-label") }}
+                        {% if form.confirm_password.errors %}
+                            {{ form.confirm_password(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.confirm_password.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.confirm_password(class="form-control form-control-lg") }}
+                        {% endif %}
+                      </div>
+
+                      <div class="form-group">
+                        {{ form.first_name.label(class="form-control-label") }}
+                        {% if form.first_name.errors %}
+                            {{ form.first_name(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.first_name.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.first_name(class="form-control form-control-lg") }}
+                        {% endif %}
+                      </div>
+
+                      <div class="form-group">
+                        {{ form.last_name.label(class="form-control-label") }}
+                        {% if form.last_name.errors %}
+                            {{ form.last_name(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.last_name.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.last_name(class="form-control form-control-lg") }}
+                        {% endif %}
+                      </div>
+
+                      <div class="form-group">
+                        {{ form.gender.label(class="form-control-label") }}
+                        {% if form.gender.errors %}
+                            {{ form.gender(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.gender.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.gender(class="form-control form-control-lg") }}
+                        {% endif %}
+                      </div>
+
+                      <div class="form-group">
+                        {{ form.date_of_birth.label(class="form-control-label") }}
+                        {% if form.date_of_birth.errors %}
+                            {{ form.date_of_birth(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.date_of_birth.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.date_of_birth(class="form-control form-control-lg") }}
+                        {% endif %}
+                      </div>
+
+                      <div class="form-group">
+                        {{ form.height.label(class="form-control-label") }}
+                        {% if form.height.errors %}
+                            {{ form.height(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.height.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.height(class="form-control form-control-lg") }}
+                        {% endif %}
+                      </div>
+
+                      <div class="form-group">
+                        {{ form.weight.label(class="form-control-label") }}
+                        {% if form.weight.errors %}
+                            {{ form.weight(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.weight.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.weight(class="form-control form-control-lg") }}
+                        {% endif %}
+                      </div>
+               
+                      <div class="form-group">
+                        {{ form.physical_activity_level.label(class="form-control-label") }}
+                        {% if form.physical_activity_level.errors %}
+                            {{ form.physical_activity_level(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.physical_activity_level.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.physical_activity_level(class="form-control form-control-lg") }}
+                        {% endif %}
+                      </div>
+ 
+                    <button type="submit" class="register-nut">Sign Up</button>
+                        <a href="./index.html" >
+                            <div class="register-nut-back">Home</div>                                
+                        </a>
+                    </fieldset>
+
+                </form>
               </div>
           </div>
           <div class="col-lg-4">
