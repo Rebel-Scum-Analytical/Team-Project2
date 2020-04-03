@@ -12,9 +12,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, BooleanField, TextField, PasswordField, SelectField, DateField, DecimalField, SubmitField
 from wtforms.validators import InputRequired, Length, NumberRange, EqualTo
 # from passlib.hash import sha256_crypt
-
-
-
+import datetime as dt
 
 #################################################
 # Flask Setup
@@ -40,7 +38,7 @@ app.secret_key = '1a2b3c4d5e'
 HOSTNAME = "127.0.0.1"
 PORT = 3306
 USERNAME = "root"
-PASSWORD = "PASSWORD"
+PASSWORD = "password"
 DIALECT = "mysql"
 DRIVER = "pymysql"
 DATABASE = "usda"
@@ -102,24 +100,24 @@ def setup():
 ###################################################
 
 #commented as using a different method for Heroku
-# engine = create_engine(db_connection_string)
-# inspector = inspect(engine)
-# table_names = inspector.get_table_names()
-# # print("Table names are: ", table_names)
+engine = create_engine(db_connection_string)
+inspector = inspect(engine)
+table_names = inspector.get_table_names()
+# print("Table names are: ", table_names)
 
-#commented as using a different method for Heroku
-# Base = automap_base()
-# Base.prepare(db.engine, reflect=True)
-# # print(Base.classes.values)
+# commented as using a different method for Heroku
+Base = automap_base()
+Base.prepare(db.engine, reflect=True)
+# print(Base.classes.values)
 
-# # create classes by mapping with names which match the table names
-# User_account = Base.classes.user_account
-# Meal_record = Base.classes.meal_record
-# Nutrition = Base.classes.nutrition
+# create classes by mapping with names which match the table names
+User_account = Base.classes.user_account
+Meal_record = Base.classes.meal_record
+Nutrition = Base.classes.nutrition
 
-#commented as using a different method for Heroku
-# session_db = Session(bind=engine)
-# print("session_db is: ", session_db)
+# commented as using a different method for Heroku
+session_db = Session(bind=engine)
+print("session_db is: ", session_db)
 
 
 
@@ -241,7 +239,8 @@ class AddMeal(FlaskForm):
     servings_count = DecimalField('servings_count', places=2, rounding=None, validators=[InputRequired(), NumberRange(min=0, max=20)])
     foodNameId = DecimalField('foodNameId')
     submit = SubmitField('Add')
-
+# Code to display daily statistics on dashboard
+# daily_goal_list = [1800, 130, 25, 2200, 25, 25.2]
 
 @app.route('/dashboard',methods=["GET", "POST"])
 def dashboard():
@@ -250,6 +249,17 @@ def dashboard():
 
     session['page']='dashboard'
 
+    # Code to display daily statistics on dashboard
+    
+    daily_goal_list = [1800, 130, 25, 2200, 25, 25.2]
+    daily_stats = session_db.query(func.sum(Nutrition.Energy).label('cal'), func.sum(Nutrition.Carbohydrate).label('carbs'),\
+                                func.sum(Nutrition.Lipid_Total).label('fats'), func.sum(Nutrition.Sodium).label('sodium'),\
+                                func.sum(Nutrition.Sugar_Total).label('sugar'), func.sum(Nutrition.Fiber).label('fiber')).\
+                                filter(Meal_record.username == session['username']).\
+                                filter(Meal_record.meal_item_code == Nutrition.NDB_No).\
+                                filter(Meal_record.meal_date == dt.date.today()).first() 
+    results = [daily_stats.cal, daily_stats.carbs, daily_stats.fats, daily_stats.sodium, daily_stats.sugar, daily_stats.fiber]                                  
+    print("daily stats are: ", results)
     form = AddMeal(request.form)
     if form.validate_on_submit():
         # flash(f'Meal Added for {form.meal_category.data}!', 'successfully')
@@ -265,7 +275,7 @@ def dashboard():
         db.session.commit()
         print("Adding meal")
 
-    return render_template("dashboard.html", form=form)
+    return render_template("dashboard.html", form=form, results = results, daily_goal_list = daily_goal_list)
 
 @app.route("/user_metrics/<new_food>")
 def user_meal(new_food):
