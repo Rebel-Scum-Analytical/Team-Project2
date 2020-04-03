@@ -252,14 +252,6 @@ def dashboard():
     # Code to display daily statistics on dashboard
     
     daily_goal_list = [1800, 130, 25, 2200, 25, 25.2]
-    daily_stats = session_db.query(func.sum(Nutrition.Energy).label('cal'), func.sum(Nutrition.Carbohydrate).label('carbs'),\
-                                func.sum(Nutrition.Lipid_Total).label('fats'), func.sum(Nutrition.Sodium).label('sodium'),\
-                                func.sum(Nutrition.Sugar_Total).label('sugar'), func.sum(Nutrition.Fiber).label('fiber')).\
-                                filter(Meal_record.username == session['username']).\
-                                filter(Meal_record.meal_item_code == Nutrition.NDB_No).\
-                                filter(Meal_record.meal_date == dt.date.today()).first() 
-    results = [daily_stats.cal, daily_stats.carbs, daily_stats.fats, daily_stats.sodium, daily_stats.sugar, daily_stats.fiber]                                  
-    print("daily stats are: ", results)
     form = AddMeal(request.form)
     if form.validate_on_submit():
         # flash(f'Meal Added for {form.meal_category.data}!', 'successfully')
@@ -271,9 +263,24 @@ def dashboard():
                                     amount = form.servings_count.data,\
                                     meal_item_code = form.foodNameId.data
                                     )
-        db.session.add(new_meal)
-        db.session.commit()
+        session_db.add(new_meal)
+        session_db.commit()
+        
         print("Adding meal")
+        return redirect("/dashboard")
+
+    cmd = session_db.query(func.sum(Nutrition.Energy).label('cal'), func.sum(Nutrition.Carbohydrate).label('carbs'),\
+                                func.sum(Nutrition.Lipid_Total).label('fats'), func.sum(Nutrition.Sodium).label('sodium'),\
+                                func.sum(Nutrition.Sugar_Total).label('sugar'), func.sum(Nutrition.Fiber).label('fiber'),\
+                                func.count().label('cnt')).\
+                                filter(Meal_record.username == session['username']).\
+                                filter(Meal_record.meal_item_code == Nutrition.NDB_No).\
+                                filter(Meal_record.meal_date == dt.date.today())
+    daily_stats = cmd.first()                            
+    results = [daily_stats.cal, daily_stats.carbs, daily_stats.fats, daily_stats.sodium, daily_stats.sugar, daily_stats.fiber]                                  
+    print("daily stats are: ", daily_stats)
+    print("daily stats cnt: ",daily_stats.cnt)
+   
 
     return render_template("dashboard.html", form=form, results = results, daily_goal_list = daily_goal_list)
 
