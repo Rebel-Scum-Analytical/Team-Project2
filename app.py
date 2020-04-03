@@ -11,7 +11,7 @@ import pymysql
 from flask_wtf import FlaskForm
 from wtforms import StringField, BooleanField, TextField, PasswordField, SelectField, DateField, DecimalField, SubmitField
 from wtforms.validators import InputRequired, Length, NumberRange, EqualTo
-from passlib.hash import sha256_crypt
+# from passlib.hash import sha256_crypt
 
 
 
@@ -254,7 +254,8 @@ def dashboard():
     if form.validate_on_submit():
         # flash(f'Meal Added for {form.meal_category.data}!', 'successfully')
 
-        new_meal = Meal_record(meal_date = form.inputdate.data,\
+        new_meal = Meal_record(username = session['username'],\
+                                    meal_date = form.inputdate.data,\
                                     type = form.meal_category.data,\
                                     meal_desc = form.food_desc.data,\
                                     amount = form.servings_count.data,\
