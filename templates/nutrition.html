@@ -41,7 +41,10 @@
                                   <!-- </div> -->
                                   <div class="col">
                                     <label for="name">Food</label>
-                                    <input class="form-control" id="foodsearch" type="text" placeholder="Search for Food">
+                                    <input type="text" placeholder="Search for Food Item?" id="foodName" name="food_desc">
+                                    <input type="hidden" id="foodNameId" name="foodNameId">
+
+                                    <!-- <input class="form-control" id="foodsearch" type="text" placeholder="Search for Food"> -->
                                     <!-- <input type="text" placeholder="Search for Food" onchange="optionChanged(this.value)"> -->
                                   </div>
                                   <!-- <div class="col-2">
@@ -113,4 +116,36 @@
   <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.11.0/d3.js"></script> -->
   <script src="static/js/data.js"></script>
   <script src="static/js/app_search.js"></script>
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script>
+    $( "#foodsearch").autocomplete({
+        source: function (request, response) {
+        $.getJSON("/nutriquicksearch?term=" + request.term, function (data) {
+            
+            response(
+                $.map(data.data, function (key) {
+                return {
+                    label: key[1] + ' ['+key[2]+' kcal]',
+                    value: key[0]
+                };
+            }));
+        });
+    },
+
+        select( event, ui ){
+        $('#foodNameId').val(ui.item.value);
+        $('#foodName').val(ui.item.label);
+        return false;
+    },
+
+      minLength: 2,
+
+    } );
+
+   
+ 
+</script>
   {% endblock %}
