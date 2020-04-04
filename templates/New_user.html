@@ -16,7 +16,7 @@
                   <form action="/register" class="register-form" method="POST">
                     {{ form.hidden_tag() }}
                     <fieldset class="form-group">
-                        <div class="form-group">
+                        <!-- <div class="form-group"> -->
                             {{ form.username.label(class="form-control-label") }}
         
                             {% if form.username.errors %}
@@ -29,9 +29,9 @@
                             {% else %}
                                 {{ form.username(class="form-control form-control-lg") }}
                             {% endif %}
-                        </div>
+                        <!-- </div> -->
 
-                        <div class="form-group">
+                        <!-- <div class="form-group"> -->
                           {{ form.password.label(class="form-control-label") }}
                           {% if form.password.errors %}
                               {{ form.password(class="form-control form-control-lg is-invalid") }}
@@ -43,9 +43,9 @@
                           {% else %}
                               {{ form.password(class="form-control form-control-lg") }}
                           {% endif %}
-                      </div>
+                      <!-- </div> -->
 
-                      <div class="form-group">
+                      <!-- <div class="form-group"> -->
                         {{ form.confirm_password.label(class="form-control-label") }}
                         {% if form.confirm_password.errors %}
                             {{ form.confirm_password(class="form-control form-control-lg is-invalid") }}
@@ -57,9 +57,9 @@
                         {% else %}
                             {{ form.confirm_password(class="form-control form-control-lg") }}
                         {% endif %}
-                      </div>
+                      <!-- </div> -->
 
-                      <div class="form-group">
+                      <!-- <div class="form-group"> -->
                         {{ form.first_name.label(class="form-control-label") }}
                         {% if form.first_name.errors %}
                             {{ form.first_name(class="form-control form-control-lg is-invalid") }}
@@ -71,9 +71,9 @@
                         {% else %}
                             {{ form.first_name(class="form-control form-control-lg") }}
                         {% endif %}
-                      </div>
+                      <!-- </div> -->
 
-                      <div class="form-group">
+                      <!-- <div class="form-group"> -->
                         {{ form.last_name.label(class="form-control-label") }}
                         {% if form.last_name.errors %}
                             {{ form.last_name(class="form-control form-control-lg is-invalid") }}
@@ -85,9 +85,9 @@
                         {% else %}
                             {{ form.last_name(class="form-control form-control-lg") }}
                         {% endif %}
-                      </div>
+                      <!-- </div> -->
 
-                      <div class="form-group">
+                      <!-- <div class="form-group"> -->
                         {{ form.gender.label(class="form-control-label") }}
                         {% if form.gender.errors %}
                             {{ form.gender(class="form-control form-control-lg is-invalid") }}
@@ -99,9 +99,9 @@
                         {% else %}
                             {{ form.gender(class="form-control form-control-lg") }}
                         {% endif %}
-                      </div>
+                      <!-- </div> -->
 
-                      <div class="form-group">
+                      <!-- <div class="form-group"> -->
                         {{ form.date_of_birth.label(class="form-control-label") }}
                         {% if form.date_of_birth.errors %}
                             {{ form.date_of_birth(class="form-control form-control-lg is-invalid") }}
@@ -113,9 +113,9 @@
                         {% else %}
                             {{ form.date_of_birth(class="form-control form-control-lg") }}
                         {% endif %}
-                      </div>
+                      <!-- </div> -->
 
-                      <div class="form-group">
+                      <!-- <div class="form-group"> -->
                         {{ form.height.label(class="form-control-label") }}
                         {% if form.height.errors %}
                             {{ form.height(class="form-control form-control-lg is-invalid") }}
@@ -127,9 +127,9 @@
                         {% else %}
                             {{ form.height(class="form-control form-control-lg") }}
                         {% endif %}
-                      </div>
+                      <!-- </div> -->
 
-                      <div class="form-group">
+                      <!-- <div class="form-group"> -->
                         {{ form.weight.label(class="form-control-label") }}
                         {% if form.weight.errors %}
                             {{ form.weight(class="form-control form-control-lg is-invalid") }}
@@ -141,9 +141,9 @@
                         {% else %}
                             {{ form.weight(class="form-control form-control-lg") }}
                         {% endif %}
-                      </div>
+                      <!-- </div> -->
                
-                      <div class="form-group">
+                      <!-- <div class="form-group"> -->
                         {{ form.physical_activity_level.label(class="form-control-label") }}
                         {% if form.physical_activity_level.errors %}
                             {{ form.physical_activity_level(class="form-control form-control-lg is-invalid") }}
@@ -155,7 +155,7 @@
                         {% else %}
                             {{ form.physical_activity_level(class="form-control form-control-lg") }}
                         {% endif %}
-                      </div>
+                      <!-- </div> -->
  
                     <button type="submit" class="register-nut">Sign Up</button>
                         <a href="./index.html" >
