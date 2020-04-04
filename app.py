@@ -39,7 +39,7 @@ app.secret_key = '1a2b3c4d5e'
 HOSTNAME = "127.0.0.1"
 PORT = 3306
 USERNAME = "root"
-PASSWORD = "password"
+PASSWORD = "odnar04$"
 DIALECT = "mysql"
 DRIVER = "pymysql"
 DATABASE = "usda"
@@ -191,16 +191,16 @@ def loginsys(username, password):
 #############################################################################################
 
 class RegistrationForm(FlaskForm):
-    username = StringField('username', validators=[InputRequired(), Length(min=4, max=20)])
-    password = PasswordField('password', validators=[InputRequired()])
-    confirm_password = PasswordField('confirm_password', validators=[InputRequired(), EqualTo('password')])
-    first_name = StringField('first_name', validators=[InputRequired(),Length(min=2, max=50)])
-    last_name = StringField('last_name', validators=[InputRequired(),Length(min=2, max=50)])
-    gender = SelectField(u'gender', choices=[('male', 'Male'), ('female', 'Female')])
-    date_of_birth = DateField('date_of_birth', format='%Y-%m-%d')
-    height = DecimalField('height', places=2, rounding=None, validators=[InputRequired(), NumberRange(min=0, max=500, message='Blah')])
-    weight = DecimalField('weight', places=2, rounding=None, validators=[InputRequired(), NumberRange(min=0, max=2000, message='Blah')])
-    physical_activity_level = SelectField(u'physical_activity_level', choices=[('sedentary', 'Sedentary'), ('lightly active', 'Lightly Active'), ('moderately active', 'Moderately Active'), ('very active', 'Very Active'), ('extra active', 'Extra Active')])  
+    username = StringField('Username', validators=[InputRequired(), Length(min=4, max=20)])
+    password = PasswordField('Password', validators=[InputRequired()])
+    confirm_password = PasswordField('Confirm Password', validators=[InputRequired(), EqualTo('password')])
+    first_name = StringField('First Name', validators=[InputRequired(),Length(min=2, max=50)])
+    last_name = StringField('Last Name', validators=[InputRequired(),Length(min=2, max=50)])
+    gender = SelectField(u'Gender', choices=[('male', 'Male'), ('female', 'Female')])
+    date_of_birth = DateField('Bate of Birth (YYYY-MM-DD)', format='%Y-%m-%d')
+    height = DecimalField('Height (inches)', places=2, rounding=None, validators=[InputRequired(), NumberRange(min=0, max=500, message='Blah')])
+    weight = DecimalField('Weight', places=2, rounding=None, validators=[InputRequired(), NumberRange(min=0, max=2000, message='Blah')])
+    physical_activity_level = SelectField(u'Physical Activity Level', choices=[('sedentary', 'Sedentary'), ('lightly active', 'Lightly Active'), ('moderately active', 'Moderately Active'), ('very active', 'Very Active'), ('extra active', 'Extra Active')])  
     submit = SubmitField('Get Started')
 
 @app.route("/register", methods=["GET", "POST"])
