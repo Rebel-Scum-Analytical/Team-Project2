@@ -27,38 +27,38 @@
               
                     <tbody>
                     <!-- Code -->
-                    <tr>
-                        <th scope="row">Daily Goals </th>
-                            <td>{{daily_goal_list[0]}} </td>
-                            <td>{{daily_goal_list[1]}} </td>
-                            <td>{{daily_goal_list[2]}} </td>
-                            <td>{{daily_goal_list[3]}} </td>
-                            <td>{{daily_goal_list[4]}}</td>
-                            <td>{{daily_goal_list[5]}}</td> 
-                        
-                    </tr>     
                     
-                    <tr>
-                      <th scope="row">Daily Totals </th>
-                        <td> {{ results[0] }} </td>
-                        <td> {{ results[1] }} </td>
-                        <td> {{ results[2] }} </td>
-                        <td> {{ results[3] }} </td>
-                        <td> {{ results[4] }} </td>
-                        <td> {{ results[5] }} </td> 
-                    
-                    </tr>        
-                                
-                    <tr>
+                        <tr>
+                            <th scope="row">Totals</th>
+                            <td>{{(daily_stats.cal)}}</td>
+                            <td>{{(daily_stats.carbs)}}</td>
+                            <td>{{(daily_stats.fats)}}</td>
+                            <td>{{(daily_stats.sodium)}}</td>
+                            <td>{{(daily_stats.sugar)}}</td>
+                            <td>{{(daily_stats.fiber)}}</td>
+                        </tr> 
+                   
+                                 
+                          
+                     <tr>
                         <th scope="row">Remaining</th>
-                    
-                            <td> {{ daily_goal_list[0] - results[0] }} </td>
-                            <td>50</td>
-                            <td>30</td>
-                            <td>20</td>
-                            <td>2,300</td>
-                            <td>45</td> -->
-                    </tr>
+                             <td>{{ (daily_goal_list[0] - results[0]) }} </td>
+                            <td>{{ (daily_goal_list[1] - results[1]) }}</td>
+                            <td>{{ (daily_goal_list[2] - results[2]) }}</td>
+                            <td>{{ (daily_goal_list[3] - results[3]) }}</td>
+                            <td>{{ (daily_goal_list[4] - results[4]) }}</td>
+                            <td>{{ (daily_goal_list[5] - results[5]) }}</td>
+                    </tr> 
+
+                    <tr>
+                        <th scope="row">Your daily goal</th>
+                             <td>{{ daily_goal_list[0] }} </td>
+                            <td>{{ daily_goal_list[1]  }}</td>
+                            <td>{{ daily_goal_list[2]  }}</td>
+                            <td>{{ daily_goal_list[3]  }}</td>
+                            <td>{{ daily_goal_list[4]  }}</td>
+                            <td>{{ daily_goal_list[5]  }}</td>
+                    </tr> 
               
                   </tbody>
               
@@ -127,34 +127,23 @@
                               <th scope="col">Meal Type</th>
                               <th scope="col">Food</th>
                               <th scope="col">Servings</th>
-                              <th scope="col">Calories (kcal)</th>                      
+                              <!-- <th scope="col">Calories (kcal)</th>                       -->
                             </tr>
                         </thead>
-                  
+
                         <tbody>
-                  
-                  
-                        <tr>
-                  
-                          <th scope="row">1</th>
-                              <td>3/28/2020</td>                  
-                              <td>Breakfast</td>
-                              <td>Cereals</td>
-                              <td>1</td>
-                              <td>200</td>
-                        </tr>
-                        <tr>
-                  
-                            <th scope="row">2</th>
-                                <td>3/28/2020</td>                  
-                                <td>Breakfast</td>
-                                <td>Milk</td>
-                                <td>1</td>
-                                <td>50</td>
-                          </tr>
-                  
-    
-                      </tbody>
+                                {% for query_val in top5_entries %}
+                                <tr>
+                                    <th scope="row">{{loop.index}}</th>
+                                    <td>{{ query_val.meal_date }}</td>
+                                    <td>{{ query_val.type }}</td>
+                                    <td>{{ query_val.meal_desc }}</td>
+                                    <td>{{ query_val.amount }}</td>
+                                </tr> 
+                                {% endfor %}
+                                                       
+                        </tbody>
+                      
                   
                       
                     </table>
