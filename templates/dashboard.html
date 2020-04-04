@@ -27,44 +27,38 @@
               
                     <tbody>
                     <!-- Code -->
-                    <tr>
-                        <th scope="row">Daily Goals </th>
-                            <td>{{daily_goal_list[0]}} </td>
-                            <td>{{daily_goal_list[1]}} </td>
-                            <td>{{daily_goal_list[2]}} </td>
-                            <td>{{daily_goal_list[3]}} </td>
-                            <td>{{daily_goal_list[4]}}</td>
-                            <td>{{daily_goal_list[5]}}</td> 
-                        
-                    </tr>     
                     
-                    <tr>
-                      <th scope="row">Daily Totals </th>
-                        <td> {{ results[0] }} </td>
-                        <td> {{ results[1] }} </td>
-                        <td> {{ results[2] }} </td>
-                        <td> {{ results[3] }} </td>
-                        <td> {{ results[4] }} </td>
-                        <td> {{ results[5] }} </td> 
-                    
-                    </tr>        
-                                
-                    <tr>
+                        <tr>
+                            <th scope="row">Totals</th>
+                            <td>{{(daily_stats.cal)|round}}</td>
+                            <td>{{(daily_stats.carbs)|round}}</td>
+                            <td>{{(daily_stats.fats)|round}}</td>
+                            <td>{{(daily_stats.sodium)|round}}</td>
+                            <td>{{(daily_stats.sugar)|round}}</td>
+                            <td>{{(daily_stats.fiber)|round}}</td>
+                        </tr> 
+                   
+                                 
+                          
+                     <tr>
                         <th scope="row">Remaining</th>
-                    
-                            <td>-</td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>-</td>     
-                            <!-- <td> {{ daily_goal_list[0] - results[0] }} </td>
-                            <td>{{ daily_goal_list[1] - results[1] }}</td>
-                            <td>{{ daily_goal_list[2] - results[2] }}</td>
-                            <td>{{ daily_goal_list[3] - results[3] }}</td>
-                            <td>{{ daily_goal_list[4] - results[4] }}</td>
-                            <td>20</td>  -->
-                    </tr>
+                             <td>{{ (daily_goal_list[0] - results[0])|round }} </td>
+                            <td>{{ (daily_goal_list[1] - results[1])|round }}</td>
+                            <td>{{ (daily_goal_list[2] - results[2])|round }}</td>
+                            <td>{{ (daily_goal_list[3] - results[3])|round }}</td>
+                            <td>{{ (daily_goal_list[4] - results[4])|round }}</td>
+                            <td>{{ (daily_goal_list[5] - results[5])|round }}</td>
+                    </tr> 
+
+                    <tr>
+                        <th scope="row">Your daily goal</th>
+                             <td>{{ daily_goal_list[0] }} </td>
+                            <td>{{ daily_goal_list[1]  }}</td>
+                            <td>{{ daily_goal_list[2]  }}</td>
+                            <td>{{ daily_goal_list[3]  }}</td>
+                            <td>{{ daily_goal_list[4]  }}</td>
+                            <td>{{ daily_goal_list[5]  }}</td>
+                    </tr> 
               
                   </tbody>
               
@@ -136,60 +130,20 @@
                               <!-- <th scope="col">Calories (kcal)</th>                       -->
                             </tr>
                         </thead>
-                  
+
                         <tbody>
-                  
-                  
-                        <tr>
-                  
-                          <th scope="row">1</th>
-                              <td>{{ top5_entries_l[0].meal_date}}</td>                  
-                              <td>{{ top5_entries_l[0].type}}</td>
-                              <td>{{ top5_entries_l[0].meal_desc}}</td>
-                              <td>{{ top5_entries_l[0].amount}}</td>
-                              <!-- <td>200</td> -->
-                        </tr>
-                        <tr>
-                  
-                            <th scope="row">1</th>
-                                <td>{{ top5_entries_l[1].meal_date}}</td>                  
-                                <td>{{ top5_entries_l[1].type}}</td>
-                                <td>{{ top5_entries_l[1].meal_desc}}</td>
-                                <td>{{ top5_entries_l[1].amount}}</td>
-                                <!-- <td>200</td> -->
-                        </tr>
-
-                        <tr>
-                  
-                            <th scope="row">1</th>
-                                <td>{{ top5_entries_l[2].meal_date}}</td>                  
-                                <td>{{ top5_entries_l[2].type}}</td>
-                                <td>{{ top5_entries_l[2].meal_desc}}</td>
-                                <td>{{ top5_entries_l[2].amount}}</td>
-                                <!-- <td>200</td> -->
-                        </tr>
-
-                        <tr>
-                  
-                            <th scope="row">1</th>
-                                <td>{{ top5_entries_l[3].meal_date}}</td>                  
-                                <td>{{ top5_entries_l[3].type}}</td>
-                                <td>{{ top5_entries_l[3].meal_desc}}</td>
-                                <td>{{ top5_entries_l[3].amount}}</td>
-                                <!-- <td>20</td> -->
-                        </tr>
-                       
-                        <tr>
-                  
-                            <th scope="row">1</th>
-                                <td>{{ top5_entries_l[4].meal_date}}</td>                  
-                                <td>{{ top5_entries_l[4].type}}</td>
-                                <td>{{ top5_entries_l[4].meal_desc}}</td>
-                                <td>{{ top5_entries_l[4].amount}}</td>
-                                <!-- <td>200</td> -->
-                        </tr>                
-    
-                      </tbody>
+                                {% for query_val in top5_entries %}
+                                <tr>
+                                    <th scope="row">{{loop.index}}</th>
+                                    <td>{{ query_val.meal_date }}</td>
+                                    <td>{{ query_val.type }}</td>
+                                    <td>{{ query_val.meal_desc }}</td>
+                                    <td>{{ query_val.amount }}</td>
+                                </tr> 
+                                {% endfor %}
+                                                       
+                        </tbody>
+                      
                   
                       
                     </table>

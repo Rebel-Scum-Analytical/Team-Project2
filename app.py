@@ -13,6 +13,7 @@ from wtforms import StringField, BooleanField, TextField, PasswordField, SelectF
 from wtforms.validators import InputRequired, Length, NumberRange, EqualTo
 # from passlib.hash import sha256_crypt
 import datetime as dt
+from decimal import Decimal
 
 #################################################
 # Flask Setup
@@ -270,25 +271,32 @@ def dashboard():
         return redirect("/dashboard")
 
     # Code to display daily statistics on dashboard - part 2
-    cmd = session_db.query(func.sum(Nutrition.Energy).label('cal'), func.sum(Nutrition.Carbohydrate).label('carbs'),\
-                                func.sum(Nutrition.Lipid_Total).label('fats'), func.sum(Nutrition.Sodium).label('sodium'),\
-                                func.sum(Nutrition.Sugar_Total).label('sugar'), func.sum(Nutrition.Fiber).label('fiber'),\
+    cmd = session_db.query(func.round(func.sum(Nutrition.Energy),0).label('cal'),\
+                                func.round(func.sum(Nutrition.Carbohydrate),2).label('carbs'),\
+                                func.round(func.sum(Nutrition.Lipid_Total),0).label('fats'),\
+                                func.round(func.sum(Nutrition.Sodium), 2).label('sodium'),\
+                                func.round(func.sum(Nutrition.Sugar_Total),2).label('sugar'),\
+                                func.round(func.sum(Nutrition.Fiber),2).label('fiber'),\
                                 func.count().label('cnt')).\
                                 filter(Meal_record.username == session['username']).\
                                 filter(Meal_record.meal_item_code == Nutrition.NDB_No).\
                                 filter(Meal_record.meal_date == dt.date.today())
-    daily_stats = cmd.first()                            
-    results = [daily_stats.cal, daily_stats.carbs, daily_stats.fats, daily_stats.sodium, daily_stats.sugar, daily_stats.fiber]                                  
+    daily_stats = cmd.first()              
+
+    results = [0,0,0,0,0,0]        
+
+    if(daily_stats.cnt!=0):       
+        results = [daily_stats.cal, daily_stats.carbs, daily_stats.fats, daily_stats.sodium, daily_stats.sugar, daily_stats.fiber]                                  
     print("daily stats are: ", daily_stats)
     print("daily stats cnt: ",daily_stats.cnt)
    
-    # Code to display last 3 wntries on dashboard
+    # Code to display last 5 entries on dashboard
     top5_entries = session_db.query(Meal_record).order_by(Meal_record.meal_date.desc()).limit(5)
-    print("Meal desc for the entry on dashbord are: ", top5_entries[4].meal_desc)
-    top5_entries_l = [top5_entries[i] for i in range(6)]  
-    print(top5_entries_l[0].meal_date)   
-    return render_template("dashboard.html", form=form, results = results, daily_goal_list = daily_goal_list, top5_entries_l = top5_entries_l)
-
+    # print("Meal desc for the entry on dashbord are: ", top5_entries[4].meal_desc)
+    # top5_entries_l = [top5_entries[i] for i in range(6)]  
+    # print(top5_entries_l[0].meal_date)   
+    return render_template("dashboard.html", form=form, results = results, daily_goal_list = daily_goal_list, top5_entries = top5_entries, daily_stats=daily_stats)
+    
 @app.route("/user_metrics/<new_food>")
 def user_meal(new_food):
     print(new_food)
