@@ -272,12 +272,14 @@ def dashboard():
 
     # Code to display daily statistics on dashboard - part 2
 # display_stats
-    cmd = session_db.query(func.sum((Nutrition.Energy) * (Meal_record.amount)).label('cal'),\
-                            func.sum((Nutrition.Carbohydrate) * (Meal_record.amount)).label('carbs'),\
-                            func.sum((Nutrition.Lipid_Total) * (Meal_record.amount)).label('fats'),\
-                            func.sum((Nutrition.Sodium) * (Meal_record.amount)).label('sodium'),\
-                            func.sum((Nutrition.Sugar_Total) * (Meal_record.amount)).label('sugar'),\
-                            func.sum((Nutrition.Fiber) * (Meal_record.amount)).label('fiber'),\
+    cmd = session_db.query(func.round(func.coalesce(func.sum((Nutrition.Energy) * (Meal_record.amount)),0),2).label('cal'),\
+                            func.round(func.coalesce(func.sum((Nutrition.Carbohydrate) * (Meal_record.amount)),0),2).label('carbs'),\
+                            func.round(func.coalesce(func.sum((Nutrition.Lipid_Total) * (Meal_record.amount)),0),2).label('fats'),\
+                            func.round(func.coalesce(func.sum((Nutrition.Sodium) * (Meal_record.amount)),0),2).label('sodium'),\
+                            func.round(func.coalesce(func.sum((Nutrition.Sugar_Total) * (Meal_record.amount)),0),2).label('sugar'),\
+                            
+                            
+                            func.round(func.coalesce(func.sum((Nutrition.Fiber) * (Meal_record.amount)),0),2).label('fiber'),\
                             func.count().label('cnt')).\
                             filter(Meal_record.username == session['username']).\
                             filter(Meal_record.meal_item_code == Nutrition.NDB_No).\
@@ -349,11 +351,21 @@ def checkLoggedIn():
             return True
     return False 
 
-@app.route('/nutrition')
+@app.route('/nutrition',methods=['GET'])
 def nutrition():
     if(checkLoggedIn() == False):
         return redirect('/login')
     session['page']='nutrition'
+
+    ndbNo=request.args.get('ndbNo')
+    
+    
+    
+    if ndbNo:
+        nutriData = session_db.query(Nutrition).\
+                    filter(Nutrition.NDB_No == ndbNo).first()
+        return render_template("nutrition.html", nutriData=nutriData)
+
     return render_template("nutrition.html")
 
 # @app.route('/register')

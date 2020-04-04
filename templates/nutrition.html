@@ -6,7 +6,7 @@
 
 
 
-
+<link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
 
   
   <section class="hero-section set-bg" data-setbg="./static/images/food.jpg">
@@ -15,9 +15,6 @@
             <div class="col-md">
               <div class="hero-image">
                 <div class="hero-text">
-                    <!-- <span>You are what you eat</span> -->
-                    <!-- <h1>TODO: ADD NUTRITION SEARCH/LOOKUP</h1> -->
-                  <!-- </br></br> -->
                     <div class="row-sm">
                       <div class="section-title register-text">
                           <div class="section-title">
@@ -25,89 +22,73 @@
                           </div>
                           <!-- <form action="/nutrition" class="register-form"> -->
                               <div class="row register-form">
-                                  <!-- <div class="col-8">
-                                      <label for="name">Food</label>
-                                      <input type="text">
-                                    </div> -->
-                                  <!-- <div class="col-2">
-                                    <label for="name">Type</label>
-                                    <input list="mealType" name="mealType" placeholder="When?">
-                                      <datalist id="mealType">
-                                          <option value="Breakfast">
-                                          <option value="Lunch">
-                                          <option value="Dinner">
-                                          <option value="Snacks">
-                                      </datalist> -->
-                                  <!-- </div> -->
                                   <div class="col">
-                                    <label for="name">Food</label>
                                     <input type="text" placeholder="Search for Food Item?" id="foodName" name="food_desc">
                                     <input type="hidden" id="foodNameId" name="foodNameId">
 
-                                    <!-- <input class="form-control" id="foodsearch" type="text" placeholder="Search for Food"> -->
-                                    <!-- <input type="text" placeholder="Search for Food" onchange="optionChanged(this.value)"> -->
                                   </div>
-                                  <!-- <div class="col-2">
-                                      <label for="name">Servings</label>
-                                      <input type="number" min="0" max="20" placeholder="How much?">
-                                    </div> -->
-                                      </div>
-                                      <button id="search-btn"  class="btn btn-primary">Search</button>
-                                    </br></br>
-                                  <div class="block">
-                                    <div class="col">
-                                      <label for="name">Matching Foods:</label>
-                                      <div class="col-2">
-                                      </div>
-                                      <textarea class="form-control" rows="5" id="comment"></textarea>
-                                      <!-- PK: Code to add table -->
-                                      <div class="col-md-10">
-                                        <div id="table-area" class="">
-                                          
-                                        </div>
-                                      </div>  
-                                      <!-- PK: Code to add table -->
 
-                                     <script type="text/javascript">
+                                  
+             
+                                </div>
 
-                                      // $(document).on('click', 'ul#matching li', function(e) {
-                                      //     e.preventDefault();
-                                      //     var $this = $(this);
-                                      //     var $searchItem = $this.find('.search').first();
-
-                                      //     remote_update("#nutrition_facts", $searchItem.attr('href'), '', null, true);
-
-                                      //   }); 
-                                      </script> 
-                                      <ul id="matching"></ul>
-                                    </div>
-                                  </div>
+                                {% if nutriData is defined %}
+                                <div id="table-area" class="">
+                                  <table id="food-table" class="table table-striped table-dark">
+                                    
+                                    <tbody>
+                  
+                                     
+                                      <tr>
+                                        <th scope="row">Food Description</th>
+                                        <td>{{nutriData.Shrt_Desc}}</td>
+                                      </tr>
+                  
+                                      <tr>
+                                        <th scope="row">Energy (kCal)</th>
+                                        <td>{{nutriData.Energy}}</td>
+                                      </tr>
+                  
+                                      <tr>
+                                        <th scope="row">Carbohydrate (g)</th>
+                                        <td>{{nutriData.Carbohydrate|round | float}}</td>
+                                      </tr>
+                  
+                                      <tr>
+                                        <th scope="row">Protein (g)</th>
+                                        <td>{{nutriData.Protein|round | float}}</td>
+                                      </tr>
+                  
+                                      <tr>
+                                        <th scope="row">Total Fat (% kcal)</th>
+                                        <td>{{nutriData.Lipid_Total|round | float}}</td>
+                                      </tr>
+                  
+                                      <tr>
+                                        <th scope="row">Fiber (g)</th>
+                                        <td>{{nutriData.Fiber|round | int}}</td>
+                                      </tr>
+                  
+                                      <tr>
+                                        <th scope="row">Sugar Total (g)</th>
+                                        <td>{{nutriData.Sugar_Total|round | float}}</td>
+                                      </tr>
+                                      
+                                    </tbody>
+                                  </table>
+                                </div>
+                  
+                              {% endif %}
+                                
                           <!-- </form> -->
                       </div>
                   </div>  
                 </div>
               </div>
             </div>
-
-            
-            <div class="col-md" id="nutriFacts" style="visibility:hidden">
-
-              <div class="register-text">
-                <div class="section-title">
-                    <h4>Nutrition Info</h4>
-
-              </div>
-              <div id="table-area" class="">
-                <table id="food-table" class="table table-striped table-dark">
-                  
-                  <tbody>
-                  </tbody>
-                </table>
-              </div>
-
-            </div>
-            
         </div>
+
+        
     </div>
   </section>
  
@@ -118,10 +99,8 @@
   <script src="static/js/app_search.js"></script>
   <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script>
-    $( "#foodsearch").autocomplete({
+    $("#foodName").autocomplete({
         source: function (request, response) {
         $.getJSON("/nutriquicksearch?term=" + request.term, function (data) {
             
@@ -138,6 +117,7 @@
         select( event, ui ){
         $('#foodNameId').val(ui.item.value);
         $('#foodName').val(ui.item.label);
+        window.location.replace('nutrition?ndbNo='+ui.item.value)
         return false;
     },
 
