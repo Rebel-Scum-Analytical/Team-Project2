@@ -271,6 +271,7 @@ def dashboard():
         return redirect("/dashboard")
 
     # Code to display daily statistics on dashboard - part 2
+# display_stats
     cmd = session_db.query(func.sum((Nutrition.Energy) * (Meal_record.amount)).label('cal'),\
                             func.sum((Nutrition.Carbohydrate) * (Meal_record.amount)).label('carbs'),\
                             func.sum((Nutrition.Lipid_Total) * (Meal_record.amount)).label('fats'),\
@@ -289,13 +290,32 @@ def dashboard():
         results = [ float(daily_stats.cal), float(daily_stats.carbs),
                    float(daily_stats.fats), float(daily_stats.sodium),
                    float(daily_stats.sugar), float(daily_stats.fiber)]                                  
+#      cmd = session_db.query(func.round(func.sum(Nutrition.Energy),0).label('cal'),\
+#                                 func.round(func.sum(Nutrition.Carbohydrate),2).label('carbs'),\
+#                                 func.round(func.sum(Nutrition.Lipid_Total),0).label('fats'),\
+#                                 func.round(func.sum(Nutrition.Sodium), 2).label('sodium'),\
+#                                 func.round(func.sum(Nutrition.Sugar_Total),2).label('sugar'),\
+#                                 func.round(func.sum(Nutrition.Fiber),2).label('fiber'),\
+#                                 func.count().label('cnt')).\
+#                                 filter(Meal_record.username == session['username']).\
+#                                 filter(Meal_record.meal_item_code == Nutrition.NDB_No).\
+#                                 filter(Meal_record.meal_date == dt.date.today())
+#     daily_stats = cmd.first()              
+
+#     results = [0,0,0,0,0,0]        
+
+#     if(daily_stats.cnt!=0):       
+#         results = [daily_stats.cal, daily_stats.carbs, daily_stats.fats, daily_stats.sodium, daily_stats.sugar, daily_stats.fiber]                                  
+# >>>>>>> master
     print("daily stats are: ", daily_stats)
     print("daily stats cnt: ",daily_stats.cnt)
    
     # Code to display last 5 entries on dashboard
+#<<<<<<< display_stats
     top5_entries = session_db.query(Meal_record).\
                     filter(Meal_record.username == session['username']).\
                     order_by(Meal_record.meal_date.desc()).limit(5)
+
     # print("Meal desc for the entry on dashbord are: ", top5_entries[4].meal_desc)
     # top5_entries_l = [top5_entries[i] for i in range(6)]  
     # print(top5_entries_l[0].meal_date)   
