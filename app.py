@@ -190,8 +190,8 @@ class RegistrationForm(FlaskForm):
     last_name = StringField('Last Name', validators=[InputRequired(),Length(min=2, max=50)])
     gender = SelectField(u'Gender', choices=[('male', 'Male'), ('female', 'Female')])
     date_of_birth = DateField('Bate of Birth (YYYY-MM-DD)', format='%Y-%m-%d')
-    height = DecimalField('Height (inches)', places=2, rounding=None, validators=[InputRequired(), NumberRange(min=0, max=500, message='Blah')])
-    weight = DecimalField('Weight', places=2, rounding=None, validators=[InputRequired(), NumberRange(min=0, max=2000, message='Blah')])
+    height = DecimalField('Height (Inches)', places=2, rounding=None, validators=[InputRequired(), NumberRange(min=0, max=500, message='Blah')])
+    weight = DecimalField('Weight (Pounds)', places=2, rounding=None, validators=[InputRequired(), NumberRange(min=0, max=2000, message='Blah')])
     physical_activity_level = SelectField(u'Physical Activity Level', choices=[('sedentary', 'Sedentary'), ('lightly active', 'Lightly Active'), ('moderately active', 'Moderately Active'), ('very active', 'Very Active'), ('extra active', 'Extra Active')])  
     submit = SubmitField('Get Started')
 
