@@ -11,7 +11,6 @@ import pymysql
 from flask_wtf import FlaskForm
 from wtforms import StringField, BooleanField, TextField, PasswordField, SelectField, DateField, DecimalField, SubmitField
 from wtforms.validators import InputRequired, Length, NumberRange, EqualTo
-# from passlib.hash import sha256_crypt
 import datetime as dt
 from decimal import Decimal
 
@@ -21,7 +20,7 @@ from decimal import Decimal
 
 app = Flask(__name__)
 
-# Change this to your secret key (can be anything, it's for extra protection)
+# Set the secret key value 
 app.secret_key = '1a2b3c4d5e'
 
 # Enter your database connection details below
@@ -39,7 +38,7 @@ app.secret_key = '1a2b3c4d5e'
 HOSTNAME = "127.0.0.1"
 PORT = 3306
 USERNAME = "root"
-PASSWORD = "odnar04$"
+PASSWORD = "password"
 DIALECT = "mysql"
 DRIVER = "pymysql"
 DATABASE = "usda"
@@ -49,13 +48,10 @@ db_connection_string = (
     f"{DIALECT}+{DRIVER}://{USERNAME}:{PASSWORD}@{HOSTNAME}:{PORT}/{DATABASE}"
 )
 
-#FOLLOWING CODE IS FOR HEROKU######
-# #################################################
-# # Database Setup
-# #################################################
-
-# # The database URI
-###################################################
+# FOLLOWING CODE IS FOR HEROKU######
+##################################################
+# Database Setup
+#################################################
 
 app.config['SQLALCHEMY_DATABASE_URI'] = (
      os.environ.get("JAWSDB_URL","") or db_connection_string
@@ -97,33 +93,26 @@ class User_account(db.Model):
 def setup():
     db.create_all()
 
-#ABOVE CODE IS FOR HEROKU######
+# ABOVE CODE IS FOR HEROKU######
 ###################################################
 
-#commented as using a different method for Heroku
+# Commented when using a different method for Heroku
 engine = create_engine(db_connection_string)
 inspector = inspect(engine)
 table_names = inspector.get_table_names()
 # print("Table names are: ", table_names)
-
-# commented as using a different method for Heroku
+# Set up the base class
 Base = automap_base()
 Base.prepare(db.engine, reflect=True)
 # print(Base.classes.values)
-
-# create classes by mapping with names which match the table names
+# Table names
 User_account = Base.classes.user_account
 Meal_record = Base.classes.meal_record
 Nutrition = Base.classes.nutrition
-
-# commented as using a different method for Heroku
+# Create the database session
 session_db = Session(bind=engine)
 print("session_db is: ", session_db)
-
-
-
-
-
+# Comment code above for heroku deployment
 
 #############################################################################################
 # Route #1("/")
@@ -133,12 +122,15 @@ print("session_db is: ", session_db)
 @app.route("/")
 def main():
     session['page']=' '
+    # Check if the user is already logged in 
+    # If user is logged in then re-route to dashborad page
     if(checkLoggedIn() == True):
         session['page']='dashboard'
         return redirect('/dashboard')
-
+    # else route to home page
     session['page']=' '
     return render_template("index.html")
+
 #############################################################################################
 # Route #2(/login)
 # Design a query for the existing user to login
@@ -197,7 +189,7 @@ class RegistrationForm(FlaskForm):
     first_name = StringField('First Name', validators=[InputRequired(),Length(min=2, max=50)])
     last_name = StringField('Last Name', validators=[InputRequired(),Length(min=2, max=50)])
     gender = SelectField(u'Gender', choices=[('male', 'Male'), ('female', 'Female')])
-    date_of_birth = DateField('Date of Birth (YYYY-MM-DD)', format='%Y-%m-%d')
+    date_of_birth = DateField('Bate of Birth (YYYY-MM-DD)', format='%Y-%m-%d')
     height = DecimalField('Height (inches)', places=2, rounding=None, validators=[InputRequired(), NumberRange(min=0, max=500, message='Blah')])
     weight = DecimalField('Weight', places=2, rounding=None, validators=[InputRequired(), NumberRange(min=0, max=2000, message='Blah')])
     physical_activity_level = SelectField(u'Physical Activity Level', choices=[('sedentary', 'Sedentary'), ('lightly active', 'Lightly Active'), ('moderately active', 'Moderately Active'), ('very active', 'Very Active'), ('extra active', 'Extra Active')])  
@@ -322,7 +314,20 @@ def dashboard():
     # top5_entries_l = [top5_entries[i] for i in range(6)]  
     # print(top5_entries_l[0].meal_date)   
     return render_template("dashboard.html", form=form, results = results, daily_goal_list = daily_goal_list, top5_entries = top5_entries, daily_stats=daily_stats)
-    
+
+@app.route('/intake')
+def food_tracker():
+    if(checkLoggedIn() == False):
+        return redirect('/login')
+
+    session['page']='intake'
+    # Code to display last 100 entries on food_diary
+    top100_entries = session_db.query(Meal_record).\
+                    filter(Meal_record.username == session['username']).\
+                    order_by(Meal_record.meal_date.desc()).limit(100)
+
+    return render_template("food_history.html", top100_entries=top100_entries)
+
 @app.route("/user_metrics/<new_food>")
 def user_meal(new_food):
     print(new_food)
