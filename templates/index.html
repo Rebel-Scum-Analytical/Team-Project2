@@ -5,7 +5,7 @@
 
 
 
-
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
 
   
@@ -18,7 +18,7 @@
                     <span>You are what you eat</span>
                     <h1>Nutrition Tracker</h1>
                     <p>Log your daily food intake and monitor your nutrition over time<br /> Nutional information to make informed dietary choices</p>
-                    <a href="#" class="primary-btn">Read More</a>
+                    <a href="#" class="primary-btn" id="opener">Read More</a>
                 </div>
               </div>
             </div>
@@ -54,6 +54,46 @@
             {% endif %} 
         </div>
     </div>
+
+    <div style="text-align: left;" id="dialog" title="Credits" class="membership-item mi-title">
+      <div class="register-btn register-text register-form ">
+      <p>A Project by Team "Rebel Scum Analytics" at UT Austin Data Analytics Boot Camp.</p>
+      <p style="text-align: left;">Team members:</p>
+      <ul style="list-style-type:square ; text-align: left; list-style-position: inside;">
+        <li style="list-style-type:square ; list-style-position: inside;">Hongmei Zeng</li>
+        <li style="list-style-type:square ; list-style-position: inside;">Parul Kapoor</li>
+        <li style="list-style-type:square ; list-style-position: inside;">Pratima Gokhale </li>
+        <li style="list-style-type:square ; list-style-position: inside;">Randy Janowski </li>
+      </ul>
+    </div>  
+    </div>
+    </div>
   </section>
+
+  
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+  <script>
+    $( function() {
+      $( "#dialog" ).dialog({
+        autoOpen: false,
+        modal: true,
+        width: 500,
+        show: {
+          effect: "blind",
+          duration: 1000
+        },
+        hide: {
+          effect: "explode",
+          duration: 1000
+        }
+      });
+   
+      $( "#opener" ).on( "click", function() {
+        $( "#dialog" ).dialog( "open" );
+      });
+    } );
+    </script>
 
   {% endblock %}
