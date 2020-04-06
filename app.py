@@ -13,6 +13,10 @@ from wtforms import StringField, BooleanField, TextField, PasswordField, SelectF
 from wtforms.validators import InputRequired, Length, NumberRange, EqualTo
 import datetime as dt
 from decimal import Decimal
+from Query_Visual import createJson, creatUserPersonalJson, creatplotdata
+import json
+import plotly
+import plotly.graph_objects as go
 
 #################################################
 # Flask Setup
@@ -327,28 +331,55 @@ def food_tracker():
                     order_by(Meal_record.meal_date.desc()).limit(100)
 
     return render_template("food_history.html", top100_entries=top100_entries)
-
-@app.route("/user_metrics/<new_food>")
-def user_meal(new_food):
-    print(new_food)
-    search = "{}%".format(new_food) 
-    list_food =db.session.query(Nutrition.Shrt_Desc,Nutrition.Weight_desc )\
-                    .filter(Nutrition.Shrt_Desc.like(search)).all()
-    print(list_food)                
-    show_breakfast = {}   
-    for food in list_food:
-        show_breakfast[food[0]] = food[1]
-       
-    print(show_breakfast)      
-    return jsonify(show_breakfast)
  
 
 @app.route('/analysis')
 def analysis():
     if(checkLoggedIn() == False):
-        return redirect('/login')
+         return redirect('/login')
     session['page']='analysis'
+    desired_date = request.args.get("date")
+    # plot_type = request.args.get("selectnutrients")
+    plot_type = "All"     
+
+    if(desired_date and plot_type):
+       
+        
+        cmd = db.session.query(func.round(func.coalesce(func.sum((Nutrition.Energy/100)*(Meal_record.amount)*(Nutrition.Weight_grams)),0),2).label('cal'),\
+        func.round(func.coalesce(func.sum((Nutrition.Water/100)* (Meal_record.amount)*(Nutrition.Weight_grams)),0),2).label('water'), func.round(func.coalesce(func.sum((Nutrition.Carbohydrate/100)* (Meal_record.amount)*(Nutrition.Weight_grams)),0),2).label('carbs'),\
+        func.round(func.coalesce(func.sum((Nutrition.Fiber/100)* (Meal_record.amount)*(Nutrition.Weight_grams)),0),2).label('fiber'),func.round(func.coalesce(func.sum((Nutrition.Protein/100)* (Meal_record.amount)*(Nutrition.Weight_grams)),0),2).label('protein'), \
+        func.round(func.coalesce(func.sum((Nutrition.Calcium/100)* (Meal_record.amount)*(Nutrition.Weight_grams)),0),2).label('calcium'),func.round(func.coalesce(func.sum((Nutrition.Copper/100)* (Meal_record.amount)*(Nutrition.Weight_grams)),0),2).label('copper'), \
+        func.round(func.coalesce(func.sum((Nutrition.Iron/100)* (Meal_record.amount)*(Nutrition.Weight_grams)),0),2).label('iron'),func.round(func.coalesce(func.sum((Nutrition.Magnesium/100)* (Meal_record.amount)*(Nutrition.Weight_grams)),0),2).label('magnesium'), \
+        func.round(func.coalesce(func.sum((Nutrition.Manganese/100)* (Meal_record.amount)*(Nutrition.Weight_grams)),0),2).label('manganese'),func.round(func.coalesce(func.sum((Nutrition.Phosphorus/100)* (Meal_record.amount)*(Nutrition.Weight_grams)),0),2).label('phosphorus'), \
+        func.round(func.coalesce(func.sum((Nutrition.Selenium/100)* (Meal_record.amount)*(Nutrition.Weight_grams)),0),2).label('selenium'),func.round(func.coalesce(func.sum((Nutrition.Zinc/100)* (Meal_record.amount)*(Nutrition.Weight_grams)),0),2).label('zinc'), \
+        func.round(func.coalesce(func.sum((Nutrition.Potassium/100)* (Meal_record.amount)*(Nutrition.Weight_grams)),0),2).label('potassium'),func.round(func.coalesce(func.sum((Nutrition.Sodium/100)* (Meal_record.amount)*(Nutrition.Weight_grams)),0),2).label('sodium'), \
+        func.round(func.coalesce(func.sum((Nutrition.Vitamin_A/100)* (Meal_record.amount)*(Nutrition.Weight_grams)),0),2).label('vitamin_A'), func.round(func.coalesce(func.sum((Nutrition.Vitamin_C/100)* (Meal_record.amount)*(Nutrition.Weight_grams)),0),2).label('vitamin_C'),\
+        func.round(func.coalesce(func.sum((Nutrition.Vitamin_D/100)* (Meal_record.amount)*(Nutrition.Weight_grams)),0),2).label('vitamin_D'), func.round(func.coalesce(func.sum((Nutrition.Vitamin_E/100)* (Meal_record.amount)*(Nutrition.Weight_grams)),0),2).label('vitamin_E'),\
+        func.round(func.coalesce(func.sum((Nutrition.Vitamin_K/100)* (Meal_record.amount)*(Nutrition.Weight_grams)),0),2).label('vitamin_K'), func.round(func.coalesce(func.sum((Nutrition.Thiamin/100)* (Meal_record.amount)*(Nutrition.Weight_grams)),0),2).label('thiamin'),\
+        func.round(func.coalesce(func.sum((Nutrition.Riboflavin/100)* (Meal_record.amount)*(Nutrition.Weight_grams)),0),2).label('riboflavin'), func.round(func.coalesce(func.sum((Nutrition.Niacin/100)* (Meal_record.amount)*(Nutrition.Weight_grams)),0),2).label('niacin'),\
+        func.round(func.coalesce(func.sum((Nutrition.Vitamin_B6/100)* (Meal_record.amount)*(Nutrition.Weight_grams)),0),2).label('vitamin_B6'), func.round(func.coalesce(func.sum((Nutrition.Folate_Total/100)* (Meal_record.amount)*(Nutrition.Weight_grams)),0),2).label('folate'),\
+        func.round(func.coalesce(func.sum((Nutrition.Vitamin_B12/100)* (Meal_record.amount)*(Nutrition.Weight_grams)),0),2).label('vitamin_B12'), func.round(func.coalesce(func.sum((Nutrition.Panto_Acid/100)* (Meal_record.amount)*(Nutrition.Weight_grams)),0),2).label('panto_acid_VB5'),\
+        func.round(func.coalesce(func.sum((Nutrition.Choline_Tot_mg/100)* (Meal_record.amount)*(Nutrition.Weight_grams)),0),2).label('choline'), func.round(func.coalesce(func.sum((Nutrition.Lipid_Total/100)* (Meal_record.amount)*(Nutrition.Weight_grams)),0),2).label('fats'))\
+        .join(Meal_record, Nutrition.NDB_No == Meal_record.meal_item_code)\
+        .filter(Meal_record.username == session['username'])\
+        .filter(Meal_record.meal_date == desired_date)
+        
+        daily_stats = cmd.first()
+                                
+        userdata_nutrition_data = createJson(daily_stats)
+        cmd1 = db.session.query(User_account.height.label('height'), User_account.weight.label('weight'),\
+            User_account.physical_activity_level.label('phy'),User_account.gender.label('gender'), User_account.date_of_birth.label('dob'))\
+            .join(Meal_record, User_account.username == Meal_record.username)\
+            .filter(User_account.username == session['username'])
+        user_info = cmd1.first()
+        user_personal_data = creatUserPersonalJson(user_info)
+       
+        user_info = {"userdata_nutrition_data": userdata_nutrition_data,"user_personal_data":user_personal_data, "plot_type":plot_type }
+        graphJSON =creatplotdata(user_info)
+        ids = ['plot1', 'plot2', 'plot3']
+        return render_template("Daily_vizualization.html",ids=ids, graphJSON=graphJSON)
     return render_template("Daily_vizualization.html")
+
 
 def checkLoggedIn():
     if 'loggedin' in session:
