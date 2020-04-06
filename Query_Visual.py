@@ -326,7 +326,7 @@ def calcPhysicalMultiplier(PAL):
     return switcher.get(PAL,1.2)
 
 def calculateCalories(user_personal_data):
-    if(user_personal_data["gender"] == "Male"):
+    if(user_personal_data["gender"] == "male"):
         bmr = (66 + 6.3*user_personal_data["weight"] + 12.9*user_personal_data["height"] -\
             6.8*calculateAge(user_personal_data["date_of_birth"]))    
     else:
