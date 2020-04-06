@@ -1,6 +1,8 @@
 # Dependencies
 import os
 import sqlalchemy
+import json
+import decimal
 from flask import Flask, render_template, jsonify, request, make_response, session, abort, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.ext.automap import automap_base
@@ -429,14 +431,20 @@ def logout():
         return redirect("/")  
 
 
+class DecimalEncoder(json.JSONEncoder):
+    def default(self, o):
+        if isinstance(o, decimal.Decimal):
+            return float(o)
+        return super(DecimalEncoder, self).default(o)
+
 @app.route('/nutriquicksearch', methods=['GET'])
 def nutriquicksearch():
     searchkey=request.args.get('term')
     if not searchkey:
         return '{  "data": [] } '
-    resultSet = db.session.query(Nutrition.NDB_No, Nutrition.Shrt_Desc, Nutrition.Energy)\
+    resultSet = session_db.query(Nutrition.NDB_No, Nutrition.Shrt_Desc, Nutrition.Weight_desc, Nutrition.Weight_grams)\
         .filter(Nutrition.Shrt_Desc.ilike('%'+searchkey+'%')).all()
-    return jsonify(data=resultSet)
+    return json.dumps(resultSet, cls=DecimalEncoder)
 
 
 
