@@ -59,7 +59,8 @@
           {% endif %} 
           
           {% if ('loggedin' in session) and (session['loggedin'] == True) %}
-            <a href="/logout" class="primary-btn signup-btn">Logout</a>
+          <a href="/logout" class="primary-btn signup-btn">Logout</a>
+          <h4 style="color:red"></h4> Hello, <b>{{ session['username'] }}</b></h4>
           {% endif %}    
         </div>
     </div>
