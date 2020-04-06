@@ -20,7 +20,8 @@
                   <ul class="list-group" id="filters">
                     <li class="filter list-group-item">
                       <label for="date">Enter a Date</label>
-                      <input class="form-control" id="datetime" name="date" type="text" placeholder="1/11/2011">
+                      <!-- <input class="form-control" id="datetime" name="date" type="text" placeholder="1/11/2011"> -->
+                      <input type="date" id="inputdate" name="date">
                     </li>
                     <li class="filter list-group-item">
                       <button type="submit" class="register-btn" id="button" >Plot</button>
@@ -60,20 +61,15 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.5.0/d3.min.js"></script> 
   <script type="text/javascript">
 
-    var graphs = {{graphJSON | safe}};
+    var graphs = {{graphJSON | safe}}
     var ids = {{ids | safe}};
-
+   
     for(var i in graphs) {
         Plotly.plot(ids[i], // the ID of the div, created above
                     graphs[i].data,
                     graphs[i].layout || {});
     }
   </script>
-
-
-
-  
-
 
   {% endblock %}
 
