@@ -10,7 +10,7 @@ data_macro_rda = {\
 "Carbohydrate": {"13": "130","30": "130","50": "130","70": "130","unit": "(g/d)","18": "130","100": "130"},\
 "Fiber": {"13": "26","30": "25","50": "25","70": "21","unit": "(g/d)","18": "26","100": "21"},\
 "Protein": {"13": "34","30": "46","50": "46","70": "46","unit": "(g/d)","18": "46","100": "46"}},\
-"Male": {"Water": {"13": "2.4","50": "3.7","70": "3.7","100": "3.7","unit": "(L/d)","18": "3.3","30": "3.7" },\
+"male": {"Water": {"13": "2.4","50": "3.7","70": "3.7","100": "3.7","unit": "(L/d)","18": "3.3","30": "3.7" },\
 "Carbohydrate": {"13": "130","50": "130","70": "130","100": "130","unit": "(g/d)","18": "130","30": "130"},\
 "Fiber": {"13": "31","50": "38","70": "30","100": "30","unit": "(g/d)","18": "38","30": "38"},\
 "Protein": {"13": "34","50": "56","70": "56","100": "56","unit": "(g/d)","18": "52","30": "56"}}}
@@ -26,7 +26,7 @@ data_mineral_rda = {
 "Zinc": {"13": "8","30": "8","50": "8","70": "8","unit": "(mg/d)","18": "9","100": "8"},\
 "Potassium": {"13": "4.5","30": "4.7","50": "4.7","70": "4.7","unit": "(g/d)","18": "4.7","100": "4.7"},\
 "Sodium": {"13": "1.5","30": "1.5","50": "1.5","70": "1.3","unit": "(g/d)","18": "1.5","100": "1.2"}},\
-"Male": {"Calcium": {"13": "1300","50": "1000","70": "1000","100": "1200","unit": "(mg/d)","18": "1300","30": "1000"},\
+"male": {"Calcium": {"13": "1300","50": "1000","70": "1000","100": "1200","unit": "(mg/d)","18": "1300","30": "1000"},\
 "Copper": {"13": "700","50": "900","70": "900","100": "900","unit": "(micro_g/d)","18": "890","30": "900"},\
 "Iron": {"13": "8","50": "8","70": "8","100": "8","unit": "(mg/d)","18": "11","30": "8"},\
 "Magnesium": {"13": "240","50": "420","70": "420","100": "420","unit": "(mg/d)","18": "410","30": "400"},\
@@ -51,7 +51,7 @@ data_vitamin_rda = {
 "Cobalamin_VB12": {"13": "1.8","30": "2.4","50": "2.4","70": "2.4","unit": "micro_g/d","18": "2.4","100": "2.4"    },\
 "Pantothenic_Acid_VB5": {"13": "4","30": "5","50": "5","70": "5","unit": "mg/d","18": "5","100": "5"    },\
 "Choline": {"13": "375","30": "425","50": "425","70": "425","unit": "mg/d","18": "400","100": "425"    }  },\
-"Male": {    "Vitamin_A": {"13": "600","50": "900","70": "900","100": "900","unit": "micro_g/d","18": "900","30": "900"    },\
+"male": {    "Vitamin_A": {"13": "600","50": "900","70": "900","100": "900","unit": "micro_g/d","18": "900","30": "900"    },\
 "Vitamin_C": {"13": "45","50": "90","70": "90","100": "90","unit": "mg/d","18": "75","30": "90"    },\
 "Vitamin_D": {"13": "15","50": "15","70": "15","100": "20","unit": "micro_g/d","18": "15","30": "15"    },\
 "Vitamin_E": {"13": "11","50": "15","70": "15","100": "15","unit": "mg/d","18": "15","30": "15"    },\
@@ -155,7 +155,8 @@ def creatplotdata(user_info):
             query_data3["nutrient"] = key
             current_values.append((userdata_nutrition_data["minerals"][key])*100)
             temp.append(dri_micro_nutrient_minerals(query_data1))
-            y2.append(f"Max value : {dri_micro_nutrient_minerals(query_data1)}, {dri_micro_nutrient_minerals(query_data3)}")
+            current_value = round(userdata_nutrition_data["minerals"][key], 3)
+            y2.append(f"Current Value : {current_value}, Max value : {dri_micro_nutrient_minerals(query_data1)}, {dri_micro_nutrient_minerals(query_data3)}")
 
 
         for key, value in userdata_nutrition_data["vitamins"].items(): 
@@ -163,7 +164,8 @@ def creatplotdata(user_info):
             query_data3["nutrient"] = key
             current_values.append(userdata_nutrition_data["vitamins"][key]*100)
             temp.append(dri_micro_nutrient_vitamins(query_data2))
-            y2.append(f" Max value : {dri_micro_nutrient_vitamins(query_data2)}, {dri_micro_nutrient_vitamins(query_data3)}")
+            current_value = round(userdata_nutrition_data["vitamins"][key], 3)
+            y2.append(f"Current Value : {current_value},Max value : {dri_micro_nutrient_vitamins(query_data2)}, {dri_micro_nutrient_vitamins(query_data3)}")
         temp = [float(i) for item in temp for i in item]
         perc_s = [i / j for i, j in zip(current_values, temp)] 
 
@@ -172,7 +174,7 @@ def creatplotdata(user_info):
             {
                 "x":y1_1,
                 "y":perc_s,
-                "hoverinfo":y2,
+                "text":y2,
                 "type": 'bar',
                 
             }
@@ -192,11 +194,11 @@ def creatplotdata(user_info):
           
             query_data["nutrient"] = key
             query_data3["nutrient"] = key
-            current_value = userdata_nutrition_data["macronutrients"][key]
+            current_value = round(userdata_nutrition_data["macronutrients"][key], 3)
             current_values.append(userdata_nutrition_data["macronutrients"][key]*100)
             temp.append(dri_macro_nutrient(query_data))
             
-            y2.append(f"   Current Value : {current_value},Max Value: {dri_macro_nutrient(query_data)} {dri_macro_nutrient(query_data3)}")
+            y2.append(f"Current Value : {current_value},Max Value: {dri_macro_nutrient(query_data)} {dri_macro_nutrient(query_data3)}")
         temp = [float(item) for item in temp]
         
         perc_s = [i / j for i, j in zip(current_values, temp)] 
@@ -204,7 +206,7 @@ def creatplotdata(user_info):
             {
                 "x":y1_1,
                 "y":perc_s,
-                "hoverinfo":y2,
+                "text":y2,
                 "type": 'bar',
                 
             }
@@ -221,18 +223,65 @@ def creatplotdata(user_info):
                 "values":current_values,
                 
                 "type": 'pie',
+                'marker': {
+                'colors': [
+                        # 'rgb(254, 224, 210)',
+                        # 'rgb(252, 146, 114)',
+                        # 'rgb(222, 45, 28)',
+                        'rgb(246, 120, 49)',
+                        'rgb(254, 224, 210)',
+                        'rgb(31, 119, 180)',
+                ]}
                 
             }
         ]
 
     layout2=dict(
-                title='Macro Nutrients'
+                title='Macro Nutrients',
+                
+                xaxis=dict( 
+                    linecolor= 'black',
+                    linewidth= 2,
+                    mirror= "true"
+                ),
+                yaxis=dict(
+                    linecolor= 'black',
+                    linewidth= 2,
+                    mirror= "true"
+                ),
+                plot_bgcolor= '#eee',
+                paper_bgcolor= '#eee'
+
             )
     layout1=dict(
-            title='Micro Nutrients'
+            title='Micro Nutrients',
+            xaxis=dict( 
+                    linecolor= 'black',
+                    linewidth= 2,
+                    mirror= "true"
+                ),
+                yaxis=dict(
+                    linecolor= 'black',
+                    linewidth= 2,
+                    mirror= "true"
+                ),
+                plot_bgcolor= '#eee',
+                paper_bgcolor= '#eee'
         )
     layout3=dict(
-        title=f'Calories Distribution of {total} KCal'
+        title=f'Calories Distribution of {total} KCal',
+        xaxis=dict( 
+                    linecolor= 'black',
+                    linewidth= 2,
+                    mirror= "true"
+                ),
+                yaxis=dict(
+                    linecolor= 'black',
+                    linewidth= 2,
+                    mirror= "true"
+                ),
+                plot_bgcolor= '#444',
+                paper_bgcolor= '#eee'
     )    
     graphs = [ {"data" : trace2, "layout": layout2}, {"data" : trace1,"layout":layout1} ,{"data" : trace3,"layout": layout3 }]
    
