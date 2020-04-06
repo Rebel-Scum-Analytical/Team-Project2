@@ -79,6 +79,7 @@ def createJson(daily_stats):
         "Carbohydrate": daily_stats.carbs, \
         "Fiber": daily_stats.fiber,\
         "Protein": daily_stats.protein},\
+        
     "minerals":{ "Calcium": daily_stats.calcium, \
         "Copper": (daily_stats.copper)*1000 ,  \
         "Iron": daily_stats.iron,\
@@ -215,13 +216,14 @@ def creatplotdata(user_info):
         data = userdata_nutrition_data["calories"]
         total = data["total"]
         del data["total"]
-        y1_1 = [item for item in data.keys()]
+        y1_1 = [item.capitalize() for item in data.keys()]
         current_values = [item for item in userdata_nutrition_data["calories"].values()]
+        y2 = ["Recommended: 10%–35%", "Recommended: 45%–65%", "Recommended: 20%–35%"]
         trace3 = [
             {
                 "labels":y1_1,
                 "values":current_values,
-                
+                "hovertext":y2,
                 "type": 'pie',
                 'marker': {
                 'colors': [
