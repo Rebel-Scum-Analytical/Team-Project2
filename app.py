@@ -126,9 +126,9 @@ def setup():
 ###################################################
 
 # Commented when using a different method for Heroku
-engine = create_engine(db_connection_string)
-inspector = inspect(engine)
-table_names = inspector.get_table_names()
+# engine = create_engine(db_connection_string)
+# inspector = inspect(engine)
+# table_names = inspector.get_table_names()
 # print("Table names are: ", table_names)
 # Set up the base class
 Base = automap_base()
@@ -139,8 +139,8 @@ User_account = Base.classes.user_account
 Meal_record = Base.classes.meal_record
 Nutrition = Base.classes.nutrition
 # Create the database session
-session_db = Session(bind=engine)
-print("session_db is: ", session_db)
+# session_db = Session(bind=engine)
+# print("session_db is: ", session_db)
 # Comment code above for heroku deployment
 
 #############################################################################################
@@ -342,8 +342,8 @@ def dashboard():
             amount=form.servings_count.data,
             meal_item_code=form.foodNameId.data,
         )
-        session_db.add(new_meal)
-        session_db.commit()
+        db.session.add(new_meal)
+        db.session.commit()
 
         print("Adding meal")
         return redirect("/dashboard")
@@ -351,33 +351,45 @@ def dashboard():
     # Code to display daily statistics on dashboard - part 2
     # display_stats
     cmd = (
-        session_db.query(
+        db.session.query(
             func.round(
-                func.coalesce(func.sum((Nutrition.Energy) * (Meal_record.amount)), 0), 2
+                func.coalesce(func.sum((Nutrition.Energy / 100)
+                            * (Meal_record.amount)
+                            * (Nutrition.Weight_grams)), 0), 2
             ).label("cal"),
             func.round(
                 func.coalesce(
-                    func.sum((Nutrition.Carbohydrate) * (Meal_record.amount)), 0
+                    func.sum((Nutrition.Carbohydrate/100) 
+                    * (Meal_record.amount)
+                    * (Nutrition.Weight_grams)), 0
                 ),
                 2,
             ).label("carbs"),
             func.round(
                 func.coalesce(
-                    func.sum((Nutrition.Lipid_Total) * (Meal_record.amount)), 0
+                    func.sum((Nutrition.Lipid_Total/100) 
+                    * (Meal_record.amount)
+                    * (Nutrition.Weight_grams)), 0
                 ),
                 2,
             ).label("fats"),
             func.round(
-                func.coalesce(func.sum((Nutrition.Sodium) * (Meal_record.amount)), 0), 2
+                func.coalesce(func.sum((Nutrition.Sodium/100) 
+                * (Meal_record.amount)
+                 * (Nutrition.Weight_grams)), 0), 2
             ).label("sodium"),
             func.round(
                 func.coalesce(
-                    func.sum((Nutrition.Sugar_Total) * (Meal_record.amount)), 0
+                    func.sum((Nutrition.Sugar_Total/100) 
+                    * (Meal_record.amount)
+                     * (Nutrition.Weight_grams)), 0
                 ),
                 2,
             ).label("sugar"),
             func.round(
-                func.coalesce(func.sum((Nutrition.Fiber) * (Meal_record.amount)), 0), 2
+                func.coalesce(func.sum((Nutrition.Fiber/100) 
+                * (Meal_record.amount)
+                * (Nutrition.Weight_grams)), 0), 2
             ).label("fiber"),
             func.count().label("cnt"),
         )
@@ -421,7 +433,7 @@ def dashboard():
     # Code to display last 5 entries on dashboard
     # <<<<<<< display_stats
     top5_entries = (
-        session_db.query(Meal_record)
+        db.session.query(Meal_record)
         .filter(Meal_record.username == session["username"])
         .order_by(Meal_record.meal_date.desc())
         .limit(5)
@@ -448,7 +460,7 @@ def food_tracker():
     session["page"] = "intake"
     # Code to display last 100 entries on food_diary
     top100_entries = (
-        session_db.query(Meal_record)
+        db.session.query(Meal_record)
         .filter(Meal_record.username == session["username"])
         .order_by(Meal_record.meal_date.desc())
         .limit(100)
@@ -457,17 +469,18 @@ def food_tracker():
     return render_template("food_history.html", top100_entries=top100_entries)
 
 
-@app.route("/analysis")
+@app.route("/analysis", methods=['GET'])
 def analysis():
     if checkLoggedIn() == False:
         return redirect("/login")
     session["page"] = "analysis"
-    desired_date = request.args.get("date")
+    
     # plot_type = request.args.get("selectnutrients")
     plot_type = "All"
+    desired_date = request.args.get("date")
 
-    if desired_date and plot_type:
-
+    if request.method == 'GET' and desired_date:
+       
         cmd = (
             db.session.query(
                 func.round(
@@ -818,8 +831,9 @@ def analysis():
             "plot_type": plot_type,
         }
         graphJSON = creatplotdata(user_info)
-        ids = ["plot1", "plot2", "plot3"]
-        return render_template("Daily_vizualization.html", ids=ids, graphJSON=graphJSON)
+        ids = ["plot1", "plot2","plot3"]
+                
+        return render_template("Daily_vizualization.html", ids=ids, graphJSON=graphJSON)  
     return render_template("Daily_vizualization.html")
 
 
@@ -840,7 +854,7 @@ def nutrition():
 
     if ndbNo:
         nutriData = (
-            session_db.query(Nutrition).filter(Nutrition.NDB_No == ndbNo).first()
+            db.session.query(Nutrition).filter(Nutrition.NDB_No == ndbNo).first()
         )
         return render_template("nutrition.html", nutriData=nutriData)
 
@@ -887,7 +901,7 @@ def nutriquicksearch():
     if not searchkey:
         return '{  "data": [] } '
     resultSet = (
-        session_db.query(
+        db.session.query(
             Nutrition.NDB_No,
             Nutrition.Shrt_Desc,
             Nutrition.Weight_desc,

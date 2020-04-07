@@ -63,7 +63,7 @@
 
     var graphs = {{graphJSON | safe}}
     var ids = {{ids | safe}};
-   
+ 
     for(var i in graphs) {
         Plotly.plot(ids[i], // the ID of the div, created above
                     graphs[i].data,
