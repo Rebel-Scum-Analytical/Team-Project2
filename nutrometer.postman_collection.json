@@ -1,0 +1,449 @@
+{
+	"info": {
+		"_postman_id": "69646477-faa2-43ee-9f33-f8385757c579",
+		"name": "nutrometer",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "register",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": ""
+				}
+			},
+			"response": [
+				{
+					"name": "register",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5000/register?username=user0008&password=0008&first_name=Diana&last_name=Healter&gender=female&date_of_birth=1978-08-08&height=68&weight=138&physical_activity_level=Extra active&confirm_password=0008",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"register"
+							],
+							"query": [
+								{
+									"key": "username",
+									"value": "user0008"
+								},
+								{
+									"key": "password",
+									"value": "0008"
+								},
+								{
+									"key": "first_name",
+									"value": "Diana"
+								},
+								{
+									"key": "last_name",
+									"value": "Healter"
+								},
+								{
+									"key": "gender",
+									"value": "female"
+								},
+								{
+									"key": "date_of_birth",
+									"value": "1978-08-08"
+								},
+								{
+									"key": "height",
+									"value": "68"
+								},
+								{
+									"key": "weight",
+									"value": "138"
+								},
+								{
+									"key": "physical_activity_level",
+									"value": "Extra active"
+								},
+								{
+									"key": "confirm_password",
+									"value": "0008"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "html",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/html; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "7250"
+						},
+						{
+							"key": "Vary",
+							"value": "Cookie"
+						},
+						{
+							"key": "Set-Cookie",
+							"value": "session=eyJjc3JmX3Rva2VuIjoiNTg3MWU0YTAzZTgyYzQ4ODIyZmY1OWM0MzFmYjVjNWMwODFhNGU2YiJ9.Xoy9eQ.MeIwgtx68MiX4MaKueMfxdmbQfM; HttpOnly; Path=/"
+						},
+						{
+							"key": "Server",
+							"value": "Werkzeug/1.0.1 Python/3.7.4"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 07 Apr 2020 17:50:49 GMT"
+						}
+					],
+					"cookie": [],
+					"body": "\n\n\n<!DOCTYPE html>\n<html lang=\"en\"></html>\n<head>\n    <title>Nutrometer</title>\n    <meta charset=\"UTF-8\">\n    <!-- <meta name=\"description\" content=\"Gutim Template\"> -->\n    <!-- <meta name=\"keywords\" content=\"Gutim, unica, creative, html\"> -->\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <meta http-equiv=\"X-UA-Compatible\" content=\"ie=edge\">\n    <meta http-equiv=\"Content-Type\" content=\"text/html; charset=iso-8859-1\" />\n    <link rel=\"stylesheet\" href=\"../static/css/bootstrap.min.css\" type=\"text/css\">\n    <link rel=\"stylesheet\" href=\"../static/css/font-awesome.min.css\" type=\"text/css\">\n    <link rel=\"stylesheet\" href=\"../static/css/owl.carousel.min.css\" type=\"text/css\">\n    <link rel=\"stylesheet\" href=\"../static/css/magnific-popup.css\" type=\"text/css\">\n    <link rel=\"stylesheet\" href=\"../static/css/slicknav.min.css\" type=\"text/css\">\n    <link rel=\"stylesheet\" href=\"../static/css/style.css\" type=\"text/css\">\n    <link rel=\"stylesheet\" href=https://stackpath.bootstrapcdn.com/bootswatch/4.4.1/slate/bootstrap.min.css>\n    <!-- <link rel=\"stylesheet\" href=\"https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css\"> -->\n    <!-- <link rel=\"stylesheet\" href=\"css/style.css\" type=\"text/css\" /> -->\n</head>\n<body>\n    <header class=\"header-section\">\n        <div class=\"container\">\n            <div class=\"logo\">\n                <a href=\"index.html\">\n                    <img src=\"../static/images/Nutrometer.png\"></img>\n                </a>\n            </div>\n            <div class=\"nav-menu\">\n                <nav class=\"mainmenu mobile-menu\">\n                    <ul>\n                 \n                                \n              </ul>\n                </nav>\n                <a href=\"/register\" class=\"primary-btn signup-btn\">Create Account</a>\n            </div>\n        </div>\n    </header>\n    <body>\n        <section class=\"hero-section set-bg\">\n            <div class=\"container\">\n                <div class=\"row\">\n                    <div class=\"col-lg-8\">\n                        <div class=\"register-text\">\n                            <div class=\"section-title\">\n                                <h2>New User Registration</h2>\n                            </div>\n                            <!-- <form action=\"/register\" class=\"register-form\" method=\"POST\"> -->\n                            <form action=\"\" class=\"register-form\" method=\"POST\">\n                                <input id=\"csrf_token\" name=\"csrf_token\" type=\"hidden\" value=\"IjU4NzFlNGEwM2U4MmM0ODgyMmZmNTljNDMxZmI1YzVjMDgxYTRlNmIi.Xoy9eQ.XUd1AjEdRvpQCgtbf0LmQ_1CJfg\">\n                                <fieldset class=\"form-group\">\n                                    <!-- <div class=\"form-group\"> -->\n                                    <label class=\"form-control-label\" for=\"username\">Username</label>\n                                    <input class=\"form-control form-control-lg\" id=\"username\" name=\"username\" required type=\"text\" value=\"\">\n                                    <!-- </div> -->\n                                    <!-- <div class=\"form-group\"> -->\n                                    <label class=\"form-control-label\" for=\"password\">Password</label>\n                                    <input class=\"form-control form-control-lg\" id=\"password\" name=\"password\" required type=\"password\" value=\"\">\n                                    <!-- </div> -->\n                                    <!-- <div class=\"form-group\"> -->\n                                    <label class=\"form-control-label\" for=\"confirm_password\">Confirm Password</label>\n                                    <input class=\"form-control form-control-lg\" id=\"confirm_password\" name=\"confirm_password\" required type=\"password\" value=\"\">\n                                    <!-- </div> -->\n                                    <!-- <div class=\"form-group\"> -->\n                                    <label class=\"form-control-label\" for=\"first_name\">First Name</label>\n                                    <input class=\"form-control form-control-lg\" id=\"first_name\" name=\"first_name\" required type=\"text\" value=\"\">\n                                    <!-- </div> -->\n                                    <!-- <div class=\"form-group\"> -->\n                                    <label class=\"form-control-label\" for=\"last_name\">Last Name</label>\n                                    <input class=\"form-control form-control-lg\" id=\"last_name\" name=\"last_name\" required type=\"text\" value=\"\">\n                                    <!-- </div> -->\n                                    <!-- <div class=\"form-group\"> -->\n                                    <label class=\"form-control-label\" for=\"gender\">Gender</label>\n                                    <select class=\"form-control form-control-lg\" id=\"gender\" name=\"gender\">\n                                        <option value=\"male\">Male</option>\n                                        <option value=\"female\">Female</option>\n                                    </select>\n                                    <!-- </div> -->\n                                    <!-- <div class=\"form-group\"> -->\n                                    <label class=\"form-control-label\" for=\"date_of_birth\">Bate of Birth (YYYY-MM-DD)</label>\n                                    <input class=\"form-control form-control-lg\" id=\"date_of_birth\" name=\"date_of_birth\" type=\"text\" value=\"\">\n                                    <!-- </div> -->\n                                    <!-- <div class=\"form-group\"> -->\n                                    <label class=\"form-control-label\" for=\"height\">Height (Inches)</label>\n                                    <input class=\"form-control form-control-lg\" id=\"height\" name=\"height\" required type=\"text\" value=\"\">\n                                    <!-- </div> -->\n                                    <!-- <div class=\"form-group\"> -->\n                                    <label class=\"form-control-label\" for=\"weight\">Weight (Pounds)</label>\n                                    <input class=\"form-control form-control-lg\" id=\"weight\" name=\"weight\" required type=\"text\" value=\"\">\n                                    <!-- </div> -->\n                                    <!-- <div class=\"form-group\"> -->\n                                    <label class=\"form-control-label\" for=\"physical_activity_level\">Physical Activity Level</label>\n                                    <select class=\"form-control form-control-lg\" id=\"physical_activity_level\" name=\"physical_activity_level\">\n                                        <option value=\"sedentary\">Sedentary</option>\n                                        <option value=\"lightly active\">Lightly Active</option>\n                                        <option value=\"moderately active\">Moderately Active</option>\n                                        <option value=\"very active\">Very Active</option>\n                                        <option value=\"extra active\">Extra Active</option>\n                                    </select>\n                                    <!-- </div> -->\n                                    <button type=\"submit\" class=\"register-nut\">Sign Up</button>\n                                    <a href=\"./index.html\" >\n                                        <div class=\"register-nut-back\">Home</div>\n                                    </a>\n                                </fieldset>\n                            </form>\n                        </div>\n                    </div>\n                    <div class=\"col-lg-4\">\n                        <!-- <div class=\"register-pic\"><img src=\"img/register-pic.jpg\" alt=\"\">\n              </div> -->\n          \n                    </div>\n                </div>\n            </div>\n        </section>\n    </body>\n</html>"
+				}
+			]
+		},
+		{
+			"name": "login",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": ""
+				}
+			},
+			"response": [
+				{
+					"name": "login",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5000/login?username=user0007&password=0007",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"login"
+							],
+							"query": [
+								{
+									"key": "username",
+									"value": "user0007"
+								},
+								{
+									"key": "password",
+									"value": "0007"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "html",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/html; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "5072"
+						},
+						{
+							"key": "Vary",
+							"value": "Cookie"
+						},
+						{
+							"key": "Set-Cookie",
+							"value": "session=eyJjc3JmX3Rva2VuIjoiNTg3MWU0YTAzZTgyYzQ4ODIyZmY1OWM0MzFmYjVjNWMwODFhNGU2YiIsInBhZ2UiOiIgIn0.Xoy97A.IFWpZiuRz-0hKypjfUJzUuhh7nc; HttpOnly; Path=/"
+						},
+						{
+							"key": "Server",
+							"value": "Werkzeug/1.0.1 Python/3.7.4"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 07 Apr 2020 17:52:44 GMT"
+						}
+					],
+					"cookie": [],
+					"body": "\n\n<!DOCTYPE html>\n<html lang=\"en\"></html>\n<head>\n    <title>Nutrometer</title>\n    <meta charset=\"UTF-8\">\n    <!-- <meta name=\"description\" content=\"Gutim Template\"> -->\n    <!-- <meta name=\"keywords\" content=\"Gutim, unica, creative, html\"> -->\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <meta http-equiv=\"X-UA-Compatible\" content=\"ie=edge\">\n    <meta http-equiv=\"Content-Type\" content=\"text/html; charset=iso-8859-1\" />\n    <link rel=\"stylesheet\" href=\"../static/css/bootstrap.min.css\" type=\"text/css\">\n    <link rel=\"stylesheet\" href=\"../static/css/font-awesome.min.css\" type=\"text/css\">\n    <link rel=\"stylesheet\" href=\"../static/css/owl.carousel.min.css\" type=\"text/css\">\n    <link rel=\"stylesheet\" href=\"../static/css/magnific-popup.css\" type=\"text/css\">\n    <link rel=\"stylesheet\" href=\"../static/css/slicknav.min.css\" type=\"text/css\">\n    <link rel=\"stylesheet\" href=\"../static/css/style.css\" type=\"text/css\">\n    <link rel=\"stylesheet\" href=https://stackpath.bootstrapcdn.com/bootswatch/4.4.1/slate/bootstrap.min.css>\n    <!-- <link rel=\"stylesheet\" href=\"https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css\"> -->\n    <!-- <link rel=\"stylesheet\" href=\"css/style.css\" type=\"text/css\" /> -->\n</head>\n<body>\n    <header class=\"header-section\">\n        <div class=\"container\">\n            <div class=\"logo\">\n                <a href=\"index.html\">\n                    <img src=\"../static/images/Nutrometer.png\"></img>\n                </a>\n            </div>\n            <div class=\"nav-menu\">\n                <nav class=\"mainmenu mobile-menu\">\n                    <ul>\n                 \n                                \n              </ul>\n                </nav>\n                <a href=\"/register\" class=\"primary-btn signup-btn\">Create Account</a>\n            </div>\n        </div>\n    </header>\n    <body>\n        <link rel=\"stylesheet\" href=\"//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css\">\n        <section class=\"hero-section set-bg\" data-setbg=\"./static/images/food.jpg\">\n            <div class=\"container\">\n                <div class=\"row\">\n                    <div class=\"col-md-6\">\n                        <div class=\"hero-image\">\n                            <div class=\"hero-text\">\n                                <span>You are what you eat</span>\n                                <h1>Nutrition Tracker</h1>\n                                <p>Log your daily food intake and monitor your nutrition over time\n                                    <br /> Nutional information to make informed dietary choices\n                                </p>\n                                <a href=\"#\" class=\"primary-btn\" id=\"opener\">Read More</a>\n                            </div>\n                        </div>\n                    </div>\n                    <div class=\"col-md-6\">\n                        <div class=\"register-text\">\n                            <div class=\"section-title\">\n                                <h2>Login</h2>\n                            </div>\n                            <form action=\"/login\" class=\"register-form\" method=\"POST\">\n                                <div class=\"row\">\n                                    <div class=\"col-lg-12\">\n                                        <H4 style=\"color:#ff0000\"></H4>\n                                    </div>\n                                </div>\n                                <div class=\"row\">\n                                    <div class=\"col-lg-6\">\n                                        <label for=\"name\">User Name</label>\n                                        <input type=\"text\" id=\"username\" name=\"username\">\n                    \n                                    </div>\n                                    <div class=\"col-lg-6\">\n                                        <label for=\"name\">Password</label>\n                                        <input  id=\"password\" name=\"password\" type=\"password\">\n                    \n                                    </div>\n                                </div>\n                                <button type=\"submit\" class=\"register-btn\">Login</button>\n                            </form>\n                        </div>\n                    </div>\n                </div>\n            </div>\n            <div style=\"text-align: left;\" id=\"dialog\" title=\"Credits\" class=\"membership-item mi-title\">\n                <div class=\"register-btn register-text register-form \">\n                    <p>A Project by Team \"Rebel Scum Analytics\" at UT Austin Data Analytics Boot Camp.</p>\n                    <p style=\"text-align: left;\">Team members:</p>\n                    <ul style=\"list-style-type:square ; text-align: left; list-style-position: inside;\">\n                        <li style=\"list-style-type:square ; list-style-position: inside;\">Hongmei Zeng</li>\n                        <li style=\"list-style-type:square ; list-style-position: inside;\">Parul Kapoor</li>\n                        <li style=\"list-style-type:square ; list-style-position: inside;\">Pratima Gokhale </li>\n                        <li style=\"list-style-type:square ; list-style-position: inside;\">Randy Janowski </li>\n                    </ul>\n                </div>\n            </div>\n        </div>\n    </section>\n    <script src=\"https://code.jquery.com/jquery-1.12.4.js\"></script>\n    <script src=\"https://code.jquery.com/ui/1.12.1/jquery-ui.js\"></script>\n    <script>\n    $( function() {\n      $( \"#dialog\" ).dialog({\n        autoOpen: false,\n        modal: true,\n        width: 500,\n        show: {\n          effect: \"blind\",\n          duration: 1000\n        },\n        hide: {\n          effect: \"explode\",\n          duration: 1000\n        }\n      });\n   \n      $( \"#opener\" ).on( \"click\", function() {\n        $( \"#dialog\" ).dialog( \"open\" );\n      });\n    } );\n    </script>\n</body>\n</html>"
+				}
+			]
+		},
+		{
+			"name": "dashboard",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": ""
+				}
+			},
+			"response": [
+				{
+					"name": "dashboard",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5000/dashboard?username=user0009&type=Breakfast&meal_date=2020-04-01&meal_item_code=6002&meal_desc=SOUP,BLACK BEAN,CND,COND [1 cup,  (8 fl oz)  (257 g)]",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"dashboard"
+							],
+							"query": [
+								{
+									"key": "username",
+									"value": "user0009"
+								},
+								{
+									"key": "type",
+									"value": "Breakfast"
+								},
+								{
+									"key": "meal_date",
+									"value": "2020-04-01"
+								},
+								{
+									"key": "meal_item_code",
+									"value": "6002"
+								},
+								{
+									"key": "meal_desc",
+									"value": "SOUP,BLACK BEAN,CND,COND [1 cup,  (8 fl oz)  (257 g)]"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "html",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/html; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "5072"
+						},
+						{
+							"key": "Vary",
+							"value": "Cookie"
+						},
+						{
+							"key": "Set-Cookie",
+							"value": "session=eyJjc3JmX3Rva2VuIjoiNTg3MWU0YTAzZTgyYzQ4ODIyZmY1OWM0MzFmYjVjNWMwODFhNGU2YiIsInBhZ2UiOiIgIn0.Xoy-Yg.Trk_jY40dFcxKhgNop52EhRY_ko; HttpOnly; Path=/"
+						},
+						{
+							"key": "Server",
+							"value": "Werkzeug/1.0.1 Python/3.7.4"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 07 Apr 2020 17:54:42 GMT"
+						}
+					],
+					"cookie": [],
+					"body": "\n\n<!DOCTYPE html>\n<html lang=\"en\"></html>\n<head>\n    <title>Nutrometer</title>\n    <meta charset=\"UTF-8\">\n    <!-- <meta name=\"description\" content=\"Gutim Template\"> -->\n    <!-- <meta name=\"keywords\" content=\"Gutim, unica, creative, html\"> -->\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <meta http-equiv=\"X-UA-Compatible\" content=\"ie=edge\">\n    <meta http-equiv=\"Content-Type\" content=\"text/html; charset=iso-8859-1\" />\n    <link rel=\"stylesheet\" href=\"../static/css/bootstrap.min.css\" type=\"text/css\">\n    <link rel=\"stylesheet\" href=\"../static/css/font-awesome.min.css\" type=\"text/css\">\n    <link rel=\"stylesheet\" href=\"../static/css/owl.carousel.min.css\" type=\"text/css\">\n    <link rel=\"stylesheet\" href=\"../static/css/magnific-popup.css\" type=\"text/css\">\n    <link rel=\"stylesheet\" href=\"../static/css/slicknav.min.css\" type=\"text/css\">\n    <link rel=\"stylesheet\" href=\"../static/css/style.css\" type=\"text/css\">\n    <link rel=\"stylesheet\" href=https://stackpath.bootstrapcdn.com/bootswatch/4.4.1/slate/bootstrap.min.css>\n    <!-- <link rel=\"stylesheet\" href=\"https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css\"> -->\n    <!-- <link rel=\"stylesheet\" href=\"css/style.css\" type=\"text/css\" /> -->\n</head>\n<body>\n    <header class=\"header-section\">\n        <div class=\"container\">\n            <div class=\"logo\">\n                <a href=\"index.html\">\n                    <img src=\"../static/images/Nutrometer.png\"></img>\n                </a>\n            </div>\n            <div class=\"nav-menu\">\n                <nav class=\"mainmenu mobile-menu\">\n                    <ul>\n                 \n                                \n              </ul>\n                </nav>\n                <a href=\"/register\" class=\"primary-btn signup-btn\">Create Account</a>\n            </div>\n        </div>\n    </header>\n    <body>\n        <link rel=\"stylesheet\" href=\"//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css\">\n        <section class=\"hero-section set-bg\" data-setbg=\"./static/images/food.jpg\">\n            <div class=\"container\">\n                <div class=\"row\">\n                    <div class=\"col-md-6\">\n                        <div class=\"hero-image\">\n                            <div class=\"hero-text\">\n                                <span>You are what you eat</span>\n                                <h1>Nutrition Tracker</h1>\n                                <p>Log your daily food intake and monitor your nutrition over time\n                                    <br /> Nutional information to make informed dietary choices\n                                </p>\n                                <a href=\"#\" class=\"primary-btn\" id=\"opener\">Read More</a>\n                            </div>\n                        </div>\n                    </div>\n                    <div class=\"col-md-6\">\n                        <div class=\"register-text\">\n                            <div class=\"section-title\">\n                                <h2>Login</h2>\n                            </div>\n                            <form action=\"/login\" class=\"register-form\" method=\"POST\">\n                                <div class=\"row\">\n                                    <div class=\"col-lg-12\">\n                                        <H4 style=\"color:#ff0000\"></H4>\n                                    </div>\n                                </div>\n                                <div class=\"row\">\n                                    <div class=\"col-lg-6\">\n                                        <label for=\"name\">User Name</label>\n                                        <input type=\"text\" id=\"username\" name=\"username\">\n                    \n                                    </div>\n                                    <div class=\"col-lg-6\">\n                                        <label for=\"name\">Password</label>\n                                        <input  id=\"password\" name=\"password\" type=\"password\">\n                    \n                                    </div>\n                                </div>\n                                <button type=\"submit\" class=\"register-btn\">Login</button>\n                            </form>\n                        </div>\n                    </div>\n                </div>\n            </div>\n            <div style=\"text-align: left;\" id=\"dialog\" title=\"Credits\" class=\"membership-item mi-title\">\n                <div class=\"register-btn register-text register-form \">\n                    <p>A Project by Team \"Rebel Scum Analytics\" at UT Austin Data Analytics Boot Camp.</p>\n                    <p style=\"text-align: left;\">Team members:</p>\n                    <ul style=\"list-style-type:square ; text-align: left; list-style-position: inside;\">\n                        <li style=\"list-style-type:square ; list-style-position: inside;\">Hongmei Zeng</li>\n                        <li style=\"list-style-type:square ; list-style-position: inside;\">Parul Kapoor</li>\n                        <li style=\"list-style-type:square ; list-style-position: inside;\">Pratima Gokhale </li>\n                        <li style=\"list-style-type:square ; list-style-position: inside;\">Randy Janowski </li>\n                    </ul>\n                </div>\n            </div>\n        </div>\n    </section>\n    <script src=\"https://code.jquery.com/jquery-1.12.4.js\"></script>\n    <script src=\"https://code.jquery.com/ui/1.12.1/jquery-ui.js\"></script>\n    <script>\n    $( function() {\n      $( \"#dialog\" ).dialog({\n        autoOpen: false,\n        modal: true,\n        width: 500,\n        show: {\n          effect: \"blind\",\n          duration: 1000\n        },\n        hide: {\n          effect: \"explode\",\n          duration: 1000\n        }\n      });\n   \n      $( \"#opener\" ).on( \"click\", function() {\n        $( \"#dialog\" ).dialog( \"open\" );\n      });\n    } );\n    </script>\n</body>\n</html>"
+				}
+			]
+		},
+		{
+			"name": "intake",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": ""
+				}
+			},
+			"response": [
+				{
+					"name": "analysis",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5000/analysis?date=2020-04-01",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"analysis"
+							],
+							"query": [
+								{
+									"key": "date",
+									"value": "2020-04-01"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "html",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/html; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "5072"
+						},
+						{
+							"key": "Vary",
+							"value": "Cookie"
+						},
+						{
+							"key": "Set-Cookie",
+							"value": "session=eyJjc3JmX3Rva2VuIjoiNTg3MWU0YTAzZTgyYzQ4ODIyZmY1OWM0MzFmYjVjNWMwODFhNGU2YiIsInBhZ2UiOiIgIn0.XozclQ.ZP5JdEphfTtX9ptVoRkIle9XfX8; HttpOnly; Path=/"
+						},
+						{
+							"key": "Server",
+							"value": "Werkzeug/1.0.1 Python/3.7.4"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 07 Apr 2020 20:03:33 GMT"
+						}
+					],
+					"cookie": [],
+					"body": "\n\n<!DOCTYPE html>\n<html lang=\"en\"></html>\n<head>\n    <title>Nutrometer</title>\n    <meta charset=\"UTF-8\">\n    <!-- <meta name=\"description\" content=\"Gutim Template\"> -->\n    <!-- <meta name=\"keywords\" content=\"Gutim, unica, creative, html\"> -->\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <meta http-equiv=\"X-UA-Compatible\" content=\"ie=edge\">\n    <meta http-equiv=\"Content-Type\" content=\"text/html; charset=iso-8859-1\" />\n    <link rel=\"stylesheet\" href=\"../static/css/bootstrap.min.css\" type=\"text/css\">\n    <link rel=\"stylesheet\" href=\"../static/css/font-awesome.min.css\" type=\"text/css\">\n    <link rel=\"stylesheet\" href=\"../static/css/owl.carousel.min.css\" type=\"text/css\">\n    <link rel=\"stylesheet\" href=\"../static/css/magnific-popup.css\" type=\"text/css\">\n    <link rel=\"stylesheet\" href=\"../static/css/slicknav.min.css\" type=\"text/css\">\n    <link rel=\"stylesheet\" href=\"../static/css/style.css\" type=\"text/css\">\n    <link rel=\"stylesheet\" href=https://stackpath.bootstrapcdn.com/bootswatch/4.4.1/slate/bootstrap.min.css>\n    <!-- <link rel=\"stylesheet\" href=\"https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css\"> -->\n    <!-- <link rel=\"stylesheet\" href=\"css/style.css\" type=\"text/css\" /> -->\n</head>\n<body>\n    <header class=\"header-section\">\n        <div class=\"container\">\n            <div class=\"logo\">\n                <a href=\"index.html\">\n                    <img src=\"../static/images/Nutrometer.png\"></img>\n                </a>\n            </div>\n            <div class=\"nav-menu\">\n                <nav class=\"mainmenu mobile-menu\">\n                    <ul>\n                 \n                                \n              </ul>\n                </nav>\n                <a href=\"/register\" class=\"primary-btn signup-btn\">Create Account</a>\n            </div>\n        </div>\n    </header>\n    <body>\n        <link rel=\"stylesheet\" href=\"//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css\">\n        <section class=\"hero-section set-bg\" data-setbg=\"./static/images/food.jpg\">\n            <div class=\"container\">\n                <div class=\"row\">\n                    <div class=\"col-md-6\">\n                        <div class=\"hero-image\">\n                            <div class=\"hero-text\">\n                                <span>You are what you eat</span>\n                                <h1>Nutrition Tracker</h1>\n                                <p>Log your daily food intake and monitor your nutrition over time\n                                    <br /> Nutional information to make informed dietary choices\n                                </p>\n                                <a href=\"#\" class=\"primary-btn\" id=\"opener\">Read More</a>\n                            </div>\n                        </div>\n                    </div>\n                    <div class=\"col-md-6\">\n                        <div class=\"register-text\">\n                            <div class=\"section-title\">\n                                <h2>Login</h2>\n                            </div>\n                            <form action=\"/login\" class=\"register-form\" method=\"POST\">\n                                <div class=\"row\">\n                                    <div class=\"col-lg-12\">\n                                        <H4 style=\"color:#ff0000\"></H4>\n                                    </div>\n                                </div>\n                                <div class=\"row\">\n                                    <div class=\"col-lg-6\">\n                                        <label for=\"name\">User Name</label>\n                                        <input type=\"text\" id=\"username\" name=\"username\">\n                    \n                                    </div>\n                                    <div class=\"col-lg-6\">\n                                        <label for=\"name\">Password</label>\n                                        <input  id=\"password\" name=\"password\" type=\"password\">\n                    \n                                    </div>\n                                </div>\n                                <button type=\"submit\" class=\"register-btn\">Login</button>\n                            </form>\n                        </div>\n                    </div>\n                </div>\n            </div>\n            <div style=\"text-align: left;\" id=\"dialog\" title=\"Credits\" class=\"membership-item mi-title\">\n                <div class=\"register-btn register-text register-form \">\n                    <p>A Project by Team \"Rebel Scum Analytics\" at UT Austin Data Analytics Boot Camp.</p>\n                    <p style=\"text-align: left;\">Team members:</p>\n                    <ul style=\"list-style-type:square ; text-align: left; list-style-position: inside;\">\n                        <li style=\"list-style-type:square ; list-style-position: inside;\">Hongmei Zeng</li>\n                        <li style=\"list-style-type:square ; list-style-position: inside;\">Parul Kapoor</li>\n                        <li style=\"list-style-type:square ; list-style-position: inside;\">Pratima Gokhale </li>\n                        <li style=\"list-style-type:square ; list-style-position: inside;\">Randy Janowski </li>\n                    </ul>\n                </div>\n            </div>\n        </div>\n    </section>\n    <script src=\"https://code.jquery.com/jquery-1.12.4.js\"></script>\n    <script src=\"https://code.jquery.com/ui/1.12.1/jquery-ui.js\"></script>\n    <script>\n    $( function() {\n      $( \"#dialog\" ).dialog({\n        autoOpen: false,\n        modal: true,\n        width: 500,\n        show: {\n          effect: \"blind\",\n          duration: 1000\n        },\n        hide: {\n          effect: \"explode\",\n          duration: 1000\n        }\n      });\n   \n      $( \"#opener\" ).on( \"click\", function() {\n        $( \"#dialog\" ).dialog( \"open\" );\n      });\n    } );\n    </script>\n</body>\n</html>"
+				}
+			]
+		},
+		{
+			"name": "logout",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": ""
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "analysis",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": ""
+				}
+			},
+			"response": [
+				{
+					"name": "analysis",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5000/analysis?date=2020-04-01",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"analysis"
+							],
+							"query": [
+								{
+									"key": "date",
+									"value": "2020-04-01"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "html",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/html; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "5072"
+						},
+						{
+							"key": "Vary",
+							"value": "Cookie"
+						},
+						{
+							"key": "Set-Cookie",
+							"value": "session=eyJjc3JmX3Rva2VuIjoiNTg3MWU0YTAzZTgyYzQ4ODIyZmY1OWM0MzFmYjVjNWMwODFhNGU2YiIsInBhZ2UiOiIgIn0.XozeOA.UnIFmd3qj792xjwP9txxwTEeBbk; HttpOnly; Path=/"
+						},
+						{
+							"key": "Server",
+							"value": "Werkzeug/1.0.1 Python/3.7.4"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 07 Apr 2020 20:10:32 GMT"
+						}
+					],
+					"cookie": [],
+					"body": "\n\n<!DOCTYPE html>\n<html lang=\"en\"></html>\n<head>\n    <title>Nutrometer</title>\n    <meta charset=\"UTF-8\">\n    <!-- <meta name=\"description\" content=\"Gutim Template\"> -->\n    <!-- <meta name=\"keywords\" content=\"Gutim, unica, creative, html\"> -->\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <meta http-equiv=\"X-UA-Compatible\" content=\"ie=edge\">\n    <meta http-equiv=\"Content-Type\" content=\"text/html; charset=iso-8859-1\" />\n    <link rel=\"stylesheet\" href=\"../static/css/bootstrap.min.css\" type=\"text/css\">\n    <link rel=\"stylesheet\" href=\"../static/css/font-awesome.min.css\" type=\"text/css\">\n    <link rel=\"stylesheet\" href=\"../static/css/owl.carousel.min.css\" type=\"text/css\">\n    <link rel=\"stylesheet\" href=\"../static/css/magnific-popup.css\" type=\"text/css\">\n    <link rel=\"stylesheet\" href=\"../static/css/slicknav.min.css\" type=\"text/css\">\n    <link rel=\"stylesheet\" href=\"../static/css/style.css\" type=\"text/css\">\n    <link rel=\"stylesheet\" href=https://stackpath.bootstrapcdn.com/bootswatch/4.4.1/slate/bootstrap.min.css>\n    <!-- <link rel=\"stylesheet\" href=\"https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css\"> -->\n    <!-- <link rel=\"stylesheet\" href=\"css/style.css\" type=\"text/css\" /> -->\n</head>\n<body>\n    <header class=\"header-section\">\n        <div class=\"container\">\n            <div class=\"logo\">\n                <a href=\"index.html\">\n                    <img src=\"../static/images/Nutrometer.png\"></img>\n                </a>\n            </div>\n            <div class=\"nav-menu\">\n                <nav class=\"mainmenu mobile-menu\">\n                    <ul>\n                 \n                                \n              </ul>\n                </nav>\n                <a href=\"/register\" class=\"primary-btn signup-btn\">Create Account</a>\n            </div>\n        </div>\n    </header>\n    <body>\n        <link rel=\"stylesheet\" href=\"//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css\">\n        <section class=\"hero-section set-bg\" data-setbg=\"./static/images/food.jpg\">\n            <div class=\"container\">\n                <div class=\"row\">\n                    <div class=\"col-md-6\">\n                        <div class=\"hero-image\">\n                            <div class=\"hero-text\">\n                                <span>You are what you eat</span>\n                                <h1>Nutrition Tracker</h1>\n                                <p>Log your daily food intake and monitor your nutrition over time\n                                    <br /> Nutional information to make informed dietary choices\n                                </p>\n                                <a href=\"#\" class=\"primary-btn\" id=\"opener\">Read More</a>\n                            </div>\n                        </div>\n                    </div>\n                    <div class=\"col-md-6\">\n                        <div class=\"register-text\">\n                            <div class=\"section-title\">\n                                <h2>Login</h2>\n                            </div>\n                            <form action=\"/login\" class=\"register-form\" method=\"POST\">\n                                <div class=\"row\">\n                                    <div class=\"col-lg-12\">\n                                        <H4 style=\"color:#ff0000\"></H4>\n                                    </div>\n                                </div>\n                                <div class=\"row\">\n                                    <div class=\"col-lg-6\">\n                                        <label for=\"name\">User Name</label>\n                                        <input type=\"text\" id=\"username\" name=\"username\">\n                    \n                                    </div>\n                                    <div class=\"col-lg-6\">\n                                        <label for=\"name\">Password</label>\n                                        <input  id=\"password\" name=\"password\" type=\"password\">\n                    \n                                    </div>\n                                </div>\n                                <button type=\"submit\" class=\"register-btn\">Login</button>\n                            </form>\n                        </div>\n                    </div>\n                </div>\n            </div>\n            <div style=\"text-align: left;\" id=\"dialog\" title=\"Credits\" class=\"membership-item mi-title\">\n                <div class=\"register-btn register-text register-form \">\n                    <p>A Project by Team \"Rebel Scum Analytics\" at UT Austin Data Analytics Boot Camp.</p>\n                    <p style=\"text-align: left;\">Team members:</p>\n                    <ul style=\"list-style-type:square ; text-align: left; list-style-position: inside;\">\n                        <li style=\"list-style-type:square ; list-style-position: inside;\">Hongmei Zeng</li>\n                        <li style=\"list-style-type:square ; list-style-position: inside;\">Parul Kapoor</li>\n                        <li style=\"list-style-type:square ; list-style-position: inside;\">Pratima Gokhale </li>\n                        <li style=\"list-style-type:square ; list-style-position: inside;\">Randy Janowski </li>\n                    </ul>\n                </div>\n            </div>\n        </div>\n    </section>\n    <script src=\"https://code.jquery.com/jquery-1.12.4.js\"></script>\n    <script src=\"https://code.jquery.com/ui/1.12.1/jquery-ui.js\"></script>\n    <script>\n    $( function() {\n      $( \"#dialog\" ).dialog({\n        autoOpen: false,\n        modal: true,\n        width: 500,\n        show: {\n          effect: \"blind\",\n          duration: 1000\n        },\n        hide: {\n          effect: \"explode\",\n          duration: 1000\n        }\n      });\n   \n      $( \"#opener\" ).on( \"click\", function() {\n        $( \"#dialog\" ).dialog( \"open\" );\n      });\n    } );\n    </script>\n</body>\n</html>"
+				}
+			]
+		},
+		{
+			"name": "nutrition",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": ""
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "nutriquicksearch",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": ""
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
