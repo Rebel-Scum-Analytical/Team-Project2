@@ -18,7 +18,9 @@
                     <div class="row-sm">
                       <div class="section-title register-text">
                           <div class="section-title">
-                              <h4>Search Food Database</h4>
+                            <h3>Nutrition Information (per 100g)</h3>
+                            <br>
+                            <h5>Search Food Database</h5>
                           </div>
                           <!-- <form action="/nutrition" class="register-form"> -->
                               <div class="row register-form">
@@ -42,6 +44,13 @@
                                       <tr>
                                         <th scope="row">Food Description</th>
                                         <td>{{nutriData.Shrt_Desc}}</td>
+                                          <!-- {% if nutriData.Shrt_Desc != null and nutriData.Weight_desc != null and nutriData.Weight_grams !=0 %}
+                                            {{nutriData.Shrt_Desc + " [" + nutriData.Weight_desc + ", " + (nutriData.Weight_grams)|round|string + " g]"}}
+
+                                          {% else %}
+                                            {{nutriData.Shrt_Desc }}
+                                          {% endif %}</td> -->
+                                        <!-- <td>{{nutriData.Shrt_Desc + " [" + nutriData.Weight_desc + ", " + (nutriData.Weight_grams)|round|string + " g]"}}</td> -->
                                       </tr>
                   
                                       <tr>
@@ -96,10 +105,10 @@
   <!-- <script src="{{ url_for('static', filename='js/user_metric.js') }}"></script> -->
   <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.11.0/d3.js"></script> -->
   <script src="static/js/data.js"></script>
-  <script src="static/js/app_search.js"></script>
+  <!-- <script src="static/js/app_search.js"></script> -->
   <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-<script>
+<!-- <script>
     $("#foodName").autocomplete({
         source: function (request, response) {
         $.getJSON("/nutriquicksearch?term=" + request.term, function (data) {
@@ -127,5 +136,46 @@
 
    
  
+</script> -->
+<script>
+  $( "#foodName" ).autocomplete({
+      source: function (request, response) {
+      $.getJSON("/nutriquicksearch?term=" + request.term, function (data) {
+          
+          response(
+              $.map(data, function (key) {
+
+                  descr = '';
+                  if(key[2] !=''){
+                      descr = ' ['+key[2];
+                      if(key[3] !=0){
+                          descr=descr+'  ('+key[3]+' g)';                        
+                      }
+                      descr=descr+']';
+                  }
+
+
+              return {
+                  
+                  label: key[1] + descr,
+                  value: key[0]
+              };
+          }));
+      });
+  },
+
+      select( event, ui ){
+      $('#foodNameId').val(ui.item.value);
+      $('#foodName').val(ui.item.label);
+      window.location.replace('nutrition?ndbNo='+ui.item.value)
+      return false;
+  },
+
+    minLength: 2,
+
+  } );
+
+ 
+
 </script>
   {% endblock %}
