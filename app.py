@@ -64,7 +64,7 @@ app.secret_key = "1a2b3c4d5e"
 HOSTNAME = "127.0.0.1"
 PORT = 3306
 USERNAME = "root"
-PASSWORD = "password"
+PASSWORD = "uv9y9g5t"
 DIALECT = "mysql"
 DRIVER = "pymysql"
 DATABASE = "usda"
@@ -882,6 +882,7 @@ def analysis():
         )
         user_info = cmd1.first()
         user_personal_data = creatUserPersonalJson(user_info)
+        print(user_personal_data)
 
         user_info = {
             "userdata_nutrition_data": userdata_nutrition_data,
