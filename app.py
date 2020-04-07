@@ -19,7 +19,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import Session
-from sqlalchemy import create_engine, func, inspect
+from sqlalchemy import create_engine, func, inspect, case
 import pymysql
 from flask_wtf import FlaskForm
 from wtforms import (
@@ -355,13 +355,29 @@ def dashboard():
             func.round(
                 func.coalesce(func.sum((Nutrition.Energy / 100)
                             * (Meal_record.amount)
-                            * (Nutrition.Weight_grams)), 0), 2
-            ).label("cal"),
+                            * (
+                                case(
+                                    [
+                                        (Nutrition.Weight_grams == 0, 100)
+                                    ], 
+                                    else_=Nutrition.Weight_grams
+                                    )
+                                )
+                            ), 0
+                        ), 2).label("cal"),
             func.round(
                 func.coalesce(
                     func.sum((Nutrition.Carbohydrate/100) 
                     * (Meal_record.amount)
-                    * (Nutrition.Weight_grams)), 0
+                    * (
+                                case(
+                                    [
+                                        (Nutrition.Weight_grams == 0, 100)
+                                    ], 
+                                    else_=Nutrition.Weight_grams
+                                    )
+                                )
+                                ), 0
                 ),
                 2,
             ).label("carbs"),
@@ -369,27 +385,59 @@ def dashboard():
                 func.coalesce(
                     func.sum((Nutrition.Lipid_Total/100) 
                     * (Meal_record.amount)
-                    * (Nutrition.Weight_grams)), 0
+                    * (
+                                case(
+                                    [
+                                        (Nutrition.Weight_grams == 0, 100)
+                                    ], 
+                                    else_=Nutrition.Weight_grams
+                                    )
+                                )
+                    ), 0
                 ),
                 2,
             ).label("fats"),
             func.round(
                 func.coalesce(func.sum((Nutrition.Sodium/100) 
                 * (Meal_record.amount)
-                 * (Nutrition.Weight_grams)), 0), 2
+                 * (
+                                case(
+                                    [
+                                        (Nutrition.Weight_grams == 0, 100)
+                                    ], 
+                                    else_=Nutrition.Weight_grams
+                                    )
+                                )
+                 ), 0), 2
             ).label("sodium"),
             func.round(
                 func.coalesce(
                     func.sum((Nutrition.Sugar_Total/100) 
                     * (Meal_record.amount)
-                     * (Nutrition.Weight_grams)), 0
+                     * (
+                                case(
+                                    [
+                                        (Nutrition.Weight_grams == 0, 100)
+                                    ], 
+                                    else_=Nutrition.Weight_grams
+                                    )
+                                )
+                     ), 0
                 ),
                 2,
             ).label("sugar"),
             func.round(
                 func.coalesce(func.sum((Nutrition.Fiber/100) 
                 * (Meal_record.amount)
-                * (Nutrition.Weight_grams)), 0), 2
+                * (
+                                case(
+                                    [
+                                        (Nutrition.Weight_grams == 0, 100)
+                                    ], 
+                                    else_=Nutrition.Weight_grams
+                                    )
+                                )
+                ), 0), 2
             ).label("fiber"),
             func.count().label("cnt"),
         )
