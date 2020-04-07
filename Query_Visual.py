@@ -115,7 +115,7 @@ def creatUserPersonalJson(user_info):
     "weight": user_info.weight,\
     "gender": user_info.gender,\
     "date_of_birth":user_info.dob,\
-    "physical_activity_level":list(user_info.phy)[0]\
+    "physical_activity_level":user_info.phy\
     }
     return user_personal_data
 
