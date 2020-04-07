@@ -109,12 +109,13 @@ def createJson(daily_stats):
     return user_data
 
 def creatUserPersonalJson(user_info):
+    
     user_personal_data = {\
     "height": user_info.height,\
     "weight": user_info.weight,\
-    "gender": list(user_info.gender)[0],\
+    "gender": user_info.gender,\
     "date_of_birth":user_info.dob,\
-    "physical_activity_level":list(user_info.phy)[0]\
+    "physical_activity_level":user_info.phy\
     }
     return user_personal_data
 
@@ -343,6 +344,7 @@ def dri_macro_nutrient(data):
 
 
 def dri_micro_nutrient_minerals(data):
+    print(data)
     values = [] 
     values.append(data_mineral_rda[data["gender"]][data["nutrient"]][data["age_key"]])
     return values
