@@ -128,7 +128,7 @@ class Nutrition(db.Model):
     Carbohydrate = db.Column(db.Float)
     Fiber = db.Column(db.Float)
     Sugar_Total = db.Column(db.Float)
-    Calcium = db.Column(db.Float)
+    Calcium = db.Column(db.Integer)
     Iron = db.Column(db.Float)
     Magnesium = db.Column(db.Float)
     Phosphorus = db.Column(db.Integer)
@@ -150,7 +150,7 @@ class Nutrition(db.Model):
     Folate_DFE_mcg = db.Column(db.Float)
     Choline_Tot_mg = db.Column(db.Float)
     Vitamin_B12 = db.Column(db.Float)
-    Vit_A_IU = db.Column(db.Float)
+    Vit_A_IU = db.Column(db.Integer)
     Vitamin_A = db.Column(db.Float)
     Retinol = db.Column(db.Float)
     Alpha_Carot_mcg = db.Column(db.Float)
@@ -189,13 +189,13 @@ def setup():
 # table_names = inspector.get_table_names()
 # print("Table names are: ", table_names)
 # Set up the base class
-Base = automap_base()
-Base.prepare(db.engine, reflect=True)
+# Base = automap_base()
+# Base.prepare(db.engine, reflect=True)
 # # print(Base.classes.values)
 # # Table names
-User_account = Base.classes.user_account
-Meal_record = Base.classes.meal_record
-Nutrition = Base.classes.nutrition
+# User_account = Base.classes.user_account
+# Meal_record = Base.classes.meal_record
+# Nutrition = Base.classes.nutrition
 # Create the database session
 # session_db = Session(bind=engine)
 # print("session_db is: ", session_db)
