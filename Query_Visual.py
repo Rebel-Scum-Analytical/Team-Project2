@@ -355,3 +355,16 @@ def dri_micro_nutrient_vitamins(data):
     values.append(data_vitamin_rda[data["gender"]][data["nutrient"]][data["age_key"]])
     return values
 
+def CalculateDailyGoals(user_personal_data):
+    data = user_personal_data
+    age_key = returnAgekey(user_personal_data["date_of_birth"])
+    sodium_goal = data_mineral_rda[data["gender"]]["Sodium"][age_key]
+    print(sodium_goal)
+    goal=[]
+    goal.append(round(calculateCalories(data), 2))
+    goal.append(float(data_macro_rda[data["gender"]]["Carbohydrate"][age_key]))
+    goal.append(float(data_macro_rda[data["gender"]]["Protein"][age_key]))
+    goal.append(float(sodium_goal) * 1000)#the dri is in g/d and we show mg/d hence multiply by 1000
+    goal.append(float(data_macro_rda[data["gender"]]["Water"][age_key]))
+    goal.append(float(data_macro_rda[data["gender"]]["Fiber"][age_key]))
+    return goal

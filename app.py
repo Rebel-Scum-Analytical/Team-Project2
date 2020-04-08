@@ -35,7 +35,7 @@ from wtforms import (
 from wtforms.validators import InputRequired, Length, NumberRange, EqualTo
 import datetime as dt
 from decimal import Decimal
-from Query_Visual import createJson, creatUserPersonalJson, creatplotdata
+from Query_Visual import createJson, creatUserPersonalJson, creatplotdata, CalculateDailyGoals
 import json
 import plotly
 import plotly.graph_objects as go
@@ -182,24 +182,6 @@ def setup():
 
 # ABOVE CODE IS FOR HEROKU######
 ###################################################
-
-# Commented when using a different method for Heroku
-# engine = create_engine(db_connection_string)
-# inspector = inspect(engine)
-# table_names = inspector.get_table_names()
-# print("Table names are: ", table_names)
-# Set up the base class
-Base = automap_base()
-Base.prepare(db.engine, reflect=True)
-# print(Base.classes.values)
-# Table names
-User_account = Base.classes.user_account
-Meal_record = Base.classes.meal_record
-Nutrition = Base.classes.nutrition
-# Create the database session
-# session_db = Session(bind=engine)
-# print("session_db is: ", session_db)
-# Comment code above for heroku deployment
 
 #############################################################################################
 # Route #1("/")
@@ -387,7 +369,25 @@ def dashboard():
 
     # Code to display daily statistics on dashboard - part 1
 
-    daily_goal_list = [1800, 130, 25, 2200, 25, 25.2]
+    # daily_goal_list = [1800, 130, 25, 2200, 25, 25.2]
+    # code added to get the Daily goal as per the user gender, height, weight, age and physical activity
+    cmd1 = (
+    db.session.query(
+        User_account.height.label("height"),
+        User_account.weight.label("weight"),
+        User_account.physical_activity_level.label("phy"),
+        User_account.gender.label("gender"),
+        User_account.date_of_birth.label("dob"),
+    )
+    .join(Meal_record, User_account.username == Meal_record.username)
+    .filter(User_account.username == session["username"])
+    )
+    user_info = cmd1.first()
+    user_personal_data = creatUserPersonalJson(user_info)
+    daily_goal_list = CalculateDailyGoals(user_personal_data)
+    print(daily_goal_list)
+
+
     form = AddMeal(request.form)
     if form.validate_on_submit():
         # flash(f'Meal Added for {form.meal_category.data}!', 'successfully')
@@ -441,7 +441,7 @@ def dashboard():
             ).label("carbs"),
             func.round(
                 func.coalesce(
-                    func.sum((Nutrition.Lipid_Total/100) 
+                    func.sum((Nutrition.Protein/100) 
                     * (Meal_record.amount)
                     * (
                                 case(
@@ -454,9 +454,9 @@ def dashboard():
                     ), 0
                 ),
                 2,
-            ).label("fats"),
+            ).label("protein"),
             func.round(
-                func.coalesce(func.sum((Nutrition.Sodium/100) 
+                func.coalesce(func.sum(((Nutrition.Sodium)/100) 
                 * (Meal_record.amount)
                  * (
                                 case(
@@ -470,7 +470,7 @@ def dashboard():
             ).label("sodium"),
             func.round(
                 func.coalesce(
-                    func.sum((Nutrition.Sugar_Total/100) 
+                    func.sum(((Nutrition.Water/1000)/100) # we are divding by 1000 to convert ml to Liters
                     * (Meal_record.amount)
                      * (
                                 case(
@@ -483,7 +483,7 @@ def dashboard():
                      ), 0
                 ),
                 2,
-            ).label("sugar"),
+            ).label("water"),
             func.round(
                 func.coalesce(func.sum((Nutrition.Fiber/100) 
                 * (Meal_record.amount)
@@ -511,9 +511,9 @@ def dashboard():
         results = [
             float(daily_stats.cal),
             float(daily_stats.carbs),
-            float(daily_stats.fats),
+            float(daily_stats.protein),
             float(daily_stats.sodium),
-            float(daily_stats.sugar),
+            float(daily_stats.water),
             float(daily_stats.fiber),
         ]
     #      cmd = session_db.query(func.round(func.sum(Nutrition.Energy),0).label('cal'),\
