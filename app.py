@@ -35,7 +35,12 @@ from wtforms import (
 from wtforms.validators import InputRequired, Length, NumberRange, EqualTo
 import datetime as dt
 from decimal import Decimal
-from Query_Visual import createJson, creatUserPersonalJson, creatplotdata, CalculateDailyGoals
+from Query_Visual import (
+    createJson,
+    creatUserPersonalJson,
+    creatplotdata,
+    CalculateDailyGoals,
+)
 import json
 import plotly
 import plotly.graph_objects as go
@@ -49,15 +54,6 @@ app = Flask(__name__)
 # Set the secret key value
 app.secret_key = "1a2b3c4d5e"
 
-# Enter your database connection details below
-# app.config['MYSQL_HOST'] = '127.0.0.1'
-# app.config['MYSQL_USER'] = 'root'
-# app.config['MYSQL_PASSWORD'] = 'password'
-# app.config['MYSQL_DB'] = 'usda'
-
-# Intialize MySQL
-# mysql = MySQL(app)
-
 #################################################
 # Set up the database
 #################################################
@@ -69,26 +65,28 @@ DIALECT = "mysql"
 DRIVER = "pymysql"
 DATABASE = "usda"
 
-# Connect to DB in DB Server
+# Create a connection string to connect to DB in DB Server
 db_connection_string = (
     f"{DIALECT}+{DRIVER}://{USERNAME}:{PASSWORD}@{HOSTNAME}:{PORT}/{DATABASE}"
 )
 
-# FOLLOWING CODE IS FOR HEROKU######
-##################################################
-# Database Setup
-#################################################
+# Database Setup for HEROKU
 
 app.config["SQLALCHEMY_DATABASE_URI"] = (
     os.environ.get("JAWSDB_URL", "") or db_connection_string
 )
+
+# databse setup for SQLAlchemy
 db = SQLAlchemy(app)
 
+# Create classes for the database tables and map the column names to all the database tables
 
+# Meal_record table. This table is used to store data that user enters through URL to add meals
 class Meal_record(db.Model):
     __tablename__ = "meal_record"
 
-    meal_item_code = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
+    meal_item_code = db.Column(db.Integer)
     username = db.Column(db.String(50))
     type = db.Column(db.String(50))
     meal_date = db.Column(db.Date)
@@ -99,6 +97,7 @@ class Meal_record(db.Model):
         return "<Meal_record %r>" % (self.name)
 
 
+# User_account table. THis table contains user profile information
 class User_account(db.Model):
     __tablename__ = "user_account"
 
@@ -116,6 +115,8 @@ class User_account(db.Model):
     def __repr__(self):
         return "<User_account %r>" % (self.name)
 
+
+# Nutrition table. This table contains all the nutrition information for the food items in usda database.
 class Nutrition(db.Model):
     __tablename__ = "nutrition"
 
@@ -171,17 +172,16 @@ class Nutrition(db.Model):
     GmWt_2 = db.Column(db.Float)
     GmWt_Desc2 = db.Column(db.Text)
     Refuse_Pct = db.Column(db.Integer)
+
     def __repr__(self):
         return "<Nutrition %r>" % (self.name)
 
 
+# Initialize the data base and create tables
 @app.before_first_request
 def setup():
     db.create_all()
 
-
-# ABOVE CODE IS FOR HEROKU######
-###################################################
 
 #############################################################################################
 # Route #1("/")
@@ -211,26 +211,23 @@ def main():
 def login():
     # Output message if something goes wrong...
     msg = ""
-    print("Start of stuff")
     # Check if "username" and "password" POST requests exist (user submitted form)
-    if (
-        request.method == "POST"
-    ):  # and 'username' in request.form and 'password' in request.form:
+    if request.method == "POST":
         # Create variables for easy access
         request_username = request.form["username"]
         request_password = request.form["password"]
+
         # Check if account exists using MySQL
-        # cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        # cursor.execute('SELECT * FROM user_accounts WHERE username = %s AND password = %s', (username, password))
         if request_username and request_password:
+            # print(
+            #     "request_username: "
+            #     + request_username
+            #     + " | request_password: "
+            #     + request_password
+            # )
             # Fetch one record and return result
-            print(
-                "request_username: "
-                + request_username
-                + " | request_password: "
-                + request_password
-            )
             account = loginsys(request_username, request_password)
+
             # If account exists in accounts table in out database
             if account:
                 # Create session data, we can access this data in other routes
@@ -246,6 +243,8 @@ def login():
     return render_template("index.html", msg=msg)
 
 
+# Function to get the variable names used to validate the logged in user.
+# This function retr=urns a user list with logged in user's first name, last name, gender and username
 def loginsys(username, password):
     print("Username: " + username + " Password: " + password)
     user_ls = (
@@ -336,10 +335,15 @@ def register():
     return render_template("New_user.html", form=form)
 
 
-##############################################################################################
-# Route #4(/home)
-# This will be the home page, only accessible for loggedin users
-#############################################################################################
+########################################################################################################
+# Route #4(/dashborad)
+# Design a query to display dashboard to the logged in user.
+# This route will provide the following functionalities and will be available for only logged in users.
+# 1) Display daily statistics to the logged in user.
+# 2) Provide a quick add feature where logged in user can add his meals.
+# 3) Dashboard will display last 5 entries that the user made using quick add mentioned in point above.
+# 4) This will add the meal information that user enters into database
+########################################################################################################
 
 
 class AddMeal(FlaskForm):
@@ -366,27 +370,26 @@ def dashboard():
         return redirect("/login")
 
     session["page"] = "dashboard"
-
+    msg = ''
     # Code to display daily statistics on dashboard - part 1
 
     # daily_goal_list = [1800, 130, 25, 2200, 25, 25.2]
     # code added to get the Daily goal as per the user gender, height, weight, age and physical activity
     cmd1 = (
-    db.session.query(
-        User_account.height.label("height"),
-        User_account.weight.label("weight"),
-        User_account.physical_activity_level.label("phy"),
-        User_account.gender.label("gender"),
-        User_account.date_of_birth.label("dob"),
-    )
-    .join(Meal_record, User_account.username == Meal_record.username)
-    .filter(User_account.username == session["username"])
+        db.session.query(
+            User_account.height.label("height"),
+            User_account.weight.label("weight"),
+            User_account.physical_activity_level.label("phy"),
+            User_account.gender.label("gender"),
+            User_account.date_of_birth.label("dob"),
+        )
+        .join(Meal_record, User_account.username == Meal_record.username)
+        .filter(User_account.username == session["username"])
     )
     user_info = cmd1.first()
     user_personal_data = creatUserPersonalJson(user_info)
     daily_goal_list = CalculateDailyGoals(user_personal_data)
     print(daily_goal_list)
-
 
     form = AddMeal(request.form)
     if form.validate_on_submit():
@@ -400,9 +403,12 @@ def dashboard():
             amount=form.servings_count.data,
             meal_item_code=form.foodNameId.data,
         )
-        db.session.add(new_meal)
-        db.session.commit()
-
+        if new_meal:
+            print("New_meal is: ", new_meal )
+            db.session.add(new_meal)
+            db.session.commit()
+        else:
+            msg = "Please enter valid values"
         print("Adding meal")
         return redirect("/dashboard")
 
@@ -411,91 +417,102 @@ def dashboard():
     cmd = (
         db.session.query(
             func.round(
-                func.coalesce(func.sum((Nutrition.Energy / 100)
-                            * (Meal_record.amount)
-                            * (
-                                case(
-                                    [
-                                        (Nutrition.Weight_grams == 0, 100)
-                                    ], 
-                                    else_=Nutrition.Weight_grams
-                                    )
-                                )
-                            ), 0
-                        ), 2).label("cal"),
+                func.coalesce(
+                    func.sum(
+                        (Nutrition.Energy / 100)
+                        * (Meal_record.amount)
+                        * (
+                            case(
+                                [(Nutrition.Weight_grams == 0, 100)],
+                                else_=Nutrition.Weight_grams,
+                            )
+                        )
+                    ),
+                    0,
+                ),
+                2,
+            ).label("cal"),
             func.round(
                 func.coalesce(
-                    func.sum((Nutrition.Carbohydrate/100) 
-                    * (Meal_record.amount)
-                    * (
-                                case(
-                                    [
-                                        (Nutrition.Weight_grams == 0, 100)
-                                    ], 
-                                    else_=Nutrition.Weight_grams
-                                    )
-                                )
-                                ), 0
+                    func.sum(
+                        (Nutrition.Carbohydrate / 100)
+                        * (Meal_record.amount)
+                        * (
+                            case(
+                                [(Nutrition.Weight_grams == 0, 100)],
+                                else_=Nutrition.Weight_grams,
+                            )
+                        )
+                    ),
+                    0,
                 ),
                 2,
             ).label("carbs"),
             func.round(
                 func.coalesce(
-                    func.sum((Nutrition.Protein/100) 
-                    * (Meal_record.amount)
-                    * (
-                                case(
-                                    [
-                                        (Nutrition.Weight_grams == 0, 100)
-                                    ], 
-                                    else_=Nutrition.Weight_grams
-                                    )
-                                )
-                    ), 0
+                    func.sum(
+                        (Nutrition.Protein / 100)
+                        * (Meal_record.amount)
+                        * (
+                            case(
+                                [(Nutrition.Weight_grams == 0, 100)],
+                                else_=Nutrition.Weight_grams,
+                            )
+                        )
+                    ),
+                    0,
                 ),
                 2,
             ).label("protein"),
             func.round(
-                func.coalesce(func.sum(((Nutrition.Sodium)/100) 
-                * (Meal_record.amount)
-                 * (
-                                case(
-                                    [
-                                        (Nutrition.Weight_grams == 0, 100)
-                                    ], 
-                                    else_=Nutrition.Weight_grams
-                                    )
-                                )
-                 ), 0), 2
+                func.coalesce(
+                    func.sum(
+                        ((Nutrition.Sodium) / 100)
+                        * (Meal_record.amount)
+                        * (
+                            case(
+                                [(Nutrition.Weight_grams == 0, 100)],
+                                else_=Nutrition.Weight_grams,
+                            )
+                        )
+                    ),
+                    0,
+                ),
+                2,
             ).label("sodium"),
             func.round(
                 func.coalesce(
-                    func.sum(((Nutrition.Water/1000)/100) # we are divding by 1000 to convert ml to Liters
-                    * (Meal_record.amount)
-                     * (
-                                case(
-                                    [
-                                        (Nutrition.Weight_grams == 0, 100)
-                                    ], 
-                                    else_=Nutrition.Weight_grams
-                                    )
-                                )
-                     ), 0
+                    func.sum(
+                        (
+                            (Nutrition.Water / 1000) / 100
+                        )  # we are divding by 1000 to convert ml to Liters
+                        * (Meal_record.amount)
+                        * (
+                            case(
+                                [(Nutrition.Weight_grams == 0, 100)],
+                                else_=Nutrition.Weight_grams,
+                            )
+                        )
+                    ),
+                    0,
                 ),
                 2,
             ).label("water"),
             func.round(
-                func.coalesce(func.sum((Nutrition.Fiber/100) 
-                * (Meal_record.amount)
-                * (
-                                case(
-                                    [
-                                        (Nutrition.Weight_grams == 0, 100)
-                                    ], 
-                                    else_=Nutrition.Weight_grams
-                                    )
-                                )
-                ), 0), 2
+                func.coalesce(
+                    func.sum(
+                        (Nutrition.Fiber / 100)
+                        * (Meal_record.amount)
+                        * (
+                            case(
+                                [(Nutrition.Weight_grams == 0, 100)],
+                                else_=Nutrition.Weight_grams,
+                            )
+                        )
+                    ),
+                    0,
+                ),
+                2,
             ).label("fiber"),
             func.count().label("cnt"),
         )
@@ -532,39 +549,40 @@ def dashboard():
 
     #     if(daily_stats.cnt!=0):
     #         results = [daily_stats.cal, daily_stats.carbs, daily_stats.fats, daily_stats.sodium, daily_stats.sugar, daily_stats.fiber]
-    # >>>>>>> master
+
     print("daily stats are: ", daily_stats)
     print("daily stats cnt: ", daily_stats.cnt)
 
     # Code to display last 5 entries on dashboard
-    # <<<<<<< display_stats
     top5_entries = (
         db.session.query(Meal_record)
         .filter(Meal_record.username == session["username"])
         .order_by(Meal_record.meal_date.desc())
         .limit(5)
     )
-
-    # print("Meal desc for the entry on dashbord are: ", top5_entries[4].meal_desc)
-    # top5_entries_l = [top5_entries[i] for i in range(6)]
-    # print(top5_entries_l[0].meal_date)
+    print("Top 5 entries are: ", top5_entries)
     return render_template(
         "dashboard.html",
         form=form,
         results=results,
         daily_goal_list=daily_goal_list,
         top5_entries=top5_entries,
-        daily_stats=daily_stats,
+        daily_stats=daily_stats, msg = msg
     )
 
 
+##############################################################################################
+# Route #5(/intake)
+# To display meal entries made by user in meal add section under dashboard section.
+# The meal entries are displayed in a table form under food history
+#############################################################################################
 @app.route("/intake")
 def food_tracker():
     if checkLoggedIn() == False:
         return redirect("/login")
 
     session["page"] = "intake"
-    # Code to display last 100 entries on food_diary
+    # Query to display last 100 entries on food_diary
     top100_entries = (
         db.session.query(Meal_record)
         .filter(Meal_record.username == session["username"])
@@ -575,18 +593,29 @@ def food_tracker():
     return render_template("food_history.html", top100_entries=top100_entries)
 
 
-@app.route("/analysis", methods=['GET'])
+# @app.route("/intake")
+# def intake():
+#     if checkLoggedIn() == False:
+#         return redirect("/login")
+#     session["page"] = "intake"
+#     return render_template("intake.html")
+
+##############################################################################################
+# Route #6(/analysis)
+# Design a query to display daily visualisations of the food intake by the user
+#############################################################################################
+@app.route("/analysis", methods=["GET"])
 def analysis():
     if checkLoggedIn() == False:
         return redirect("/login")
     session["page"] = "analysis"
-    
+
     # plot_type = request.args.get("selectnutrients")
     plot_type = "All"
     desired_date = request.args.get("date")
 
-    if request.method == 'GET' and desired_date:
-       
+    if request.method == "GET" and desired_date:
+
         cmd = (
             db.session.query(
                 func.round(
@@ -937,12 +966,14 @@ def analysis():
             "plot_type": plot_type,
         }
         graphJSON = creatplotdata(user_info)
-        ids = ["plot1", "plot2","plot3"]
-                
-        return render_template("Daily_vizualization.html", ids=ids, graphJSON=graphJSON)  
+        ids = ["plot1", "plot2", "plot3"]
+
+        return render_template("Daily_vizualization.html", ids=ids, graphJSON=graphJSON)
     return render_template("Daily_vizualization.html")
 
 
+# Function to check if the user is logged in and maintain the infomration in session variable.
+# This is used in multiple routes.
 def checkLoggedIn():
     if "loggedin" in session:
         if session["loggedin"] == True:
@@ -950,6 +981,14 @@ def checkLoggedIn():
     return False
 
 
+##################################################################################################
+# Route #7(/nutrition)
+# "Nutrition Lookup"
+# To display nutrition information in table form for the searched food item on "Nutrition Lookup"
+# This will provide a search window where user can enter text and will return a clickable list
+# of matchig food entries. When user selects any item from the list, the code displays nutrition
+# information for the selected food item
+##################################################################################################
 @app.route("/nutrition", methods=["GET"])
 def nutrition():
     if checkLoggedIn() == False:
@@ -966,21 +1005,10 @@ def nutrition():
 
     return render_template("nutrition.html")
 
-
-# @app.route('/register')
-# def register():
-#     session['page']='register'
-#     return render_template("New_user.html")
-
-
-@app.route("/intake")
-def intake():
-    if checkLoggedIn() == False:
-        return redirect("/login")
-    session["page"] = "intake"
-    return render_template("intake.html")
-
-
+##################################################################################################
+# Route #8(/logout)
+# Design a query for the existing user to logout.
+##################################################################################################
 @app.route("/logout")
 def logout():
     if checkLoggedIn() == False:
@@ -994,6 +1022,12 @@ def logout():
         return redirect("/")
 
 
+######################################################################################################
+# Route #9(/nutriquicksearch)
+# Design a query for the existing user to search food item and display a list of matcing items.
+# This will display a list of matching records and user can select the food item of their choice.
+# The list will display the food item name along with the item weight in grams and weight description.
+######################################################################################################
 class DecimalEncoder(json.JSONEncoder):
     def default(self, o):
         if isinstance(o, decimal.Decimal):
