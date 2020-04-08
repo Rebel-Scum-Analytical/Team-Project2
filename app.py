@@ -348,15 +348,15 @@ def register():
 
 class AddMeal(FlaskForm):
     inputdate = DateField("inputdate", format="%Y-%m-%d")
-    meal_category = StringField("meal_category", validators=[InputRequired()])
-    food_desc = StringField("food_desc", validators=[InputRequired()])
+    meal_category = StringField("meal_category", validators=[InputRequired(message="Meal type is required")])
+    food_desc = StringField("food_desc", validators=[InputRequired(message="Search the food item")])
     servings_count = DecimalField(
         "servings_count",
         places=2,
         rounding=None,
-        validators=[InputRequired(), NumberRange(min=0, max=20)],
+        validators=[InputRequired(message="Serving count is required"), NumberRange(min=1, max=20)],
     )
-    foodNameId = DecimalField("foodNameId")
+    # foodNameId = DecimalField("foodNameId")
     submit = SubmitField("Add")
 
 
@@ -393,6 +393,7 @@ def dashboard():
 
     form = AddMeal(request.form)
     if form.validate_on_submit():
+        
         # flash(f'Meal Added for {form.meal_category.data}!', 'successfully')
 
         new_meal = Meal_record(
@@ -401,14 +402,22 @@ def dashboard():
             type=form.meal_category.data,
             meal_desc=form.food_desc.data,
             amount=form.servings_count.data,
-            meal_item_code=form.foodNameId.data,
         )
-        if new_meal:
-            print("New_meal is: ", new_meal )
-            db.session.add(new_meal)
-            db.session.commit()
-        else:
-            msg = "Please enter valid values"
+        # if new_meal.type is null: 
+        #     print("Please enter a valid meal type value")
+        #     msg = "Please enter a valid value"
+        # elif new_meal.meal_desc is null: 
+        #     print("Please search a meal item")
+        #     msg = "Please enter a valid value"
+        # elif new_meal.amount is null: 
+        #     print("Please enter a valid serving size")
+        #     msg = "Please enter a valid serving sevalue"
+                  
+            
+        # else:
+        db.session.add(new_meal)
+        db.session.commit()
+        flash("Meal saved successfully!")
         print("Adding meal")
         return redirect("/dashboard")
 

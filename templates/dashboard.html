@@ -87,7 +87,14 @@
                     {{ form.csrf_token }}
                     {{ form.name }}
                     {% if form.errors %}
-                    {{ form.errors }}
+                    <ul style="color:#ff0000; list-style-type:none" class="errors">
+                        {% for error in form.errors %}
+                        <li>
+                            {{ form.errors[error][0] }}
+                        </li>
+                        {% endfor %}
+                    </ul>
+                
                     {% endif %}
                     <div class="row">
                         <div class="col-2">
@@ -208,6 +215,18 @@
 </script>
 
 <script src="/static/js/date.js"></script>
+
+
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+  <script> 
+    {% for message in messages %}
+      alert('{{ message }}')
+    {% endfor %}
+</script>
+  {% endif %}
+{% endwith %}
+
   
 
   {% endblock %}
