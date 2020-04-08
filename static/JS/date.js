@@ -13,6 +13,9 @@ function getDate() {
     } 
   
     today = yyyy + '-' + mm + '-' + dd;
+    let maxDate = today;
+    $('#inputdate').attr('max', maxDate);
+    
     console.log(today);
     document.getElementById("inputdate").value = today;
   }

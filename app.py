@@ -79,6 +79,8 @@ app.config["SQLALCHEMY_DATABASE_URI"] = (
 # databse setup for SQLAlchemy
 db = SQLAlchemy(app)
 
+app.config["SQLALCHEMY_ECHO"] = True
+
 # Create classes for the database tables and map the column names to all the database tables
 
 # Meal_record table. This table is used to store data that user enters through URL to add meals
@@ -356,7 +358,7 @@ class AddMeal(FlaskForm):
         rounding=None,
         validators=[InputRequired(message="Serving count is required"), NumberRange(min=1, max=20)],
     )
-    # foodNameId = DecimalField("foodNameId")
+    foodNameId = StringField("foodNameId")
     submit = SubmitField("Add")
 
 
@@ -402,6 +404,7 @@ def dashboard():
             type=form.meal_category.data,
             meal_desc=form.food_desc.data,
             amount=form.servings_count.data,
+            meal_item_code=form.foodNameId.data
         )
         # if new_meal.type is null: 
         #     print("Please enter a valid meal type value")
@@ -529,6 +532,7 @@ def dashboard():
         .filter(Meal_record.meal_item_code == Nutrition.NDB_No)
         .filter(Meal_record.meal_date == dt.date.today())
     )
+    # print ("daily_total qry: "+ str(cmd))
     daily_stats = cmd.first()
 
     results = [0.0, 0, 0, 0, 0, 0]
