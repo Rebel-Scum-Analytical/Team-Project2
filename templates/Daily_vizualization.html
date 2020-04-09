@@ -47,7 +47,12 @@
       <div class="container">
         <div class="row">
           <div class="col">
+            {% if date is defined %}
+            <h2 style="color:rgba(255, 72, 0, 0.938); text-align:center">Nutritional contents of your meal on {{date}}</h2>
+            {% endif %}
+            <p style=”padding-bottom: 2ex; “></p>
             <div id ="plot1">
+             
                       
                                 
             </div>
@@ -74,8 +79,10 @@
 
     var graphs = {{graphJSON | safe}}
     var ids = {{ids | safe}};
+    
  
     for(var i in graphs) {
+  
         Plotly.plot(ids[i], // the ID of the div, created above
                     graphs[i].data,
                     graphs[i].layout || {});
