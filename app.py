@@ -969,7 +969,7 @@ def analysis():
         graphJSON = creatplotdata(user_info)
         ids = ["plot1", "plot2", "plot3"]
 
-        return render_template("Daily_vizualization.html", ids=ids, graphJSON=graphJSON)
+        return render_template("Daily_vizualization.html", ids=ids, graphJSON=graphJSON, date=desired_date)
     return render_template("Daily_vizualization.html")
 
 

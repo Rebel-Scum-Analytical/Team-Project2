@@ -253,7 +253,7 @@ def creatplotdata(user_info):
                     linecolor= 'black',
                     linewidth= 2,
                     mirror= "true",
-                    title = dict(text = 'Percentage of Macro Nutrients per DRI (USDA)', font=dict(family ="Poppins",size= 18 ))
+                    title = dict(text = 'Percentage of Macro Nutrients per DRI', font=dict(family ="Poppins",size= 18 ))
                 ),
                 plot_bgcolor= '#444',
                 paper_bgcolor= '#eee'
@@ -271,7 +271,7 @@ def creatplotdata(user_info):
                     linecolor= 'black',
                     linewidth= 2,
                     mirror= "true",
-                    title = dict(text = 'Percentage of Micro Nutrients per DRI (USDA)', font=dict(family ="Poppins",size= 18 ))
+                    title = dict(text = 'Percentage of Micro Nutrients per DRI', font=dict(family ="Poppins",size= 18 ))
                 ),
                 plot_bgcolor= '#444',
                 paper_bgcolor= '#eee'
