@@ -50,6 +50,10 @@
                   {% if session['page'] == 'intake' %}  class="active" {% endif %}>
                   <a href="/intake">Food History</a></li>
                 </li>
+                <li
+                  {% if session['page'] == 'profile' %}  class="active" {% endif %}>
+                  <a href="/profile">My Profile</a></li>
+                </li>
                 {% endif %} 
                                 
               </ul>
