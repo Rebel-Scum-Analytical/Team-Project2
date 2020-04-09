@@ -1053,6 +1053,24 @@ def nutriquicksearch():
     )
     return json.dumps(resultSet, cls=DecimalEncoder)
 
+##################################################################################################
+# Route #10(/profile)
+# Design a query for display the profile information for the logged in user.
+##################################################################################################
+@app.route("/profile")
+def profile():
+    if checkLoggedIn() == False:
+        return redirect("/login")
+
+    session["page"] = "profile"
+    # Query to display the user profile
+    user_profile = db.session.query(User_account).\
+        filter(User_account.username == session["username"]).\
+        all()
+    
+    # print("User profile is: ", user_profile)
+
+    return render_template("/profile.html", user_profile=user_profile)   
 
 if __name__ == "__main__":
     app.run(debug=True)
