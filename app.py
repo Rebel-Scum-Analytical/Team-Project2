@@ -87,7 +87,7 @@ app.config["SQLALCHEMY_ECHO"] = True
 class Meal_record(db.Model):
     __tablename__ = "meal_record"
 
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     meal_item_code = db.Column(db.Integer)
     username = db.Column(db.String(50))
     type = db.Column(db.String(50))
@@ -346,6 +346,17 @@ def register():
 # 3) Dashboard will display last 5 entries that the user made using quick add mentioned in point above.
 # 4) This will add the meal information that user enters into database
 ########################################################################################################
+def getUserpersonalData(user):
+    cmd1 = db.session.query(
+            User_account.height.label("height"),
+            User_account.weight.label("weight"),
+            User_account.physical_activity_level.label("phy"),
+            User_account.gender.label("gender"),
+            User_account.date_of_birth.label("dob")).filter(User_account.username == user)
+    user_info = cmd1.first()
+    return(creatUserPersonalJson(user_info))
+
+
 
 
 class AddMeal(FlaskForm):
@@ -375,21 +386,9 @@ def dashboard():
     msg = ''
     # Code to display daily statistics on dashboard - part 1
 
-    # daily_goal_list = [1800, 130, 25, 2200, 25, 25.2]
     # code added to get the Daily goal as per the user gender, height, weight, age and physical activity
-    cmd1 = (
-        db.session.query(
-            User_account.height.label("height"),
-            User_account.weight.label("weight"),
-            User_account.physical_activity_level.label("phy"),
-            User_account.gender.label("gender"),
-            User_account.date_of_birth.label("dob"),
-        )
-        .join(Meal_record, User_account.username == Meal_record.username)
-        .filter(User_account.username == session["username"])
-    )
-    user_info = cmd1.first()
-    user_personal_data = creatUserPersonalJson(user_info)
+    session_user_name = session["username"]
+    user_personal_data = getUserpersonalData(session_user_name)
     daily_goal_list = CalculateDailyGoals(user_personal_data)
     print(daily_goal_list)
 
@@ -956,22 +955,11 @@ def analysis():
             .filter(Meal_record.meal_date == desired_date)
         )
 
-        daily_stats = cmd.first()
+        nutri_stats = cmd.first()
 
-        userdata_nutrition_data = createJson(daily_stats)
-        cmd1 = (
-            db.session.query(
-                User_account.height.label("height"),
-                User_account.weight.label("weight"),
-                User_account.physical_activity_level.label("phy"),
-                User_account.gender.label("gender"),
-                User_account.date_of_birth.label("dob"),
-            )
-            .join(Meal_record, User_account.username == Meal_record.username)
-            .filter(User_account.username == session["username"])
-        )
-        user_info = cmd1.first()
-        user_personal_data = creatUserPersonalJson(user_info)
+        userdata_nutrition_data = createJson(nutri_stats)
+        session_user_name = session["username"]        
+        user_personal_data = getUserpersonalData(session_user_name)
 
         user_info = {
             "userdata_nutrition_data": userdata_nutrition_data,

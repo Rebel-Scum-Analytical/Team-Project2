@@ -240,53 +240,50 @@ def creatplotdata(user_info):
         ]
 
     layout2=dict(
-                title='Macro Nutrients',
+                title= dict(text='Macro Nutrients',font=dict(family ="Poppins",size= 24 )),
                 
                 xaxis=dict( 
                     linecolor= 'black',
                     linewidth= 2,
-                    mirror= "true"
+                    mirror= "true",
+                    title = dict(text = 'Macro Nutrient Name',font=dict(family ="Poppins",size= 18 ) )
+                    
                 ),
                 yaxis=dict(
                     linecolor= 'black',
                     linewidth= 2,
-                    mirror= "true"
+                    mirror= "true",
+                    title = dict(text = 'Percentage of Macro Nutrients per DRI (USDA)', font=dict(family ="Poppins",size= 18 ))
                 ),
-                plot_bgcolor= '#eee',
+                plot_bgcolor= '#444',
                 paper_bgcolor= '#eee'
 
             )
     layout1=dict(
-            title='Micro Nutrients',
+            title=dict(text = 'Micro Nutrients',font=dict(family ="Poppins",size= 24 )),
             xaxis=dict( 
                     linecolor= 'black',
                     linewidth= 2,
-                    mirror= "true"
+                    mirror= "true",
+                    title = dict(text = 'Micro Nutrient Name', font=dict(family ="Poppins",size= 18 ))
                 ),
                 yaxis=dict(
                     linecolor= 'black',
                     linewidth= 2,
-                    mirror= "true"
-                ),
-                plot_bgcolor= '#eee',
-                paper_bgcolor= '#eee'
-        )
-    layout3=dict(
-        title=f'Calories Distribution of {total} KCal',
-        xaxis=dict( 
-                    linecolor= 'black',
-                    linewidth= 2,
-                    mirror= "true"
-                ),
-                yaxis=dict(
-                    linecolor= 'black',
-                    linewidth= 2,
-                    mirror= "true"
+                    mirror= "true",
+                    title = dict(text = 'Percentage of Micro Nutrients per DRI (USDA)', font=dict(family ="Poppins",size= 18 ))
                 ),
                 plot_bgcolor= '#444',
                 paper_bgcolor= '#eee'
+        )
+    layout3=dict(
+        title=f'Percentage Contribution by Proteins, Carbohydrates and Fats to Total Calories {total} KCal',
+        titlefont = dict(color= '#fff', size = 24,family ="Poppins" ), 
+        legend=dict(font = dict(color= '#fff',size = 18,family ="Poppins" )),
+        plot_bgcolor= '#444',
+        paper_bgcolor= '#444'
     )    
-    graphs = [ {"data" : trace2, "layout": layout2}, {"data" : trace1,"layout":layout1} ,{"data" : trace3,"layout": layout3 }]
+    graphs = [ {"data" : trace2, "layout": layout2}, {"data" : trace1,"layout":layout1}, {"data" : trace3,"layout": layout3 } ]
    
     graphJSON = json.dumps(graphs, cls=plotly.utils.PlotlyJSONEncoder)
     return graphJSON
