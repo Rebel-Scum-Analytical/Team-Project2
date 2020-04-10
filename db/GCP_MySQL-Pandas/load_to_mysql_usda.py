@@ -13,14 +13,14 @@ import warnings
 #################################################
 
 USER = "root"
-PASSWORD = "PASSWORD" # Enter you SQL password here
+PASSWORD = "PASSWORD"  # Enter you SQL password here
 HOST = "127.0.0.1"
 PORT = "3306"
 DATABASE = "usda_db"
 TABLENAME = "nutrition"
 
 # Create the database usig csv file
-df = pd.read_csv('file1.csv')  
+df = pd.read_csv("file1.csv")
 # print(df.head())
 
 engine = create_engine(f"mysql+pymysql://{USER}:{PASSWORD}@{HOST}:{PORT}")

@@ -211,7 +211,7 @@ def main():
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
-    
+
     # Output message if something goes wrong...
     msg = ""
     if checkLoggedIn() == True:
@@ -225,7 +225,7 @@ def login():
 
         # Check if account exists using MySQL
         if request_username and request_password:
-            
+
             # Fetch one record and return result
             account = loginsys(request_username, request_password)
 
@@ -350,26 +350,32 @@ def register():
 ########################################################################################################
 def getUserpersonalData(user):
     cmd1 = db.session.query(
-            User_account.height.label("height"),
-            User_account.weight.label("weight"),
-            User_account.physical_activity_level.label("phy"),
-            User_account.gender.label("gender"),
-            User_account.date_of_birth.label("dob")).filter(User_account.username == user)
+        User_account.height.label("height"),
+        User_account.weight.label("weight"),
+        User_account.physical_activity_level.label("phy"),
+        User_account.gender.label("gender"),
+        User_account.date_of_birth.label("dob"),
+    ).filter(User_account.username == user)
     user_info = cmd1.first()
-    return(creatUserPersonalJson(user_info))
-
-
+    return creatUserPersonalJson(user_info)
 
 
 class AddMeal(FlaskForm):
     inputdate = DateField("inputdate", format="%Y-%m-%d")
-    meal_category = StringField("meal_category", validators=[InputRequired(message="Meal type is required")])
-    food_desc = StringField("food_desc", validators=[InputRequired(message="Search the food item")])
+    meal_category = StringField(
+        "meal_category", validators=[InputRequired(message="Meal type is required")]
+    )
+    food_desc = StringField(
+        "food_desc", validators=[InputRequired(message="Search the food item")]
+    )
     servings_count = DecimalField(
         "servings_count",
         places=2,
         rounding=None,
-        validators=[InputRequired(message="Serving count is required"), NumberRange(min=1, max=20)],
+        validators=[
+            InputRequired(message="Serving count is required"),
+            NumberRange(min=1, max=20),
+        ],
     )
     foodNameId = StringField("foodNameId")
     submit = SubmitField("Add")
@@ -385,7 +391,7 @@ def dashboard():
         return redirect("/login")
 
     session["page"] = "dashboard"
-    msg = ''
+    msg = ""
     # Code to display daily statistics on dashboard - part 1
 
     # code added to get the Daily goal as per the user gender, height, weight, age and physical activity
@@ -396,7 +402,7 @@ def dashboard():
 
     form = AddMeal(request.form)
     if form.validate_on_submit():
-        
+
         # flash(f'Meal Added for {form.meal_category.data}!', 'successfully')
 
         new_meal = Meal_record(
@@ -405,19 +411,18 @@ def dashboard():
             type=form.meal_category.data,
             meal_desc=form.food_desc.data,
             amount=form.servings_count.data,
-            meal_item_code=form.foodNameId.data
+            meal_item_code=form.foodNameId.data,
         )
-        # if new_meal.type is null: 
+        # if new_meal.type is null:
         #     print("Please enter a valid meal type value")
         #     msg = "Please enter a valid value"
-        # elif new_meal.meal_desc is null: 
+        # elif new_meal.meal_desc is null:
         #     print("Please search a meal item")
         #     msg = "Please enter a valid value"
-        # elif new_meal.amount is null: 
+        # elif new_meal.amount is null:
         #     print("Please enter a valid serving size")
         #     msg = "Please enter a valid serving sevalue"
-                  
-            
+
         # else:
         db.session.add(new_meal)
         db.session.commit()
@@ -581,7 +586,8 @@ def dashboard():
         results=results,
         daily_goal_list=daily_goal_list,
         top5_entries=top5_entries,
-        daily_stats=daily_stats, msg = msg
+        daily_stats=daily_stats,
+        msg=msg,
     )
 
 
@@ -960,7 +966,7 @@ def analysis():
         nutri_stats = cmd.first()
 
         userdata_nutrition_data = createJson(nutri_stats)
-        session_user_name = session["username"]        
+        session_user_name = session["username"]
         user_personal_data = getUserpersonalData(session_user_name)
 
         user_info = {
@@ -971,7 +977,9 @@ def analysis():
         graphJSON = creatplotdata(user_info)
         ids = ["plot1", "plot2", "plot3"]
 
-        return render_template("Daily_vizualization.html", ids=ids, graphJSON=graphJSON, date=desired_date)
+        return render_template(
+            "Daily_vizualization.html", ids=ids, graphJSON=graphJSON, date=desired_date
+        )
     return render_template("Daily_vizualization.html")
 
 
@@ -1008,6 +1016,7 @@ def nutrition():
 
     return render_template("nutrition.html")
 
+
 ##################################################################################################
 # Route #8(/logout)
 # Design a query for the existing user to logout.
@@ -1023,7 +1032,7 @@ def logout():
         session["messages"] = messages
         session["page"] = " "
         return redirect("/")
-    return("/")    
+    return "/"
 
 
 ######################################################################################################
@@ -1058,6 +1067,7 @@ def nutriquicksearch():
     )
     return json.dumps(resultSet, cls=DecimalEncoder)
 
+
 ##################################################################################################
 # Route #10(/profile)
 # Design a query for display the profile information for the logged in user.
@@ -1069,13 +1079,16 @@ def profile():
 
     session["page"] = "profile"
     # Query to display the user profile
-    user_profile = db.session.query(User_account).\
-        filter(User_account.username == session["username"]).\
-        all()
-    
+    user_profile = (
+        db.session.query(User_account)
+        .filter(User_account.username == session["username"])
+        .all()
+    )
+
     # print("User profile is: ", user_profile)
 
-    return render_template("/profile.html", user_profile=user_profile)   
+    return render_template("/profile.html", user_profile=user_profile)
+
 
 if __name__ == "__main__":
     app.run(debug=True)
