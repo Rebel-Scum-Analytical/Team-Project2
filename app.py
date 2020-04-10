@@ -211,8 +211,12 @@ def main():
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
+    
     # Output message if something goes wrong...
     msg = ""
+    if checkLoggedIn() == True:
+        session["page"] = "dashboard"
+        return redirect("/dashboard")
     # Check if "username" and "password" POST requests exist (user submitted form)
     if request.method == "POST":
         # Create variables for easy access
@@ -221,12 +225,7 @@ def login():
 
         # Check if account exists using MySQL
         if request_username and request_password:
-            # print(
-            #     "request_username: "
-            #     + request_username
-            #     + " | request_password: "
-            #     + request_password
-            # )
+            
             # Fetch one record and return result
             account = loginsys(request_username, request_password)
 
@@ -313,6 +312,9 @@ class RegistrationForm(FlaskForm):
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
+    if checkLoggedIn() == True:
+        session["page"] = "dashboard"
+        return redirect("/dashboard")
 
     form = RegistrationForm(request.form)
     if form.validate_on_submit():
@@ -1021,6 +1023,7 @@ def logout():
         session["messages"] = messages
         session["page"] = " "
         return redirect("/")
+    return("/")    
 
 
 ######################################################################################################
@@ -1038,6 +1041,8 @@ class DecimalEncoder(json.JSONEncoder):
 
 @app.route("/nutriquicksearch", methods=["GET"])
 def nutriquicksearch():
+    if checkLoggedIn() == False:
+        return redirect("/login")
     searchkey = request.args.get("term")
     if not searchkey:
         return '{  "data": [] } '
