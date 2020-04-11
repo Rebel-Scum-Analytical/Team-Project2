@@ -576,7 +576,7 @@ def dashboard():
     top5_entries = (
         db.session.query(Meal_record)
         .filter(Meal_record.username == session["username"])
-        .order_by(Meal_record.meal_date.desc())
+        .order_by(Meal_record.id.desc())
         .limit(5)
     )
     print("Top 5 entries are: ", top5_entries)
