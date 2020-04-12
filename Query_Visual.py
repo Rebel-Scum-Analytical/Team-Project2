@@ -666,9 +666,7 @@ def creatplotdata(user_info):
                 "type": "pie",
                 "marker": {
                     "colors": [
-                        # 'rgb(254, 224, 210)',
-                        # 'rgb(252, 146, 114)',
-                        # 'rgb(222, 45, 28)',
+
                         "rgb(246, 120, 49)",
                         "rgb(254, 224, 210)",
                         "rgb(31, 119, 180)",
@@ -769,12 +767,13 @@ def returnAgekey(dob):
 
 
 def calcPhysicalMultiplier(PAL):
+    PAL = PAL.lower()
     switcher = {
         "Sedentary": 1.2,
-        "Lightly_active": 1.375,
-        "moderately_active": 1.55,
-        "very_active": 1.725,
-        "extra_active": 1.9,
+        "lightly active": 1.375,
+        "moderately active": 1.55,
+        "very active": 1.725,
+        "extra active": 1.9,
     }
     return switcher.get(PAL, 1.2)
 
@@ -802,7 +801,6 @@ def dri_macro_nutrient(data):
 
 
 def dri_micro_nutrient_minerals(data):
-    print(data)
     values = []
     values.append(data_mineral_rda[data["gender"]][data["nutrient"]][data["age_key"]])
     return values
@@ -817,8 +815,7 @@ def dri_micro_nutrient_vitamins(data):
 def CalculateDailyGoals(user_personal_data):
     data = user_personal_data
     age_key = returnAgekey(user_personal_data["date_of_birth"])
-    sodium_goal = data_mineral_rda[data["gender"]]["Sodium"][age_key]
-    print(sodium_goal)
+    sodium_goal = data_mineral_rda[data["gender"]]["Sodium"][age_key]    
     goal = []
     goal.append(round(calculateCalories(data), 2))
     goal.append(float(data_macro_rda[data["gender"]]["Carbohydrate"][age_key]))
