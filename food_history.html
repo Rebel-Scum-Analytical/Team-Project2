@@ -1,0 +1,53 @@
+{% extends "layout.html" %} {% block pagetitle %}Nutrometer{% endblock %} {% block bodycontent %}
+
+<section class="hero-section set-bg" data-setbg="./static/images/food.jpg">
+    <div class="container">
+        <div class="row">
+            <div class="col-md">
+                <div class="register-text">
+                    <div class="section-title">
+                        <h4>Your Food History</h4>
+
+                        <table class="table table-dark" id="diary-table">
+
+                            {% if top100_entries.count() != 0 %}
+
+                            <thead>
+                                <tr>
+                                    <th scope="col"></th>
+                                    <th scope="col">Date</th>
+                                    <th scope="col">Meal Type</th>
+                                    <th scope="col">Food</th>
+                                    <th scope="col">Servings</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                {% for query_val in top100_entries %}
+                                <tr>
+                                    <th scope="row">{{loop.index}}</th>
+                                    <td>{{ query_val.meal_date }}</td>
+                                    <td>{{ query_val.type }}</td>
+                                    <td>{{ query_val.meal_desc }}</td>
+                                    <td>{{ query_val.amount |round | int }}</td>
+                                </tr>
+                                {% endfor %}
+
+                            </tbody>
+                            {% else %}
+                            <tbody>
+                                <tr>
+                                    <th scope="row">You do not have any food history. Start entering through dashboard!</th>
+                                </tr>
+                            </tbody>
+                            {% endif %}
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

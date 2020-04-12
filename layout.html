@@ -1,0 +1,92 @@
+
+<!DOCTYPE html>
+
+<html lang="en"></html>
+<head>
+  <title>{% block pagetitle %}{% endblock %}</title>
+  <meta charset="UTF-8">
+  <!-- <meta name="description" content="Gutim Template"> -->
+  <!-- <meta name="keywords" content="Gutim, unica, creative, html"> -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../static/css/bootstrap.min.css" type="text/css">
+  <link rel="stylesheet" href="../static/css/font-awesome.min.css" type="text/css">
+  <link rel="stylesheet" href="../static/css/owl.carousel.min.css" type="text/css">
+  <link rel="stylesheet" href="../static/css/magnific-popup.css" type="text/css">
+  <link rel="stylesheet" href="../static/css/slicknav.min.css" type="text/css">
+  <link rel="stylesheet" href="../static/css/style.css" type="text/css">
+  <link rel="stylesheet" href=https://stackpath.bootstrapcdn.com/bootswatch/4.4.1/slate/bootstrap.min.css>
+  <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"> -->
+  <!-- <link rel="stylesheet" href="css/style.css" type="text/css" /> -->
+</head>
+<body>
+  
+  
+  <header class="header-section">
+    <div class="container">
+        <div class="logo">
+            <a href="index.html">
+                <img src="../static/images/Nutrometer.png"></img>
+            </a>
+        </div>
+        <div class="nav-menu">
+          <nav class="mainmenu mobile-menu">
+              <ul>
+                {% if ('loggedin' in session) and (session['loggedin'] == True) %}
+                <li
+                  {% if session['page'] == 'dashboard' %}  class="active" {% endif %}>
+                  <a href="./index.html">Dashboard</a>
+                </li>
+                <li
+                  {% if session['page'] == 'analysis' %}  class="active" {% endif %}>
+                  <a href="/analysis">Analysis</a>
+                </li>
+                <li
+                  {% if session['page'] == 'nutrition' %}  class="active" {% endif %}>
+                  <a href="/nutrition">Nutrition Lookup</a>
+                </li>
+                <li
+                  {% if session['page'] == 'intake' %}  class="active" {% endif %}>
+                  <a href="/intake">Food History</a></li>
+                </li>
+                <li
+                  {% if session['page'] == 'profile' %}  class="active" {% endif %}>
+                  <a href="/profile">My Profile</a></li>
+                </li>
+                {% endif %} 
+                                
+              </ul>
+            </nav>
+          {% if (('loggedin' not in session) or (session['loggedin'] != True)) and (session['page'] !='register') %}
+
+            {% with messages = get_flashed_messages() %}
+              {% if messages %}
+                <script> 
+                  {% for message in messages %}
+                    alert('{{ message }}')
+                  {% endfor %}
+                </script>
+              {% endif %}
+            {% endwith %}
+            
+          <a href="/register" class="primary-btn signup-btn">Create Account</a>
+          {% endif %} 
+          
+          {% if ('loggedin' in session) and (session['loggedin'] == True) %}
+          <a href="/logout" class="primary-btn signup-btn">Logout</a>
+          <h4 style="color:red"></h4> Hello, <b>{{ session['username']|title }}</b></h4>
+          {% endif %}    
+        </div>
+    </div>
+  </header>
+<body>
+  {% block bodycontent %}{% endblock %}
+
+
+
+
+
+</body>
+
+</html>

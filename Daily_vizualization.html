@@ -1,0 +1,81 @@
+{% extends "layout.html" %} {% block pagetitle %}Nutrometer{% endblock %}
+<style>
+    #plot1 {
+        box-sizing: border-box;
+        padding: 10px;
+        width: 500px;
+        height: 500px;
+        border: 1px solid gray;
+        margin-top: -1px;
+        margin-left: -1px;
+    }
+</style>
+{% block bodycontent %}
+
+<section class="hero-section" data-setbg="../static/images/food.jpg">
+
+</section>
+<section class="visual-section">
+    <div class="row">
+        <div class="col-md-2">
+            <aside class="filters">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Filter Search</div>
+                    <div class="panel-body">
+                        <form action="" method="GET">
+                            <div class="form-group">
+                                <ul class="list-group" id="filters">
+                                    <li class="filter list-group-item">
+                                        <label for="date">Enter a Date</label>
+                                        <input type="date" id="inputdate" name="date" max=maxDate {% if request.args.get( 'date') %} value={{ request.args.get( 'date') }} {% endif %}>
+                                    </li>
+                                    <li class="filter list-group-item">
+                                        <button type="submit" class="register-btn" id="button">Plot</button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </aside>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    {% if date is defined %}
+                    <h4 style="color:white; text-align:center">Nutritional contents of your meal on {{date}}</h2>
+            <div id ="plot1">
+            {% endif %}                    
+            </div>
+            <p style=”padding-bottom: 2ex; “></p>
+            <div id ="plot2">
+
+            </div>
+            <p style=”padding-bottom: 2ex; “></p>
+            <div id ="plot3">
+
+            </div>
+          </div>
+        </div>  
+      </div>
+    </div>
+  </section>
+
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.5.0/d3.min.js"></script> 
+  <script type="text/javascript">
+
+    var graphs = {{graphJSON | safe}}
+    var ids = {{ids | safe}};
+
+    for(var i in graphs) {
+        Plotly.plot(ids[i], // the ID of the div, created above
+                    graphs[i].data,
+                    graphs[i].layout || {});
+    }
+  </script>
+<script src="/static/js/date1.js"></script>
+
+  {% endblock %}
+

@@ -1,0 +1,53 @@
+{% extends "layout.html" %} {% block pagetitle %}Nutrometer{% endblock %} {% block bodycontent %}
+
+<section class="hero-section set-bg" data-setbg="./static/images/food.jpg">
+    <div class="container">
+        <div class="row">
+            <div class="col-md">
+                <div class="register-text">
+                    <div class="section-title">
+                        <h4>Profile Information</h4>
+
+                        <table class="table table-dark" id="diary-table">
+
+                            <thead>
+                                <tr>
+                                    <th scope="col"></th>
+                                    <th scope="col">Username</th>
+                                    <th scope="col">First Name</th>
+                                    <th scope="col">Last Name</th>
+                                    <th scope="col">Gender</th>
+                                    <th scope="col">Date of Birth</th>
+                                    <th scope="col">Height(inches)</th>
+                                    <th scope="col">Weight(lbs)</th>
+                                    <th scope="col">Physical Activity Level</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                {% for val in user_profile %}
+                                <tr>
+                                    <th scope="row"></th>
+                                    <td>{{ session['username'] }}</td>
+                                    <td>{{ val.first_name }}</td>
+                                    <td>{{ val.last_name }}</td>
+                                    <td>{{ val.gender}}</td>
+                                    <td>{{ val.date_of_birth }}</td>
+                                    <td>{{ val.height }}</td>
+                                    <td>{{ val.weight }}</td>
+                                    <td>{{ val.physical_activity_level }}</td>
+
+                                </tr>
+                                {% endfor %}
+
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

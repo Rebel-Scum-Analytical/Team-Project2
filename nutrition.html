@@ -1,0 +1,163 @@
+{% extends "layout.html" %} {% block pagetitle %}Nutrometer{% endblock %} {% block bodycontent %}
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+
+<section class="hero-section set-bg" data-setbg="./static/images/food.jpg">
+    <div class="container">
+        <div class="row">
+            <div class="col-md">
+                <div class="hero-image">
+                    <div class="hero-text">
+                        <div class="row-sm">
+                            <div class="section-title register-text">
+                                <div class="section-title">
+                                    <h3>Nutrition Information (per 100g)</h3>
+                                    <br>
+                                    <h5>Search Food Database</h5>
+                                </div>
+                                <!-- <form action="/nutrition" class="register-form"> -->
+                                <div class="row register-form">
+                                    <div class="col">
+                                        <input type="text" placeholder="Search for Food Item?" id="foodName" name="food_desc">
+                                        <input type="hidden" id="foodNameId" name="foodNameId">
+
+                                    </div>
+
+                                </div>
+
+                                {% if nutriData is defined %}
+                                <div id="table-area" class="">
+                                    <table id="food-table" class="table table-striped table-dark">
+
+                                        <tbody>
+
+                                            <tr>
+                                                <th scope="row">Food Description</th>
+                                                <td>{{nutriData.Shrt_Desc}}</td>
+                                                <!-- {% if nutriData.Shrt_Desc != null and nutriData.Weight_desc != null and nutriData.Weight_grams !=0 %}
+                                            {{nutriData.Shrt_Desc + " [" + nutriData.Weight_desc + ", " + (nutriData.Weight_grams)|round|string + " g]"}}
+
+                                          {% else %}
+                                            {{nutriData.Shrt_Desc }}
+                                          {% endif %}</td> -->
+                                                <!-- <td>{{nutriData.Shrt_Desc + " [" + nutriData.Weight_desc + ", " + (nutriData.Weight_grams)|round|string + " g]"}}</td> -->
+                                            </tr>
+
+                                            <tr>
+                                                <th scope="row">Energy (kCal)</th>
+                                                <td>{{nutriData.Energy}}</td>
+                                            </tr>
+
+                                            <tr>
+                                                <th scope="row">Carbohydrate (g)</th>
+                                                <td>{{nutriData.Carbohydrate|round | float}}</td>
+                                            </tr>
+
+                                            <tr>
+                                                <th scope="row">Protein (g)</th>
+                                                <td>{{nutriData.Protein|round | float}}</td>
+                                            </tr>
+
+                                            <tr>
+                                                <th scope="row">Total Fat (% kcal)</th>
+                                                <td>{{nutriData.Lipid_Total|round | float}}</td>
+                                            </tr>
+
+                                            <tr>
+                                                <th scope="row">Fiber (g)</th>
+                                                <td>{{nutriData.Fiber|round | int}}</td>
+                                            </tr>
+
+                                            <tr>
+                                                <th scope="row">Sugar Total (g)</th>
+                                                <td>{{nutriData.Sugar_Total|round | float}}</td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                {% endif %}
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.5.0/d3.min.js"></script>
+<!-- <script src="{{ url_for('static', filename='js/user_metric.js') }}"></script> -->
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.11.0/d3.js"></script> -->
+<script src="static/js/data.js"></script>
+<!-- <script src="static/js/app_search.js"></script> -->
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<!-- <script>
+    $("#foodName").autocomplete({
+        source: function (request, response) {
+        $.getJSON("/nutriquicksearch?term=" + request.term, function (data) {
+
+            response(
+                $.map(data.data, function (key) {
+                return {
+                    label: key[1] + ' ['+key[2]+' kcal]',
+                    value: key[0]
+                };
+            }));
+        });
+    },
+
+        select( event, ui ){
+        $('#foodNameId').val(ui.item.value);
+        $('#foodName').val(ui.item.label);
+        window.location.replace('nutrition?ndbNo='+ui.item.value)
+        return false;
+    },
+
+      minLength: 2,
+
+    } );
+
+</script> -->
+<script>
+    $("#foodName").autocomplete({
+        source: function(request, response) {
+            $.getJSON("/nutriquicksearch?term=" + request.term, function(data) {
+
+                response(
+                    $.map(data, function(key) {
+
+                        descr = '';
+                        if (key[2] != '') {
+                            descr = ' [' + key[2];
+                            if (key[3] != 0) {
+                                descr = descr + '  (' + key[3] + ' g)';
+                            }
+                            descr = descr + ']';
+                        }
+
+                        return {
+
+                            label: key[1] + descr,
+                            value: key[0]
+                        };
+                    }));
+            });
+        },
+
+        select(event, ui) {
+            $('#foodNameId').val(ui.item.value);
+            $('#foodName').val(ui.item.label);
+            window.location.replace('nutrition?ndbNo=' + ui.item.value)
+            return false;
+        },
+
+        minLength: 2,
+
+    });
+</script>
+{% endblock %}
