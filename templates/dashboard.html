@@ -1,6 +1,20 @@
--{% extends "layout.html" %} {% block pagetitle %}Dashboard{% endblock %} {% block bodycontent %}
+{% extends "layout.html" %} {% block pagetitle %}Dashboard{% endblock %} {% block bodycontent %}
 
-<link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+<!-- <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css"> -->
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<style type="text/css">
+
+.fakelink {
+	cursor:pointer;
+    color:blue;
+    text-decoration:underline;
+     
+}
+.fakelink:hover {
+	text-decoration:none;
+	text-shadow: 1px 1px 1px #555;
+}
+</style>
 
 <section class="hero-section set-bg">
     <div class="container">
@@ -105,6 +119,7 @@
                             <label for="name">Food</label>
                             <input type="text" placeholder="What?" id="foodName" name="food_desc">
                             <input type="hidden" id="foodNameId" name="foodNameId">
+                            <span class="fakelink" id="opener">Advanced Search</span>
                         </div>
                         <div class="col-2">
                             <label for="name">Servings</label>
@@ -151,6 +166,16 @@
         </div>
 
     </div>
+
+    
+</section>
+<section>
+    <div style="text-align: left;" id="dialog" title="Advanced Search">
+        <div>
+            <p style="text-align: center;">Food name search by closest food name match</p>
+            <input type="text" placeholder="What are you looking for?" id="foodNameAdv" name="food_desc_adv">
+        </div>
+    </div>
 </section>
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -189,6 +214,47 @@
         minLength: 2,
 
     });
+
+    //advanced search
+
+    $("#foodNameAdv").autocomplete({
+        source: function(request, response) {
+            $.getJSON("/advanced_search?term=" + request.term, function(data) {
+
+                response(
+                    $.map(data, function(key) {
+
+                        descr = '';
+                        if (key[2] != '') {
+                            descr = ' [' + key[2];
+                            if (key[3] != 0) {
+                                descr = descr + '  (' + key[3] + ' g)';
+                            }
+                            descr = descr + ']';
+                        }
+
+                        return {
+
+                            label: key[1] + descr,
+                            value: key[0]
+                        };
+                    })
+                    );
+            });
+        },
+
+        select(event, ui) {
+            $('#foodNameId').val(ui.item.value);
+            $('#foodName').val(ui.item.label);
+            $("#dialog").dialog("close");
+            return false;
+        },
+
+        minLength: 2,
+
+    });
+    $("#foodNameAdv").autocomplete("option", "appendTo", "#dialog");
+
 </script>
 
 <script src="/static/js/date.js"></script>
@@ -201,4 +267,25 @@
     alert('{{ message }}') { % endfor %
     }
 </script>
-{% endif %} {% endwith %} {% endblock %}
+{% endif %}
+{% endwith %}
+
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+<script>
+    $(function() {
+        $("#dialog").dialog({
+            autoOpen: false,
+            modal: true,
+            width: 800,
+            height: 600
+        });
+
+        $("#opener").on("click", function() {
+            $("#foodNameAdv").val('');
+            $("#dialog").dialog("open");
+        });
+    });
+</script>
+ {% endblock %}

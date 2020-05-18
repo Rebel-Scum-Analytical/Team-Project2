@@ -1,5 +1,12 @@
 # Dependencies
 import os
+import csv
+import numpy as np
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.preprocessing import Normalizer
+from sklearn.pipeline import make_pipeline
+from sklearn.metrics.pairwise import cosine_similarity
+import pandas as pd 
 import sqlalchemy
 import json
 import decimal
@@ -1089,6 +1096,42 @@ def profile():
 
     return render_template("/profile.html", user_profile=user_profile)
 
+# Method to gget the recommendation list of items similar to food items in advanced search
+# filepath = "/db/nutrition.csv"
+df = pd.read_csv("db/nutrition.csv")
+print("Nutrition data is: ", df.head())
+X_text = df["Shrt_Desc"].values
+cv = make_pipeline(
+CountVectorizer(
+    ngram_range=(3, 7),
+    analyzer="char"),
+    Normalizer())
+cv.fit(X_text)
+X = cv.transform(X_text)
+## PK add code part1  to get term from advanced search box ##
+# X_term = cv.transform(["choclte chip sookies"])
+# simularities = cosine_similarity(X_term, X)
+def advanced_search_func(term):
+    X_term = cv.transform([term])
+    simularities = cosine_similarity(X_term, X)
+    k = 10
+    result = np.sort(np.argpartition(simularities[0], len(simularities[0]) - k)[-k:])
+    return df.loc[result][['NDB_No', 'Shrt_Desc', 'Weight_desc', 'Weight_grams']]
+    
+@app.route("/advanced_search",methods=["GET"])
+def advanced_search():
+    if checkLoggedIn() == False:
+        return redirect("/login")
+    # session["page"] = "dashboard"  
+    # Get the term from advanced dearch bar on dashoard page
+    term = request.args.get("term")
+    if not term:
+        return '{  "data": [] } '
+    ## Add logic here  to find the search term ##
+    print('term: '+term)
+    searchResult = advanced_search_func(term)
+    return json.dumps(searchResult.values.tolist(), cls=DecimalEncoder)
+    #return(json.dumps(str(searchResult.values.tolist())))
 
 if __name__ == "__main__":
     app.run(debug=True)
